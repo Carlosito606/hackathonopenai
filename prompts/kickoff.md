@@ -1,5 +1,7 @@
 # Kickoff prompts
 
+Complete, filled-in prompts per rocket for team Vibers: `prompts/team.md`. This file is the generic template.
+
 Paste the universal prompt, filled in, as the FIRST message to your agent (Claude Code, Codex, Codex cloud, any
 other). Add your rocket's mission line from the table below. The rules themselves live in AGENTS.md.
 
