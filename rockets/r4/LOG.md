@@ -26,3 +26,5 @@
 - This machine has 8 GiB RAM: R1 preparation and the local reader must run sequentially to avoid memory pressure.
 - R4 now also enriches the preceding user excerpt that R1 brings with assistant candidates; the final pack must
   still contain the actual supporting text. All 26 tests pass.
+- Added contract interoperability (no private R1 fields required), code selection of first/last events and
+  rejection of future events as completed events. All 31 tests pass. Candidate caches remain unchanged R1 output.

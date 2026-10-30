@@ -63,7 +63,13 @@ class ComputationTest(unittest.TestCase):
         pool += self.event('I attended the pottery workshop today.', '2024-03-11', 's_b')
         result = compute('Which came first, the botanical garden or the pottery workshop?', '2024-03-20', pool)
         self.assertTrue(result['computed'])
-        self.assertEqual(result['answer'], 'the botanical garden -> the pottery workshop')
+        self.assertEqual(result['answer'], 'the botanical garden')
+
+    def test_latest_event_is_selected_in_code(self):
+        pool = self.event('I used the bus today.', '2024-03-04')
+        pool += self.event('I used the train today.', '2024-03-11', 's_b')
+        result = compute("Which did I use most recently, 'bus' or 'train'?", '2024-03-20', pool)
+        self.assertEqual(result.get('answer'), 'train')
 
     def test_conflicting_dates_do_not_choose_arbitrarily(self):
         pool = self.event('I visited the botanical garden today.', '2024-03-04')
@@ -117,6 +123,11 @@ class ComputationTest(unittest.TestCase):
         pool = self.event('I visited the botanical garden today.', '2024-03-11')
         pool += self.event('I attended the pottery workshop today.', '2024-03-04', 's_b')
         result = compute('How many days before the pottery workshop did I visit the botanical garden?', '2024-03-20', pool)
+        self.assertFalse(result['computed'])
+
+    def test_future_event_is_not_a_completed_event(self):
+        pool = self.event('Tomorrow I attend the botanical garden workshop.', '2024-03-04')
+        result = compute('How many days ago did I attend the botanical garden workshop?', '2024-03-20', pool)
         self.assertFalse(result['computed'])
 
 

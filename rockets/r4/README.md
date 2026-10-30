@@ -2,7 +2,7 @@
 
 Bet: code computes event dates, elapsed time and event order; the reader phrases the answer and cites sources.
 Status: initial implementation, **not benchmarked end-to-end**. No claim of improvement over R1.
-Checks: 26 synthetic tests pass, including paired R1/R4 plans, a local HTTP reader fixture and official score.py.
+Checks: 31 synthetic tests pass, including contract interoperability, a local HTTP reader fixture and official score.py.
 Baseline: R1 at `de158d5`, same retrieval candidates, same machine; dev minus `splits/dev_holdout.txt`.
 Reader: team confirmed Qwen2.5-7B-Instruct 4-bit; local Q4_K_M/llama.cpp setup is in progress.
 Parts: all four contract stages in `rocket.py`; R1 retrieval, R4 enrichment/assembly/decision.
@@ -19,6 +19,7 @@ Limits: no local semantic event extractor or cross-session item counter yet; amb
 - Rejects plans, negations, assistant suggestions, conflicting matches and ambiguous multi-date sentences.
 - Adds computed facts and their `[E#]` labels only when their supporting text is included in the evidence pack.
 - Conservatively falls back to R1-style reading rather than generating an ungrounded count or date.
+- Accepts contract candidates without R1's private fields and session/fact units without a turn number.
 
 ## Reproduce
 
