@@ -24,3 +24,5 @@
 - Preparing the official Q4_K_M GGUF with llama.cpp CPU locally, recording the exact model revision separately.
 - Expanded to 25 passing tests; a missing final marker records an empty response and a reader failure, not abstention.
 - This machine has 8 GiB RAM: R1 preparation and the local reader must run sequentially to avoid memory pressure.
+- R4 now also enriches the preceding user excerpt that R1 brings with assistant candidates; the final pack must
+  still contain the actual supporting text. All 26 tests pass.

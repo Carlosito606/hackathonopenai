@@ -36,6 +36,12 @@ def enrich(q, h, cands):
     for c in cands:
         session = sessions[c['session_id']]
         extracted = events(c['text'], session['date'], c['session_id'], c['turn'], c['role'])
+        # R1 brings up to 300 characters of the preceding user turn with an assistant
+        # candidate. These are real source events, even if that user turn was not ranked.
+        if c['role'] == 'assistant' and c['turn'] is not None and c['turn'] > 0:
+            previous = session['turns'][c['turn'] - 1]
+            if previous['role'] == 'user':
+                extracted += events(previous['content'][:300], session['date'], c['session_id'], c['turn'] - 1, 'user')
         enriched.append({**c, 'notes': {**c.get('notes', {}), 'timeline': extracted, 'question_form': form}})
     return enriched
 
