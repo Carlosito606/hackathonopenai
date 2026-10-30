@@ -89,7 +89,7 @@ class Embedder:
         return self._model
 
     def ensure(self, sessions):
-        todo = [s for s in sessions if s["session_id"] not in self.cache]
+        todo = list({s["session_id"]: s for s in sessions if s["session_id"] not in self.cache}.values())
         if not todo:
             return
         texts, owners = [], []
