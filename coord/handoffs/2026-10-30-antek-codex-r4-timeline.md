@@ -5,7 +5,8 @@ done:
 - Forked date parser, event matching and code calculations for grounded exact durations and ordering.
 - Range/inference handling for weekends, bare ordinals, calendar months; rejects plans and ambiguous matches.
 - Paired R1/R4 artifact runner, partial-run auditor, model-identity check; no Reactor execution path.
-- 35 synthetic tests pass, including contract interoperability, a local HTTP fixture and the official scorer.
+- 40 synthetic tests pass, including contract interoperability, a local HTTP fixture and the official scorer.
+- Ordering supports disjoint explicit date ranges; complete calendar months/years clamp month-end anniversaries.
 - All-user-turn parser diagnostic: 14 computations / 107 temporal questions (not R1 retrieval, not a reader score).
 - Verified one temporal gold/source inconsistency, recorded separately in coord/findings/.
 - Reserved Reactor smoke @616bb63 completed: 2 canonical temporal questions, R1 and R4 both 2/2 correct,

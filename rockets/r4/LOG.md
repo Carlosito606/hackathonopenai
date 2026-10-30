@@ -51,3 +51,11 @@
   the reader used it correctly. The other question fell back to reading. No broad quality claim from n=2.
 - Model latencies (seconds): R1 94.29 / 41.39; R4 80.95 / 91.68. Too few observations for a speed comparison.
 - Standard run artifacts and scorer details are published; raw plans/replies stay in ignored cache, no key stored.
+
+## 2026-10-31 — antek-codex — interval ordering and calendar boundaries
+
+- Ordering may use disjoint explicit date ranges while exact durations still require exact days. Overlapping
+  intervals and mixed-date clauses remain unresolved. No inferred month/year is promoted to exact certainty.
+- Complete month/year differences now use clamped calendar anniversaries, including January 31 and February 29.
+- All 40 synthetic tests pass; these changes still need the full paired reader evaluation. The published Reactor
+  smoke remains tied to its actual source sha 616bb63 and contains no ordering questions.

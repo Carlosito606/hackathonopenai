@@ -5,7 +5,7 @@ Status: first end-to-end Reactor smoke completed; full paired stand-in evaluatio
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact (5 complete calendar months / 154 days), verified against the source and used correctly.
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 35 synthetic tests pass, including contract interoperability, a local HTTP reader fixture and official score.py.
+Checks: 40 synthetic tests pass, including contract interoperability, a local HTTP reader fixture and official score.py.
 Baseline: R1 at `de158d5`, same retrieval candidates, same machine; dev minus `splits/dev_holdout.txt`.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
 Stand-in: Qwen2.5-7B-Instruct Q4_K_M downloaded; it starts after R1 preparation to fit 8 GiB RAM.
@@ -21,6 +21,8 @@ Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, t
 - Adds `two weekends ago`, `the 15th`, `a couple of days ago`, calendar month offsets and period ranges.
 - Keeps weekends as ranges; omitted months/years and conversational month offsets are marked inferred.
 - Exact calculations require two uniquely grounded event dates (or one event and the question date).
+- Chronological order also works for disjoint date ranges; overlapping ranges leave order unresolved.
+- Complete calendar months/years use clamped anniversaries (January 31 → February 28, leap-day anniversaries).
 - Rejects plans, negations, assistant suggestions, conflicting matches and ambiguous multi-date sentences.
 - Matches coherent entity names/titles and question-provided aliases, not a bag of their words.
 - Adds computed facts and their `[E#]` labels only when their supporting text is included in the evidence pack.

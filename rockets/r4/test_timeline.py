@@ -2,7 +2,7 @@
 import unittest
 
 from .dates import annotate_dates, resolve_dates
-from .timeline import classify, compute, entities_match, events
+from .timeline import calendar_difference, classify, compute, entities_match, events
 
 
 class DatesTest(unittest.TestCase):
@@ -148,6 +148,33 @@ class ComputationTest(unittest.TestCase):
     def test_a_question_is_not_a_completed_event(self):
         pool = self.event('Did I visit the botanical garden yesterday?', '2024-03-05')
         self.assertFalse(compute('How many days ago did I visit the botanical garden?', '2024-03-11', pool)['computed'])
+
+    def test_order_can_be_proved_from_disjoint_periods(self):
+        pool = self.event('I visited the botanical garden last weekend.', '2024-03-04')
+        pool += self.event('I attended the pottery workshop last weekend.', '2024-03-18', 's_b')
+        result = compute('Which came first, the botanical garden or the pottery workshop?', '2024-03-20', pool)
+        self.assertTrue(result['computed'])
+        self.assertEqual(result['answer'], 'the botanical garden')
+        self.assertIn('2024-03-02..2024-03-03', result['facts'])
+
+    def test_overlapping_periods_do_not_prove_order(self):
+        pool = self.event('I visited the botanical garden last weekend.', '2024-03-04')
+        pool += self.event('I attended the pottery workshop today.', '2024-03-03', 's_b')
+        result = compute('Which came first, the botanical garden or the pottery workshop?', '2024-03-20', pool)
+        self.assertFalse(result['computed'])
+
+    def test_mixed_period_and_day_in_sentence_are_ambiguous(self):
+        pool = self.event('I visited the garden last weekend and the workshop today.', '2024-03-04')
+        self.assertTrue(all(e['ambiguous_clause'] for e in pool))
+
+    def test_calendar_months_and_years_clamp_anniversaries(self):
+        self.assertEqual(calendar_difference('2023-01-31', '2023-02-28', 'month'), '1 complete calendar month (28 days)')
+        self.assertEqual(calendar_difference('2024-02-29', '2025-02-28', 'year'), '1 complete calendar year (365 days)')
+        self.assertEqual(calendar_difference('2023-01-31', '2023-02-27', 'month'), '0 complete calendar months (27 days)')
+
+    def test_single_day_and_week_are_grammatical(self):
+        self.assertEqual(calendar_difference('2024-03-04', '2024-03-05', 'day'), '1 day')
+        self.assertEqual(calendar_difference('2024-03-04', '2024-03-11', 'week'), '1 week (7 days)')
 
 
 if __name__ == '__main__':

@@ -138,7 +138,7 @@ def baseline_decide(q, h, cands, pack):
 def decide(q, h, cands, pack):
     text = baseline_decide(q, h, cands, pack)['question']
     if pack['facts']:
-        text += ('\nVerified calendar computations from the supplied excerpts:\n' + pack['facts'] +
+        text += ('\nCalendar computations for the matched events in the supplied excerpts:\n' + pack['facts'] +
                  '\nUse these computations only for the events named above. Keep their evidence labels in the final answer line.')
     text += ('\nDate ranges and dates labelled inferred are not exact event dates. '
              'Do not replace an event date with its conversation date unless the text says it happened that day.')
