@@ -7,6 +7,44 @@ STOP = set('a an the and or to of on at for from in with my me i did do does was
            'day days week weeks month months year years how many much long ago since before after between '
            'when which what event events first last earliest latest order happened participate participated '
            'attend attended started start decided mentioned bought buy got get take took going went visit visited'.split())
+NAME = r"\b(?:[A-Z][A-Za-z0-9]*(?:['’][a-z]+)?|\d+[A-Za-z]*)(?:(?:\s+(?:of|the|and|for|in|at|to))?\s+[A-Z][A-Za-z0-9]*(?:['’][a-z]+)?)*\b"
+NAME_STOP = set('a an the of and for in at to my i'.split())
+
+
+def phrase_tokens(text):
+    return [w for w in re.findall(r'[a-z0-9]+', text.lower()) if w not in NAME_STOP]
+
+
+def contains_phrase(phrase, text):
+    needle, haystack = phrase_tokens(phrase), phrase_tokens(text)
+    return not needle or any(haystack[i:i + len(needle)] == needle for i in range(len(haystack) - len(needle) + 1))
+
+
+def entities_match(anchor, text):
+    """Require coherent names/titles, rather than scattered words from a generic near-hit.
+
+    A parenthesized alias explicitly provided by the question is an alternative,
+    e.g. Museum of Modern Art (MoMA), not an additional mandatory word.
+    """
+    alternatives, occupied = [], []
+    for match in re.finditer(rf'({NAME})\s*\(([A-Z][A-Za-z0-9.]{{1,15}})\)', anchor):
+        alternatives.append(list(match.groups()))
+        occupied.append(match.span())
+    for match in re.finditer(NAME, anchor):
+        if not any(left <= match.start() and match.end() <= right for left, right in occupied):
+            alternatives.append([match.group()])
+    for match in re.finditer(r"(?<!\w)(['\"])(.+?)\1(?!\w)", anchor):
+        alternatives.append([match.group(2)])
+    return all(any(contains_phrase(entity, text) for entity in group) for group in alternatives)
+
+
+def resolve_aliases(anchor, text):
+    for match in reversed(list(re.finditer(rf'({NAME})\s*\(([A-Z][A-Za-z0-9.]{{1,15}})\)', anchor))):
+        for variant in (match.group(2), match.group(1)):
+            if contains_phrase(variant, text):
+                anchor = anchor[:match.start()] + variant + anchor[match.end():]
+                break
+    return anchor
 
 
 def words(text):
@@ -86,6 +124,7 @@ def events(text, session_date, session_id, turn, role):
         # Planned and hypothetical events must not become statements that an event happened.
         planned = bool(re.search(r"\b(will|going to|planning to|plan to|hope to|hoping to|would|might|if)\b", clause, re.I))
         negated = bool(re.search(r"\b(didn't|did not|never|haven't|have not)\b", clause, re.I))
+        question_only = bool(re.match(r'\s*(?:By the way,\s*)?(?:can|could|would|do|did|how|what|when|where|which|who|is|are|have)\b', clause, re.I))
         cancelled = bool(re.search(r'\bcancell?ed\b', clause, re.I))
         relevant = [d for d in resolve_dates(clause, session_date) if d['precision'] == 'day']
         # Several different dates in one sentence cannot be assigned to individual events by proximity alone.
@@ -96,17 +135,20 @@ def events(text, session_date, session_id, turn, role):
         subjects = [s for s in subjects if s.lower() not in ('i', 'we')]
         future = parse_date(item['start']) > parse_date(session_date)
         out.append({**item, 'session_id': session_id, 'turn': turn, 'role': role, 'text': clause,
-                    'asserted': not planned and not negated and not future and role == 'user', 'ambiguous_clause': ambiguous,
+                    'asserted': not planned and not negated and not question_only and not future and role == 'user',
+                    'ambiguous_clause': ambiguous,
                     'cancelled': cancelled, 'third_party_subjects': subjects})
     return out
 
 
 def match_event(anchor, pool):
-    tokens = words(anchor)
-    if not tokens:
+    if not words(anchor):
         return None
     choices = []
     for event in pool:
+        tokens = words(resolve_aliases(anchor, event['text']))
+        if not tokens:
+            continue
         if not event['asserted'] or event['precision'] != 'day' or event['ambiguous_clause']:
             continue
         if event.get('cancelled') and not re.search(r'\bcancel', anchor, re.I):
@@ -117,9 +159,7 @@ def match_event(anchor, pool):
         coverage = len(matched) / len(tokens)
         if coverage < 0.75 or len(matched) < min(2, len(tokens)):
             continue
-        # Names, quoted titles and numbers in the anchor must all be present, not merely similar.
-        names = re.findall(r'\b[A-Z][a-z]+\b|\b\d+\b', anchor)
-        if any(not (words(name) <= words(event['text'])) for name in names if words(name)):
+        if not entities_match(anchor, event['text']):
             continue
         choices.append((coverage, len(matched), event))
     if not choices:
