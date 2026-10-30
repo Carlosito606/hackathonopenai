@@ -1,0 +1,2 @@
+{"question_id": "q_584d0cd7ca07", "question_type": "temporal-reasoning", "gold_abstain": false, "answer": "correct", "abstain_ok": true, "evidence_f1": 1.0}
+{"question_id": "q_2403af78a507", "question_type": "temporal-reasoning", "gold_abstain": false, "answer": "correct", "abstain_ok": true, "evidence_f1": 0.5}
