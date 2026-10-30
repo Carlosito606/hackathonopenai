@@ -38,3 +38,5 @@
 - A generic art-museum mention could match a specific named museum through scattered words. Fixed coherent
   name/title matching and explicit aliases; added alphanumeric-name and question-as-event regression tests.
 - All 35 tests pass. Temporal questions now have preparation priority; completed multi-session caches are retained.
+- Neutralized the inherited format example in both R1 and R4 prompts before any Reactor smoke test; named examples
+  from task data are not allowed to prime either variant. Baseline retrieval and evidence selection are unchanged.
