@@ -6,8 +6,8 @@ body:
   - type: dropdown
     id: area
     attributes:
-      label: Area
-      options: [retrieval, temporal, verify, integration, analysis]
+      label: Rocket or area
+      options: [core / mission control, R1 HYBRID, R2 SESSION-RANK, R3 FACT-LEDGER, R4 TIMELINE, R5 OBSERVER, R6 AGENTIC, R7 GUARDIAN, R8 ROUTER, POLIGON, ship]
     validations: {required: true}
   - type: textarea
     id: hypothesis
