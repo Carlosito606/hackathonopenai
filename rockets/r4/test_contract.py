@@ -24,6 +24,11 @@ def fixture():
 
 
 class ContractTest(unittest.TestCase):
+    def test_missing_final_answer_remains_a_reader_failure(self):
+        result = {'question_id': 'q_synthetic', 'status': 'timeout', 'reply': 'I need more time.'}
+        self.assertEqual(run.prediction(result), {'question_id': 'q_synthetic', 'abstain': False,
+                                                  'answer': '', 'citations': []})
+
     def test_stages_preserve_inputs_and_ground_facts_in_evidence(self):
         q, h, cands = fixture()
         before = json.dumps([q, h, cands], sort_keys=True)
