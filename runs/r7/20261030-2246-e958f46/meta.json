@@ -1,0 +1,17 @@
+{
+ "rocket": "r7",
+ "run_id": "20261030-2246-e958f46",
+ "git_sha": "e958f46",
+ "stages": {
+  "retrieve": "r7-bm25",
+  "enrich": null,
+  "assemble": "r1",
+  "decide": "r7-pack"
+ },
+ "split": "dev minus dev_holdout.txt",
+ "reader": null,
+ "flags": {
+  "policy": "pack",
+  "cands": null
+ }
+}

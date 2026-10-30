@@ -26,7 +26,7 @@ python rockets/r7/measure.py runs/r7/<run_id> ../data/dev/gold.jsonl --show
 
 ## Numbers
 
-Run `runs/r7/<milestone run>/`, dev minus `splits/dev_holdout.txt`, R1 evidence pack (BM25 candidates; all gold
+Run `runs/r7/20261030-2246-e958f46/`, dev minus `splits/dev_holdout.txt`, R1 evidence pack (BM25 candidates; all gold
 sessions in the pack for 93.5% of answerable questions). Abstention before any reader; answer accuracy and
 evidence F1 need the stand-in model (not chosen yet in `experiments/LEADERBOARD.md`).
 
