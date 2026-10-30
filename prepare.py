@@ -13,9 +13,10 @@ from memsys import TEMPORAL, Embedder, build_evidence, day_no, load_split, parse
 GUIDE = """
 (How to answer: the evidence is excerpts from my own past chats with you, oldest first, each with its date; "user" is me, "assistant" is you.
 - Some excerpts are near misses: other people's things, other pets, a different event, a plan that changed, or a value I corrected later. Use only what matches the question exactly.
-- If it changed over time, the most recent conversation wins.
+- If it changed over time, the most recent conversation wins. A plan, a recommendation, an attempt, or a change I later undid ("removed it", "didn't keep it", "used to") is not my current state.
+- Things said about other people (family, friends, neighbors, colleagues) or their pets do not answer a question about me or mine.
 - The final line holds only the short answer (a name, number, date or short phrase) and the labels of the excerpts that state it, e.g. "<answer> [E4]". One answer, no hedging, no alternatives. It is the last line of your reply: nothing after it.
-- Write INSUFFICIENT_EVIDENCE only if no excerpt states what is asked.{extra})"""
+- Write INSUFFICIENT_EVIDENCE only if no excerpt states what is asked about me (it is never said, or said only about someone else).{extra})"""
 DATES = """
 - Dates are tagged [YYYY-MM-DD, day N]: days between two dates = the difference of their day numbers (weeks = days / 7). The question date is day {today}. Use the date the event happened as stated, else the date of the conversation that reports it. Tags with "about" are approximate: prefer an exact date for the same event if one is given."""
 COUNT = """
