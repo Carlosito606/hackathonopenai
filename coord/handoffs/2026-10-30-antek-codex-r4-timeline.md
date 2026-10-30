@@ -5,7 +5,7 @@ done:
 - Forked date parser, event matching and code calculations for grounded exact durations and ordering.
 - Range/inference handling for weekends, bare ordinals, calendar months; rejects plans and ambiguous matches.
 - Paired R1/R4 artifact runner, partial-run auditor, model-identity check; no Reactor execution path.
-- 25 synthetic tests pass, including a local HTTP protocol fixture and the official scorer.
+- 26 synthetic tests pass, including a local HTTP protocol fixture and the official scorer.
 - Official dev/scorer and dependencies downloaded outside the repository; holdout excluded throughout.
 
 not done:

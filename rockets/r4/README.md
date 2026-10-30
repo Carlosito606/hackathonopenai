@@ -2,7 +2,7 @@
 
 Bet: code computes event dates, elapsed time and event order; the reader phrases the answer and cites sources.
 Status: initial implementation, **not benchmarked end-to-end**. No claim of improvement over R1.
-Checks: 25 synthetic tests pass, including paired R1/R4 plans, a local HTTP reader fixture and official score.py.
+Checks: 26 synthetic tests pass, including paired R1/R4 plans, a local HTTP reader fixture and official score.py.
 Baseline: R1 at `de158d5`, same retrieval candidates, same machine; dev minus `splits/dev_holdout.txt`.
 Reader: team confirmed Qwen2.5-7B-Instruct 4-bit; local Q4_K_M/llama.cpp setup is in progress.
 Parts: all four contract stages in `rocket.py`; R1 retrieval, R4 enrichment/assembly/decision.

@@ -49,6 +49,15 @@ class ContractTest(unittest.TestCase):
         result = rocket.grounded_computation(q, enriched, [{'id': 's_synthetic', 'date': '2024-03-05', 'text': 'unrelated'}])
         self.assertFalse(result['computed'])
 
+    def test_r1_previous_user_context_can_ground_event(self):
+        q, h, cands = fixture()
+        h['sessions'][0]['turns'].append({'role': 'assistant', 'content': 'That sounds like a lovely visit.'})
+        cands = [{**cands[0], 'role': 'assistant', 'turn': 1, 'text': h['sessions'][0]['turns'][1]['content']}]
+        enriched = rocket.enrich(q, h, cands)
+        pack = rocket.assemble(q, h, enriched)
+        self.assertIn('Computed: 7 days', pack['facts'])
+        self.assertIn('[E1]', pack['facts'])
+
     def test_paired_runner_and_official_score(self):
         scorer = Path(os.environ.get('R4_SCORER', 'score.py')).resolve()
         if not scorer.exists():
