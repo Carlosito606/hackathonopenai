@@ -40,6 +40,7 @@ class ContractTest(unittest.TestCase):
         self.assertIn('Computed: 7 days', pack['facts'])
         self.assertIn('[E1]', pack['facts'])
         self.assertIn('Computed: 7 days', decision['question'])
+        self.assertIn('e.g. "<answer> [E4]"', decision['question'])
         self.assertEqual(before, json.dumps([q, h, cands], sort_keys=True))
         self.assertTrue(all(e['id'] == 's_synthetic' for e in pack['evidence']))
 

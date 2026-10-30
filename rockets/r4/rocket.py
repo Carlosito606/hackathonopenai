@@ -125,10 +125,13 @@ def assemble(q, h, cands):
 
 def baseline_decide(q, h, cands, pack):
     prepare = importlib.import_module('prepare')
+    # Neutral format-only example in both variants; never seed an answer with a name
+    # that might occur in the challenge's test data.
+    guide = re.sub(r'e\.g\.\s*"[^"\n]*?\[E\d+\][^"\n]*"', 'e.g. "<answer> [E4]"', prepare.GUIDE)
     extra = prepare.DATES.format(today=r1().day_no(r1().parse_date(q['question_date']))) if r1().TEMPORAL.search(q['question']) else ''
     if prepare.COUNTING.search(q['question']) and not re.search(r'how many (days|weeks|months|years)', q['question'], re.I):
         extra += prepare.COUNT
-    return {'question': q['question'].strip() + '\n' + prepare.GUIDE.format(extra=extra),
+    return {'question': q['question'].strip() + '\n' + guide.format(extra=extra),
             'abstain': False, 'after': 'abstain_if_insufficient'}
 
 
