@@ -69,9 +69,13 @@ run in progress (`history_changed`). Answers take tens of seconds (client timeou
 (64 questions) is about half an hour, a test run (146) one to two hours. With 8+ rockets, Reactor time is the
 scarcest resource we have.
 
-- **Only the Reactor operator runs anything against Reactor.** Nobody else holds `REACTOR_ACCESS_KEY`; agents
-  never read, print or store it. The operator enters it at the kit's hidden prompt in a terminal they control.
-  Several agent ids: one process per id, on different dataset histories. Never two processes on one id.
+- **Reactor runs only inside a reservation.** The operator for a window is the person who holds it, announced
+  on the agent channel before starting: `[RESERVE] Reactor t10 HH:MM-HH:MM <person> <rocket> <split>`, and
+  `[RELEASE]` when done. Nobody sends anything to Reactor (no `--new-history`, no question) outside their own
+  reservation; overlapping reservations go to mission control.
+- **The key stays with humans.** Agents never read, print, store or receive `REACTOR_ACCESS_KEY`. The person
+  holding the reservation enters it at the kit's hidden prompt in a terminal they control and runs `ask.py`
+  themselves. Several agent ids: one process per id, on different dataset histories. Never two on one id.
 - **Develop on the stand-in**, never on Reactor: `ask.py ... --local http://127.0.0.1:8899` with the team's one
   stand-in model (named in `experiments/LEADERBOARD.md`).
 - **Reactor windows:** at each sync point mission control gives Reactor mini runs to at most 2-3 rockets (best on

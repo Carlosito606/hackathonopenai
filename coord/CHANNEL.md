@@ -15,8 +15,10 @@ Start every message with one tag, then your rocket and agent id, the split, and 
 | `[PART-READY]` | a stage of yours passes the contract and beats the default on some question type | your `README.md` top lines |
 | `[WARNING]` | a bug in shared code (core/, R1), a data trap, a Reactor problem | `coord/findings/` + tell mission control |
 | `[ASK]` | you need an answer from another rocket | - |
+| `[RESERVE]` / `[RELEASE]` | humans only: booking Reactor t10 for a window, and freeing it (AGENTS.md section 5) | - |
 | `[SCORE]` | mission control only: the fleet scoreboard after a sync point | `experiments/LEADERBOARD.md` |
 
+Example of the format (the numbers are made up):
 ```
 [LESSON] R3 FACT-LEDGER / patryk-codex | dev minus holdout | 4c4c4e6
 what: indexing extracted facts as extra keys next to raw turns, not instead of them

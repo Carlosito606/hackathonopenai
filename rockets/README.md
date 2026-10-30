@@ -7,6 +7,8 @@ ship. Why this works and where it breaks: section "Why" below.
 
 ## Portfolio
 
+Proposed crew for the 4 machines and complete ready-to-paste prompts: `prompts/team.md`.
+
 Each rocket takes a different cell on three axes, so the fleet covers the space instead of converging on one idea:
 **unit** (what is indexed and retrieved), **reading** (how evidence becomes an answer), **memory build** (what is
 computed before questions arrive).
