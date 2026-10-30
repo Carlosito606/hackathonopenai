@@ -5,6 +5,9 @@ import re
 
 MODEL = "deepset/roberta-base-squad2"
 K, CHUNK = 8, 1200
+# verify.py prefixed each chunk with its session date; the model then answers "how long / how often" questions with
+# that date ("How long was I in Korea for?" -> "2023/05/25"), so unanswerable questions look answerable.
+DATE_PREFIX = False
 _tk = _model = None
 
 # Question shapes the QA signal is used for. Test has no type labels, so the type is guessed from the question:
@@ -55,7 +58,7 @@ def scores(question, texts):
 
 def signal(q, h, cands):
     """{"qa", "qa_span", "qa_session"} from the first K distinct chunks of the candidates, each prefixed with its
-    session date and role as in verify.py."""
+    role (and its session date when DATE_PREFIX, as in verify.py)."""
     dates = {s["session_id"]: s["date"] for s in h["sessions"]}
     seen, texts, sids = set(), [], []
     for c in cands:
@@ -63,7 +66,8 @@ def signal(q, h, cands):
         if key in seen:
             continue
         seen.add(key)
-        texts.append(f"[{dates[c['session_id']]}] {c['role']}: {c['text'][:CHUNK + 200]}")
+        date = f"[{dates[c['session_id']]}] " if DATE_PREFIX else ""
+        texts.append(f"{date}{c['role']}: {c['text'][:CHUNK + 200]}")
         sids.append(c["session_id"])
         if len(texts) == K:
             break

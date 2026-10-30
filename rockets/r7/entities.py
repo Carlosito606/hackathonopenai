@@ -23,6 +23,10 @@ times per every each average left still own also both either back around away"""
 
 MONTHS = set("""january february march april may june july august september october november december jan feb mar apr
 jun jul aug sep sept oct nov dec monday tuesday wednesday thursday friday saturday sunday""".split())
+# Capitalized words that name a date or a kind of thing, not one specific thing: chats say "February 14" for
+# "Valentine's day" and "BS in CS" for "Bachelor's degree" (both false abstentions on dev).
+NOT_NAMES = MONTHS | set("""valentine christmas easter thanksgiving halloween hanukkah diwali ramadan eid new year year's
+mother's father's labor memorial independence bachelor master doctor doctorate associate""".split())
 
 DETERMINERS = set("my the a an our his her their this that these those some any".split())
 
@@ -69,15 +73,24 @@ def extract(question):
 
     for m in re.finditer(r"""(?<![A-Za-z])['"‘“]([^'"’”]{2,60})['"’”](?![A-Za-z])""", q):
         add(m.group(1), "quoted")
-    toks = WORD.findall(q)
+    found = list(WORD.finditer(q))
+    toks = [m.group(0) for m in found]
+
+    def joined(j):
+        """Token j follows token j-1 with only spaces between ("Emma, Rachel" are two names)."""
+        return not q[found[j - 1].end():found[j].start()].strip()
+
+    def name_word(tok):
+        return stem(tok) not in NOT_NAMES and tok.lower().strip("'’.") not in NOT_NAMES
+
     i = 0
     while i < len(toks):
         tok = toks[i]
         low = tok.lower().strip("'’.")
         if _proper(tok) and not (i == 0 and low in STOP) and low not in ("i", "i'm", "i've", "i'd") \
-                and low not in MONTHS and not tok[0].isdigit():
+                and name_word(tok) and not tok[0].isdigit():
             j = i + 1
-            while j < len(toks) and toks[j].lower() not in MONTHS and (
+            while j < len(toks) and joined(j) and name_word(toks[j]) and (
                     _proper(toks[j]) or toks[j] in ("of", "de") or (toks[j][0].isdigit() and _proper(toks[j - 1]))):
                 j += 1
             while j > i + 1 and toks[j - 1] in ("of", "de"):
