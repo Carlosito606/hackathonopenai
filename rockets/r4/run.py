@@ -6,6 +6,7 @@ Use --prepare-only for retrieval/evidence/computation artifacts while waiting fo
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -67,6 +68,7 @@ def main():
     parser.add_argument('--data', required=True, type=Path)
     parser.add_argument('--local', help='team stand-in OpenAI-compatible endpoint; no Reactor endpoints accepted')
     parser.add_argument('--reader', help='exact team model name, required for measured answer runs')
+    parser.add_argument('--reader-revision', help='optional exact model repository revision for reproducibility')
     parser.add_argument('--scorer', type=Path, help='official memory-challenge/score.py')
     parser.add_argument('--types', default='temporal-reasoning', help='comma-separated dev types, or all')
     parser.add_argument('--prepare-only', action='store_true')
@@ -95,12 +97,16 @@ def main():
         parser.error(f'run folder exists: {out}; use a new --run-id')
     out.mkdir(parents=True)
     write(out / 'meta.json', {'rocket': 'r4', 'run_id': out.name, 'git_sha': sha,
-                            'source_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT)),
+                            'source_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain', '--',
+                                'rockets/r4', 'memsys.py', 'prepare.py', 'ask.py', 'retrieval.py', 'dates.py',
+                                'evidence.py', 'reactor/client.py'], cwd=ROOT)),
                             'stages': {'retrieve': 'r1', 'enrich': 'r4', 'assemble': 'r4', 'decide': 'r4'},
                             'baseline_sha': 'de158d5', 'split': 'dev minus splits/dev_holdout.txt',
                             'question_types': sorted(types), 'questions': len(questions),
                             'reader': args.reader, 'flags': vars(args) | {'data': str(args.data), 'scorer': str(args.scorer),
                                                                       'candidate_cache': str(args.candidate_cache)},
+                            'retrieval_device': os.environ.get('R4_DEVICE', 'cpu'),
+                            'cpu_threads': os.environ.get('OMP_NUM_THREADS'),
                             'complete': False})
     baseline = out / 'baseline-r1'
     baseline.mkdir()

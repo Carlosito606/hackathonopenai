@@ -35,7 +35,8 @@ def enrich(q, h, cands):
     enriched = []
     for c in cands:
         session = sessions[c['session_id']]
-        extracted = events(c['text'], session['date'], c['session_id'], c['turn'], c['role'])
+        event_role = c['role'] if c['kind'] == 'turn' and c['turn'] is not None else None
+        extracted = events(c['text'], session['date'], c['session_id'], c['turn'], event_role)
         # R1 brings up to 300 characters of the preceding user turn with an assistant
         # candidate. These are real source events, even if that user turn was not ranked.
         if c['role'] == 'assistant' and c['turn'] is not None and c['turn'] > 0:
@@ -48,7 +49,45 @@ def enrich(q, h, cands):
 
 def baseline_assemble(q, h, cands):
     module = r1()
-    return {'evidence': module.build_evidence(h, cands, dates=bool(module.TEMPORAL.search(q['question']))), 'facts': ''}
+    return {'evidence': compatible_evidence(h, cands, dates=bool(module.TEMPORAL.search(q['question']))), 'facts': ''}
+
+
+def compatible_evidence(h, cands, dates=False):
+    """Adapt contract Cand values without relying on R1's private `si` field.
+
+    The R1 turn path stays identical. Session/fact units with turn=None remain
+    valid inputs for docking, but cannot ground exact user-event arithmetic.
+    """
+    sessions = {s['session_id']: (index, s) for index, s in enumerate(h['sessions'])}
+    turns, other = [], []
+    for c in cands:
+        if c['session_id'] not in sessions:
+            raise ValueError('candidate session is not part of this history')
+        index, session = sessions[c['session_id']]
+        turn = c['turn']
+        if turn is None:
+            other.append(c)
+            continue
+        if type(turn) is not int or not 0 <= turn < len(session['turns']):
+            raise ValueError('candidate turn is not part of its source session')
+        turns.append({**c, 'si': index, 'role': session['turns'][turn]['role']})
+    evidence = r1().build_evidence(h, turns, dates=dates)
+    used = sum(len(item['text']) + 60 for item in evidence)
+    by_id = {item['id']: item for item in evidence}
+    for c in other:
+        text = c['text'][:1000]
+        session = sessions[c['session_id']][1]
+        if dates:
+            text = r1().annotate_dates(text, r1().parse_date(session['date']))
+        text = f'{c["kind"]}: {text}'
+        if used + len(text) + 60 > 18000:
+            continue
+        if c['session_id'] in by_id:
+            by_id[c['session_id']]['text'] += '\n' + text
+        else:
+            by_id[c['session_id']] = {'id': c['session_id'], 'date': session['date'], 'text': text}
+        used += len(text) + 60
+    return sorted(by_id.values(), key=lambda item: sessions[item['id']][0])
 
 
 def grounded_computation(q, cands, evidence):
@@ -67,7 +106,7 @@ def grounded_computation(q, cands, evidence):
 
 def assemble(q, h, cands):
     # Select the same excerpts as R1 before adding the fork's date annotations.
-    evidence = r1().build_evidence(h, cands, dates=False)
+    evidence = compatible_evidence(h, cands, dates=False)
     bounded, used = [], 0
     for item in evidence:
         item['text'] = annotate_dates(item['text'], item['date'])

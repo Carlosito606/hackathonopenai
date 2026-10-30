@@ -58,6 +58,26 @@ class ContractTest(unittest.TestCase):
         self.assertIn('Computed: 7 days', pack['facts'])
         self.assertIn('[E1]', pack['facts'])
 
+    def test_contract_candidates_do_not_need_r1_private_fields(self):
+        q, h, cands = fixture()
+        cands = [{key: value for key, value in cands[0].items() if key not in ('si', 'date')}]
+        pack = rocket.assemble(q, h, rocket.enrich(q, h, cands))
+        self.assertIn('Computed: 7 days', pack['facts'])
+
+    def test_session_units_with_no_turn_are_valid_docking_inputs(self):
+        for role in (None, 'user'):
+            q, h, cands = fixture()
+            cands = [{**cands[0], 'turn': None, 'kind': 'session', 'role': role}]
+            pack = rocket.assemble(q, h, rocket.enrich(q, h, cands))
+            self.assertEqual(pack['facts'], '')
+            self.assertEqual(pack['evidence'][0]['id'], 's_synthetic')
+
+    def test_foreign_history_source_is_rejected(self):
+        q, h, cands = fixture()
+        cands[0]['session_id'] = 's_another_history'
+        with self.assertRaises(ValueError):
+            rocket.assemble(q, h, cands)
+
     def test_paired_runner_and_official_score(self):
         scorer = Path(os.environ.get('R4_SCORER', 'score.py')).resolve()
         if not scorer.exists():

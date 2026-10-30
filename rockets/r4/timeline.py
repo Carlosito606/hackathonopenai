@@ -61,7 +61,8 @@ def classify(question):
         if len(anchors) < 2:
             anchors = re.findall(r"['\"]([^'\"]+)['\"]", q)
         result.update(form='order', anchors=[a.strip() for a in anchors if words(a)],
-                      direction='latest' if re.search('recent|latest', q, re.I) else 'earliest')
+                      direction='latest' if re.search('recent|latest', q, re.I) else 'earliest',
+                      order_output='list' if re.search(r'\border\b|first to last|earliest to latest|second and third', q, re.I) else 'winner')
         return result
     match = re.search(r'\b(?:ago did I|ago have I|passed since I|since I last)\s+(.+)', q, re.I)
     if match:
@@ -93,8 +94,9 @@ def events(text, session_date, session_id, turn, role):
                               r'he|she|they|[A-Z][a-z]+)\s+(?:has |had |just )?'
                               r'(?:visited|attended|bought|finished|started|joined|graduated|became)\b', clause)
         subjects = [s for s in subjects if s.lower() not in ('i', 'we')]
+        future = parse_date(item['start']) > parse_date(session_date)
         out.append({**item, 'session_id': session_id, 'turn': turn, 'role': role, 'text': clause,
-                    'asserted': not planned and not negated and role == 'user', 'ambiguous_clause': ambiguous,
+                    'asserted': not planned and not negated and not future and role == 'user', 'ambiguous_clause': ambiguous,
                     'cancelled': cancelled, 'third_party_subjects': subjects})
     return out
 
@@ -182,7 +184,9 @@ def compute(question, question_date, pool):
             result['reason'] = 'order_not_strict'
             return result
         ordered = sorted(zip(anchors, selected), key=lambda item: item[1]['start'])
-        answer = ' -> '.join(anchor for anchor, _event in ordered)
-        facts.append('Computed chronological order (earliest to latest): ' + answer + '.')
+        chronology = ' -> '.join(anchor for anchor, _event in ordered)
+        answer = chronology if form['order_output'] == 'list' else ordered[-1 if form['direction'] == 'latest' else 0][0]
+        facts.append('Computed chronological order (earliest to latest): ' + chronology + '.')
+        facts.append('Computed answer to the ordering question: ' + answer + '.')
     result.update(computed=True, sources=sources, facts='\n'.join(facts), answer=answer, reason='grounded_exact_dates')
     return result
