@@ -4,3 +4,6 @@ __pycache__/
 /plan-*.jsonl
 /results-*.jsonl
 .env
+.worktrees/
+.claude/worktrees/
+/predictions*.jsonl
