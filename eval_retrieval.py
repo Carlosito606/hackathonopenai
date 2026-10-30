@@ -23,8 +23,8 @@ for q in qs:
     for mode in ("fused", "rerank"):
         cands = retrieve(h, q["question"], emb, rerank=mode == "rerank")
         rank = session_ranking(cands)
-        passages, _ = build_evidence(h, cands, q["question_date"])
-        sent = {sid for sid, _ in passages}
+        passages = build_evidence(h, cands)
+        sent = {p["id"] for p in passages}
         for typ in (g["question_type"], "all"):
             r = res[mode, typ]
             for k in (1, 3, 5, 10):
