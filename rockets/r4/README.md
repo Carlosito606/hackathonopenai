@@ -1,14 +1,18 @@
 # R4 TIMELINE — antek-codex
 
 Bet: code computes event dates, elapsed time and event order; the reader phrases the answer and cites sources.
-Status: initial implementation, **not benchmarked end-to-end**. No claim of improvement over R1.
+Status: first end-to-end Reactor smoke completed; full paired stand-in evaluation is still running.
+Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
+R4 supplied one computed fact (5 complete calendar months / 154 days), verified against the source and used correctly.
+This two-question smoke makes **no claim of improvement over R1**.
 Checks: 35 synthetic tests pass, including contract interoperability, a local HTTP reader fixture and official score.py.
 Baseline: R1 at `de158d5`, same retrieval candidates, same machine; dev minus `splits/dev_holdout.txt`.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
-Reader: team confirmed Qwen2.5-7B-Instruct 4-bit; local Q4_K_M/llama.cpp setup is in progress.
+Stand-in: Qwen2.5-7B-Instruct Q4_K_M downloaded; it starts after R1 preparation to fit 8 GiB RAM.
 Parts: all four contract stages in `rocket.py`; R1 retrieval, R4 enrichment/assembly/decision.
 Dates: `dates.py` forks the date block in R1 `memsys.py` at `de158d5` (there was no standalone dates.py).
 Limits: no local semantic event extractor or cross-session item counter yet; ambiguous events fall back to reading.
+Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, then released early).
 
 ## What the first implementation does
 
