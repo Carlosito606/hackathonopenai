@@ -17,3 +17,10 @@
 - A one-time human-authorized authenticated connection check succeeded; no Reactor question or history reset was sent.
 - Code contains no Reactor execution path or access key. Shared Reactor reservations remain with humans.
 - Team endpoint/model requested; no end-to-end quality score is available, and no claim beats R1.
+
+## 2026-10-30 — antek-codex — stand-in configuration
+
+- Team confirmed Qwen2.5-7B-Instruct, 4-bit; the Mac endpoint is not remotely accessible.
+- Preparing the official Q4_K_M GGUF with llama.cpp CPU locally, recording the exact model revision separately.
+- Expanded to 25 passing tests; a missing final marker records an empty response and a reader failure, not abstention.
+- This machine has 8 GiB RAM: R1 preparation and the local reader must run sequentially to avoid memory pressure.

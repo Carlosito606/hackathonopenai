@@ -5,11 +5,12 @@ done:
 - Forked date parser, event matching and code calculations for grounded exact durations and ordering.
 - Range/inference handling for weekends, bare ordinals, calendar months; rejects plans and ambiguous matches.
 - Paired R1/R4 artifact runner, partial-run auditor, model-identity check; no Reactor execution path.
-- 24 synthetic tests pass, including a local HTTP protocol fixture and the official scorer.
+- 25 synthetic tests pass, including a local HTTP protocol fixture and the official scorer.
 - Official dev/scorer and dependencies downloaded outside the repository; holdout excluded throughout.
 
 not done:
-- End-to-end dev answer comparison: the shared stand-in endpoint/model is still unspecified in LEADERBOARD.md.
+- End-to-end dev answer comparison: Qwen2.5-7B-Instruct 4-bit was confirmed by the team, but its Mac endpoint is
+  local-only; a Q4_K_M/llama.cpp CPU installation is being prepared on this machine.
 - Full R1 retrieval preparation: running on CPU while the large reranker downloads/initializes.
 - Independent auditing of computed-fact correctness on dev; no claim of improvement over R1.
 - Cross-session counting, semantic event extraction, local-model fallback for unresolved dates.
