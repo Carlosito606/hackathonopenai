@@ -2,7 +2,7 @@
 import unittest
 
 from .dates import annotate_dates, resolve_dates
-from .timeline import classify, compute, events
+from .timeline import classify, compute, entities_match, events
 
 
 class DatesTest(unittest.TestCase):
@@ -129,6 +129,25 @@ class ComputationTest(unittest.TestCase):
         pool = self.event('Tomorrow I attend the botanical garden workshop.', '2024-03-04')
         result = compute('How many days ago did I attend the botanical garden workshop?', '2024-03-20', pool)
         self.assertFalse(result['computed'])
+
+    def test_generic_museum_does_not_name_a_specific_museum(self):
+        self.assertFalse(entities_match('the Museum of Modern Art (MMA)', 'I visited an art museum and saw modern art.'))
+        self.assertTrue(entities_match('the Museum of Modern Art (MMA)', 'I visited MMA yesterday.'))
+        self.assertTrue(entities_match('the Museum of Modern Art (MMA)', 'I visited the Museum of Modern Art yesterday.'))
+        pool = self.event('I visited MMA yesterday.', '2024-03-05')
+        result = compute('How many days ago did I visit the Museum of Modern Art (MMA)?', '2024-03-11', pool)
+        self.assertEqual(result.get('answer'), '7 days')
+
+    def test_titles_preserve_phrase_not_word_bag(self):
+        self.assertTrue(entities_match("'The Seven Husbands of Evelyn Hugo'", 'I finished Seven Husbands of Evelyn Hugo today.'))
+        self.assertFalse(entities_match("'Seven Husbands of Evelyn Hugo'", 'Evelyn met seven people. Hugo discussed their husbands.'))
+
+    def test_alphanumeric_event_names_are_not_swapped(self):
+        self.assertFalse(entities_match('5K charity run', 'I participated in a 10K charity run today.'))
+
+    def test_a_question_is_not_a_completed_event(self):
+        pool = self.event('Did I visit the botanical garden yesterday?', '2024-03-05')
+        self.assertFalse(compute('How many days ago did I visit the botanical garden?', '2024-03-11', pool)['computed'])
 
 
 if __name__ == '__main__':
