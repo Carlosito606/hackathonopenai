@@ -1,7 +1,7 @@
 """Question forms, grounded event matching and calendar arithmetic. No model or gold input."""
 import re
 
-from .dates import parse_date, resolve_dates
+from .dates import parse_date, resolve_dates, shift_months
 
 STOP = set('a an the and or to of on at for from in with my me i did do does was were is are have has had been be '
            'day days week weeks month months year years how many much long ago since before after between '
@@ -126,9 +126,9 @@ def events(text, session_date, session_id, turn, role):
         negated = bool(re.search(r"\b(didn't|did not|never|haven't|have not)\b", clause, re.I))
         question_only = bool(re.match(r'\s*(?:By the way,\s*)?(?:can|could|would|do|did|how|what|when|where|which|who|is|are|have)\b', clause, re.I))
         cancelled = bool(re.search(r'\bcancell?ed\b', clause, re.I))
-        relevant = [d for d in resolve_dates(clause, session_date) if d['precision'] == 'day']
+        relevant = resolve_dates(clause, session_date)
         # Several different dates in one sentence cannot be assigned to individual events by proximity alone.
-        ambiguous = len({d['start'] for d in relevant}) > 1
+        ambiguous = len({(d['start'], d['end']) for d in relevant}) > 1
         subjects = re.findall(r'\b([Mm]y (?:friend|cousin|sister|brother|aunt|uncle|mother|father)|'
                               r'he|she|they|[A-Z][a-z]+)\s+(?:has |had |just )?'
                               r'(?:visited|attended|bought|finished|started|joined|graduated|became)\b', clause)
@@ -141,7 +141,7 @@ def events(text, session_date, session_id, turn, role):
     return out
 
 
-def match_event(anchor, pool):
+def match_event(anchor, pool, allow_ranges=False):
     if not words(anchor):
         return None
     choices = []
@@ -149,7 +149,8 @@ def match_event(anchor, pool):
         tokens = words(resolve_aliases(anchor, event['text']))
         if not tokens:
             continue
-        if not event['asserted'] or event['precision'] != 'day' or event['ambiguous_clause']:
+        precision_ok = event['precision'] == 'day' or (allow_ranges and event['precision'] == 'range')
+        if not event['asserted'] or not precision_ok or event['ambiguous_clause']:
             continue
         if event.get('cancelled') and not re.search(r'\bcancel', anchor, re.I):
             continue
@@ -167,7 +168,7 @@ def match_event(anchor, pool):
     choices.sort(key=lambda item: (-item[0], -item[1]))
     best = choices[0]
     tied = [e for coverage, count, e in choices if coverage == best[0] and count == best[1]]
-    if len({e['start'] for e in tied}) > 1:
+    if len({(e['start'], e['end']) for e in tied}) > 1:
         return None  # repeated activities and conflicting dates need semantic disambiguation
     return best[2]
 
@@ -176,19 +177,19 @@ def calendar_difference(start, end, unit):
     a, b = parse_date(start), parse_date(end)
     days = abs((b - a).days)
     if unit == 'day':
-        return f'{days} days'
+        return f'{days} day' + ('' if days == 1 else 's')
     if unit == 'week':
         value = days / 7
-        return f'{value:g} weeks ({days} days)'
+        return f'{value:g} ' + ('week' if value == 1 else 'weeks') + f' ({days} days)'
     if b < a:
         a, b = b, a
     months = (b.year - a.year) * 12 + b.month - a.month
-    if b.day < a.day:
+    if shift_months(a, months) > b:
         months -= 1
     if unit == 'month':
-        return f'{months} complete calendar months ({days} days)'
+        return f'{months} complete calendar ' + ('month' if months == 1 else 'months') + f' ({days} days)'
     years = months // 12
-    return f'{years} complete calendar years ({days} days)'
+    return f'{years} complete calendar ' + ('year' if years == 1 else 'years') + f' ({days} days)'
 
 
 def compute(question, question_date, pool):
@@ -198,7 +199,7 @@ def compute(question, question_date, pool):
               'reason': 'unsupported_or_ambiguous_question_form'}
     if form['form'] not in ('between', 'elapsed', 'order') or not anchors:
         return result
-    selected = [match_event(anchor, pool) for anchor in anchors]
+    selected = [match_event(anchor, pool, allow_ranges=form['form'] == 'order') for anchor in anchors]
     if any(event is None for event in selected):
         result['reason'] = 'missing_or_ambiguous_event_date'
         return result
@@ -206,7 +207,8 @@ def compute(question, question_date, pool):
         result['reason'] = 'same_event_matched_twice'
         return result
     sources = list(dict.fromkeys(e['session_id'] for e in selected))
-    facts = [f'{anchor}: {event["start"]} (source {event["session_id"]}, turn {event["turn"]}; '
+    facts = [f'{anchor}: {event["start"]}' + (f'..{event["end"]}' if event['start'] != event['end'] else '') +
+             f' (source {event["session_id"]}, turn {event["turn"]}; '
              f'expression {event["expression"]!r})' for anchor, event in zip(anchors, selected)]
     answer = ''
     if form['form'] in ('between', 'elapsed'):
@@ -220,10 +222,10 @@ def compute(question, question_date, pool):
         answer = calendar_difference(selected[0]['start'], end, form['unit'])
         facts.append(f'Computed: {answer} between {selected[0]["start"]} and {end}.')
     else:
-        if len(selected) < 2 or len({e['start'] for e in selected}) != len(selected):
+        ordered = sorted(zip(anchors, selected), key=lambda item: item[1]['start'])
+        if len(selected) < 2 or any(left[1]['end'] >= right[1]['start'] for left, right in zip(ordered, ordered[1:])):
             result['reason'] = 'order_not_strict'
             return result
-        ordered = sorted(zip(anchors, selected), key=lambda item: item[1]['start'])
         chronology = ' -> '.join(anchor for anchor, _event in ordered)
         answer = chronology if form['order_output'] == 'list' else ordered[-1 if form['direction'] == 'latest' else 0][0]
         facts.append('Computed chronological order (earliest to latest): ' + chronology + '.')
