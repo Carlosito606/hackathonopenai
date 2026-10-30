@@ -1,5 +1,6 @@
 """R7 GUARDIAN: verification first. Retrieval and evidence are R1's; the decide stage checks that every specific
-entity of the question occurs in the assembled evidence and abstains (or warns the reader) when one does not."""
+entity of the question occurs in the assembled evidence and abstains (or warns the reader) when one does not, and
+optionally (run.py --qa) abstains on single-fact questions whose SQuAD 2.0 no-answer score is below a threshold."""
 import re
 import sys
 from pathlib import Path
@@ -11,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from memsys import TEMPORAL, build_evidence, session_chunks, sub_queries, tokens  # noqa: E402  (R1, read-only)
 
 import entities  # noqa: E402
+import qa  # noqa: E402  (torch loads only when the QA signal is used)
 
 # Policies of the decide stage (run.py --policy):
 #   none        never abstain before the reader (R1's behaviour)
@@ -19,6 +21,9 @@ import entities  # noqa: E402
 #   warn        never abstain; tell the reader which entities the excerpts do not mention
 POLICIES = ("none", "pack", "pack-strict", "warn")
 POLICY = "pack"
+# Second signal (run.py --qa): SQuAD 2.0 no-answer score on single-fact questions, abstain below the threshold.
+USE_QA = False  # off by default so the stage runs without torch; run.py --qa turns it on
+QA_THRESHOLD = -5.0  # dev minus holdout sweep (measure.py): recall 0.48, false abstention 0.008 with `pack`
 
 
 def retrieve(q, h):
@@ -66,18 +71,33 @@ def missing(checked, policy, question=""):
     return out
 
 
-def decide(q, h, cands, pack, policy=None):
+def qa_applies(question):
+    """Single-fact lookups only: not computed answers (dates, counts, sums) and not questions about the assistant."""
+    return not qa.COMPUTED.search(question) and not ASSISTANT.search(question)
+
+
+def qa_abstains(question, sig, threshold=None):
+    threshold = QA_THRESHOLD if threshold is None else threshold
+    return (threshold is not None and sig is not None and sig.get("qa") is not None and qa_applies(question)
+            and sig["qa"] < threshold)
+
+
+def decide(q, h, cands, pack, policy=None, use_qa=None):
     policy = policy or POLICY
+    use_qa = USE_QA if use_qa is None else use_qa
     checked = verify(q, pack)
+    sig = qa.signal(q, h, cands) if use_qa and policy != "none" else None
     miss = missing(checked, policy, q["question"]) if policy != "none" else []
     question = q["question"].strip()
     if policy == "warn" and miss:
         names = ", ".join(f'"{e["text"]}"' for e in miss)
         question += (f"\n(Check: the excerpts never mention {names}. If the question depends on it, the answer is "
                      "INSUFFICIENT_EVIDENCE.)")
-        return {"question": question, "abstain": False, "after": "abstain_if_insufficient", "checked": checked}
-    return {"question": question, "abstain": policy in ("pack", "pack-strict") and bool(miss),
-            "after": "abstain_if_insufficient", "checked": checked}
+        return {"question": question, "abstain": False, "after": "abstain_if_insufficient", "checked": checked,
+                "qa": sig}
+    abstain = policy in ("pack", "pack-strict") and (bool(miss) or qa_abstains(q["question"], sig))
+    return {"question": question, "abstain": abstain, "after": "abstain_if_insufficient", "checked": checked,
+            "qa": sig}
 
 
 STAGES = {"retrieve": retrieve, "assemble": assemble, "decide": decide}

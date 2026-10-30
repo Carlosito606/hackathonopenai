@@ -19,6 +19,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import rocket  # noqa: E402
 from memsys import load_split, session_chunks  # noqa: E402
 
+KEEP = ("text", "kind", "words", "found", "head_found", "in")  # entity fields written to decisions.jsonl
+
 
 def cands_from_file(path, hist):
     """R1-style candidates rebuilt from a candidates.jsonl ([session_id, turn, score] rows, no text)."""
@@ -47,6 +49,7 @@ def main():
     ap.add_argument("--only", help="file of question ids to run")
     ap.add_argument("--policy", default=rocket.POLICY, choices=rocket.POLICIES)
     ap.add_argument("--cands", help="candidates.jsonl of another run (e.g. R1) instead of R7's BM25 retrieve")
+    ap.add_argument("--qa", action="store_true", help="also compute the SQuAD 2.0 no-answer signal (needs torch)")
     ap.add_argument("--out", default=str(ROOT / "runs" / "r7"))
     args = ap.parse_args()
 
@@ -57,17 +60,22 @@ def main():
     if args.only:
         keep = set(Path(args.only).read_text().split())
         qs = [q for q in qs if q["question_id"] in keep]
-    retrieve = cands_from_file(args.cands, hist) if args.cands else (lambda q: rocket.retrieve(q, hist[q["history_id"]]))
+    if args.cands:
+        retrieve = cands_from_file(args.cands, hist)
+    else:
+        retrieve = lambda q: rocket.retrieve(q, hist[q["history_id"]])  # noqa: E731
 
-    sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=ROOT).stdout.strip()
+    sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True,
+                         cwd=ROOT).stdout.strip()
     run_id = f"{datetime.now():%Y%m%d-%H%M}-{sha}"
     out = Path(args.out) / run_id
     out.mkdir(parents=True, exist_ok=True)
     meta = {"rocket": "r7", "run_id": run_id, "git_sha": sha,
             "stages": {"retrieve": "r1" if args.cands else "r7-bm25", "enrich": None, "assemble": "r1",
-                       "decide": f"r7-{args.policy}"},
+                       "decide": f"r7-{args.policy}" + ("+qa" if args.qa else "")},
             "split": Path(args.split).name + (" minus " + Path(args.exclude).name if args.exclude else ""),
-            "reader": None, "flags": {"policy": args.policy, "cands": args.cands}}
+            "reader": None, "flags": {"policy": args.policy, "cands": args.cands, "qa": args.qa,
+                                      "qa_threshold": rocket.QA_THRESHOLD}}
     (out / "meta.json").write_text(json.dumps(meta, indent=1) + "\n", encoding="utf-8")
 
     files = {n: open(out / f"{n}.jsonl", "w", encoding="utf-8")
@@ -76,7 +84,7 @@ def main():
         h = hist[q["history_id"]]
         cands = retrieve(q)
         pack = rocket.assemble(q, h, cands)
-        ask = rocket.decide(q, h, cands, pack, policy=args.policy)
+        ask = rocket.decide(q, h, cands, pack, policy=args.policy, use_qa=args.qa)
         sessions = [e["id"] for e in pack["evidence"]]
         files["candidates"].write(json.dumps({"question_id": q["question_id"], "ranked": [
             [c["session_id"], c["turn"], round(c["score"], 6)] for c in cands[:100]]}) + "\n")
@@ -85,10 +93,8 @@ def main():
         files["predictions"].write(json.dumps({"question_id": q["question_id"], "abstain": ask["abstain"],
                                                "answer": "", "citations": []}) + "\n")
         files["decisions"].write(json.dumps({"question_id": q["question_id"], "question": q["question"],
-                                             "abstain": ask["abstain"], "sessions": sessions,
-                                             "checked": [{k: e[k] for k in ("text", "kind", "words", "found", "head_found",
-                                                                          "in")}
-                                                         for e in ask["checked"]]}) + "\n")
+                                             "abstain": ask["abstain"], "sessions": sessions, "qa": ask["qa"],
+                                             "checked": [{k: e[k] for k in KEEP} for e in ask["checked"]]}) + "\n")
         if i % 50 == 0:
             print(f"{i}/{len(qs)}", flush=True)
     for f in files.values():

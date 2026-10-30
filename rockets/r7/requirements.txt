@@ -1,0 +1,3 @@
+# R7 extras on top of the root requirements.txt (only for run.py --qa)
+transformers  # qa.py; installed with sentence-transformers
+# Windows with an old VC++ runtime: pin torch==2.6.0 locally (2.15 fails with WinError 126, shm.dll)
