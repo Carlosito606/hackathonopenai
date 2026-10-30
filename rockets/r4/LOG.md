@@ -40,3 +40,14 @@
 - All 35 tests pass. Temporal questions now have preparation priority; completed multi-session caches are retained.
 - Neutralized the inherited format example in both R1 and R4 prompts before any Reactor smoke test; named examples
   from task data are not allowed to prime either variant. Baseline retrieval and evidence selection are unchanged.
+
+## 2026-10-30 — antek-codex — reserved Reactor smoke, 22:50–22:56 UTC
+
+- Human authorized use when free. Confirmed RELEASE and obtained an exclusive window; used 4 calls and released early.
+- Two available temporal questions from the canonical reactor_mini split, holdout excluded, identical cached R1
+  candidates for both variants. R1 source de158d5; neutral format example in both prompts. Code sha 616bb63.
+- R1: 2/2 correct, evidence F1 0.75. R4: 2/2 correct, evidence F1 0.75. All four client statuses answered.
+- R4 computed one source-grounded fact: 2022-10-22 to 2023-03-25 = 154 days, 5 complete calendar months;
+  the reader used it correctly. The other question fell back to reading. No broad quality claim from n=2.
+- Model latencies (seconds): R1 94.29 / 41.39; R4 80.95 / 91.68. Too few observations for a speed comparison.
+- Standard run artifacts and scorer details are published; raw plans/replies stay in ignored cache, no key stored.
