@@ -1,0 +1,124 @@
+"""Synthetic invariants: calendar boundaries, provenance, ambiguity and non-events."""
+import unittest
+
+from .dates import annotate_dates, resolve_dates
+from .timeline import classify, compute, events
+
+
+class DatesTest(unittest.TestCase):
+    def single(self, expression, base='2024/03/04 (Mon) 09:00'):
+        return resolve_dates(expression, base)[0]
+
+    def test_relative_dates_are_history_local(self):
+        self.assertEqual(self.single('yesterday')['start'], '2024-03-03')
+        self.assertEqual(self.single('yesterday', '2024-05-01')['start'], '2024-04-30')
+
+    def test_leap_day_and_year_boundary(self):
+        self.assertEqual(self.single('a couple of days ago', '2024-03-02')['start'], '2024-02-29')
+        self.assertEqual(self.single('two days ago', '2024-01-01')['start'], '2023-12-30')
+
+    def test_weekends_stay_ranges(self):
+        item = self.single('two weekends ago')
+        self.assertEqual((item['start'], item['end'], item['precision']), ('2024-02-24', '2024-02-25', 'range'))
+        self.assertEqual(self.single('last weekend')['start'], '2024-03-02')
+
+    def test_ordinal_infers_previous_month_without_pretending_certainty(self):
+        item = self.single('I went on the 15th.')
+        self.assertEqual((item['start'], item['precision']), ('2024-02-15', 'inferred'))
+        self.assertEqual(self.single('I will go on the 15th.')['start'], '2024-03-15')
+
+    def test_month_shift_clamps_without_claiming_exactness(self):
+        item = self.single('a month ago', '2024-03-31')
+        self.assertEqual((item['start'], item['precision']), ('2024-02-29', 'inferred'))
+
+    def test_explicit_date_annotated_once(self):
+        annotated = annotate_dates('I went on March 4, 2024.', '2024-03-10')
+        self.assertEqual(annotated.count('day '), 1)
+        self.assertIn('2024-03-04', annotated)
+
+    def test_invalid_dates_are_not_events(self):
+        self.assertEqual(resolve_dates('2024-02-30', '2024-03-04'), [])
+
+
+class ComputationTest(unittest.TestCase):
+    def event(self, text, base, sid='s_a', role='user'):
+        return events(text, base, sid, 0, role)
+
+    def test_elapsed_days_with_provenance(self):
+        pool = self.event('I visited the botanical garden yesterday.', '2024-03-05')
+        result = compute('How many days ago did I visit the botanical garden?', '2024-03-11', pool)
+        self.assertTrue(result['computed'])
+        self.assertEqual(result['answer'], '7 days')
+        self.assertEqual(result['sources'], ['s_a'])
+
+    def test_two_event_duration(self):
+        pool = self.event('I visited the botanical garden today.', '2024-03-04')
+        pool += self.event('I attended the pottery workshop yesterday.', '2024-03-12', 's_b')
+        result = compute('How many days passed between the botanical garden and the pottery workshop?', '2024-03-20', pool)
+        self.assertEqual(result.get('answer'), '7 days')
+        self.assertEqual(result['sources'], ['s_a', 's_b'])
+
+    def test_order(self):
+        pool = self.event('I visited the botanical garden today.', '2024-03-04')
+        pool += self.event('I attended the pottery workshop today.', '2024-03-11', 's_b')
+        result = compute('Which came first, the botanical garden or the pottery workshop?', '2024-03-20', pool)
+        self.assertTrue(result['computed'])
+        self.assertEqual(result['answer'], 'the botanical garden -> the pottery workshop')
+
+    def test_conflicting_dates_do_not_choose_arbitrarily(self):
+        pool = self.event('I visited the botanical garden today.', '2024-03-04')
+        pool += self.event('I visited the botanical garden today.', '2024-03-11', 's_b')
+        self.assertFalse(compute('How many days ago did I visit the botanical garden?', '2024-03-20', pool)['computed'])
+
+    def test_approximate_date_not_used_for_exact_duration(self):
+        pool = self.event('I visited the botanical garden two weekends ago.', '2024-03-04')
+        self.assertFalse(compute('How many days ago did I visit the botanical garden?', '2024-03-20', pool)['computed'])
+
+    def test_plans_negations_and_assistant_not_user_events(self):
+        for text, role in [('I will visit the botanical garden today.', 'user'),
+                           ("I did not visit the botanical garden today.", 'user'),
+                           ('You visited the botanical garden today.', 'assistant')]:
+            with self.subTest(text=text):
+                pool = self.event(text, '2024-03-04', role=role)
+                self.assertFalse(compute('How many days ago did I visit the botanical garden?', '2024-03-20', pool)['computed'])
+
+    def test_multiple_dates_in_sentence_are_not_proximity_matched(self):
+        pool = self.event('I visited the garden on 2024-03-04 and the workshop on 2024-03-11.', '2024-03-20')
+        self.assertTrue(all(e['ambiguous_clause'] for e in pool))
+
+    def test_near_miss_entity_is_not_silently_accepted(self):
+        pool = self.event('I visited the botanical garden today.', '2024-03-04')
+        self.assertFalse(compute('How many days ago did I visit the Botanical Museum?', '2024-03-20', pool)['computed'])
+
+    def test_classifies_count_without_inventing_total(self):
+        q = 'How many charity events did I participate in before the fundraiser?'
+        self.assertEqual(classify(q)['form'], 'count')
+        self.assertFalse(compute(q, '2024-03-20', [])['computed'])
+
+    def test_classifies_duration_without_two_grounded_endpoints(self):
+        self.assertEqual(classify('How many days did it take me to finish the book?')['form'], 'duration')
+        self.assertEqual(classify('How long had I been taking pottery lessons when I bought the kiln?')['form'], 'between')
+
+    def test_order_named_list_preserves_three_anchors(self):
+        result = classify('Who graduated first, second and third among Alice, Brenda and Clara?')
+        self.assertEqual(result['anchors'], ['Alice', 'Brenda', 'Clara'])
+
+    def test_cancellation_is_an_event_but_not_a_completed_visit(self):
+        pool = self.event('I cancelled the botanical garden visit today.', '2024-03-04')
+        self.assertFalse(compute('How many days ago did I visit the botanical garden?', '2024-03-11', pool)['computed'])
+        result = compute('How many days ago did I cancel the botanical garden visit?', '2024-03-11', pool)
+        self.assertTrue(result['computed'])
+
+    def test_other_persons_visit_is_not_my_visit(self):
+        pool = self.event('My cousin visited the botanical garden today.', '2024-03-04')
+        self.assertFalse(compute('How many days ago did I visit the botanical garden?', '2024-03-11', pool)['computed'])
+
+    def test_before_question_requires_chronological_premise(self):
+        pool = self.event('I visited the botanical garden today.', '2024-03-11')
+        pool += self.event('I attended the pottery workshop today.', '2024-03-04', 's_b')
+        result = compute('How many days before the pottery workshop did I visit the botanical garden?', '2024-03-20', pool)
+        self.assertFalse(result['computed'])
+
+
+if __name__ == '__main__':
+    unittest.main()
