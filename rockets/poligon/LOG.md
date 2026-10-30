@@ -36,3 +36,21 @@
 - `failures.py`: outcomes per type. On R7's gate-only run (no reader) it shows 25/398 packs missing gold.
 - Tested only on a mock OpenAI-compatible server (plumbing, cache, table). The stand-in model (Qwen2.5-7B-Instruct
   Q4_K_M, llama.cpp Vulkan build) is downloaded but not started yet.
+
+## 2026-10-31 00:20 karol-claude-2: judge and injection audit on the stand-in model
+
+Stand-in: Qwen2.5-7B-Instruct Q4_K_M (bartowski GGUF), llama.cpp b12004 Vulkan build, `llama-server --port 8897
+-c 4096 -ngl 99`, 4 slots; judge prompt ~0.4-1 s with 4 parallel requests on a Ryzen AI 7 PRO 350 laptop.
+
+- `judge.py --selftest`, 490 cases from dev gold: 0.951 agreement. gold in a sentence 100/100, another question's
+  answer rejected 99/100, hedged between two rejected 92/100, negated gold rejected 96/100, temporal off by one
+  accepted 32/35, off by five rejected 35/35, **knowledge-update "old value, then updated" accepted only 12/20**:
+  the judge may under-count answers that also mention the old value.
+- Injection audit, first try (yes/no "answers or contradicts?", 4 sentences): useless. Gold evidence sessions got
+  "yes" 18/100, random sessions "no" 100/100. Half the gap was the calibration: for k-update, multi and temporal
+  the answer is computed and almost never written in one session (1-2 of 15-26). The other half: the excerpt
+  missed the answer sentence ("Where did I buy my bookshelf?" -> four bookshelf sentences, not the IKEA one).
+- Second try (`check_injections.py`, kept): neighbours of the 4 best sentences, and the model answers the
+  question from the excerpt or says NONE. Calibration on the 107 single-session questions whose answer is written
+  in an evidence session: excerpt contains the answer 88/107; gold session gives a non-NONE reply 92/107 (85/88
+  when the excerpt covers it), matching gold 62/107; a random other session gives NONE 107/107.

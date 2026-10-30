@@ -20,9 +20,11 @@ import hashlib
 import json
 import random
 import re
+import threading
 import time
 import urllib.request
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 RULES = ("If the response is equivalent to the correct answer or contains all the intermediate steps to get the "
@@ -67,11 +69,24 @@ class Judge:
         if self.cache_path.exists():
             self.cache = {r["key"]: r for r in rj(self.cache_path)}
         self.calls = 0
+        self.lock = threading.Lock()
+
+    def many(self, prompts, workers=1, max_tokens=None):
+        """Verdicts for a list of prompts, `workers` requests at a time (llama-server serves several slots);
+        with max_tokens, the raw replies instead."""
+        fn = self if max_tokens is None else (lambda p: self.ask(p, max_tokens)["raw"])
+        with ThreadPoolExecutor(max(1, workers)) as ex:
+            return list(ex.map(fn, prompts))
 
     def __call__(self, prompt):
-        key = hashlib.sha1(f"{self.model}|{prompt}".encode()).hexdigest()
+        return self.ask(prompt)["verdict"]
+
+    def ask(self, prompt, max_tokens=8):
+        """The cached row {key, verdict, raw} for a prompt; verdict is the first yes/no in the reply, if any."""
+        tag = f"{self.model}|{prompt}" if max_tokens == 8 else f"{self.model}|{max_tokens}|{prompt}"
+        key = hashlib.sha1(tag.encode()).hexdigest()
         if key not in self.cache:
-            body = {"messages": [{"role": "user", "content": prompt}], "max_tokens": 8, "temperature": 0}
+            body = {"messages": [{"role": "user", "content": prompt}], "max_tokens": max_tokens, "temperature": 0}
             if self.model:
                 body["model"] = self.model
             req = urllib.request.Request(self.url + "/v1/chat/completions", json.dumps(body).encode(),
@@ -79,12 +94,13 @@ class Judge:
             raw = json.loads(urllib.request.urlopen(req, timeout=600).read())["choices"][0]["message"]["content"]
             m = re.search(r"\b(yes|no)\b", raw.lower())
             row = {"key": key, "verdict": m.group(1) if m else None, "raw": raw[:200]}
-            self.cache[key] = row
-            self.cache_path.parent.mkdir(parents=True, exist_ok=True)
-            with open(self.cache_path, "a", encoding="utf-8", newline="\n") as f:
-                f.write(json.dumps(row, ensure_ascii=False) + "\n")
-            self.calls += 1
-        return self.cache[key]["verdict"]
+            with self.lock:
+                self.cache[key] = row
+                self.cache_path.parent.mkdir(parents=True, exist_ok=True)
+                with open(self.cache_path, "a", encoding="utf-8", newline="\n") as f:
+                    f.write(json.dumps(row, ensure_ascii=False) + "\n")
+                self.calls += 1
+        return self.cache[key]
 
 
 # summarize() follows the challenge's score.py, so the table means what score.py's table means.
@@ -135,11 +151,13 @@ def judge_run(args, judge):
     out, t = [], time.time()
     todo = [r for r in rj(args.details) if r["answer"] == "unjudged"]
     print(f"{len(todo)} unjudged answers to judge", flush=True)
+    prompts = [prompt_for(gold[r["question_id"]]["question_type"], qs[r["question_id"]],
+                          gold[r["question_id"]]["answer"], preds[r["question_id"]]["answer"]) for r in todo]
+    verdicts = dict(zip((r["question_id"] for r in todo), judge.many(prompts, args.workers)))
     for r in rj(args.details):
         r = dict(r)
         if r["answer"] == "unjudged":
-            g, p = gold[r["question_id"]], preds[r["question_id"]]
-            v = judge(prompt_for(g["question_type"], qs[r["question_id"]], g["answer"], p["answer"]))
+            v = verdicts[r["question_id"]]
             r["judge"] = v
             r["answer"] = {"yes": "correct", "no": "wrong"}.get(v, "unjudged")
         out.append(r)
@@ -176,8 +194,9 @@ def selftest(args, judge):
             cases.append(("temporal off by one", True, g, f"{int(n.group(1)) + 1} days"))
             cases.append(("temporal off by five", False, g, f"{int(n.group(1)) + 5} days"))
     t0, agree = time.time(), defaultdict(list)
-    for kind, want, g, resp in cases:
-        v = judge(prompt_for(g["question_type"], qs[g["question_id"]], g["answer"], resp))
+    verdicts = judge.many([prompt_for(g["question_type"], qs[g["question_id"]], g["answer"], resp)
+                           for _, _, g, resp in cases], args.workers)
+    for (kind, want, g, resp), v in zip(cases, verdicts):
         agree[kind].append(v == ("yes" if want else "no"))
         agree["all"].append(v == ("yes" if want else "no"))
     print(f"{len(cases)} cases in {time.time() - t0:.0f}s ({judge.calls} model calls)")
@@ -195,6 +214,7 @@ def main():
     ap.add_argument("--model", default="", help="model name, if the server needs one")
     ap.add_argument("--cache", default=str(Path.home() / ".cache" / "poligon-judge.jsonl"))
     ap.add_argument("--out", help="write judged details here")
+    ap.add_argument("--workers", type=int, default=4, help="parallel requests (llama-server: its --parallel slots)")
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--per-type", type=int, default=20, help="selftest: gold questions per type")
     args = ap.parse_args()
