@@ -2,7 +2,7 @@
 
 Bet: code computes event dates, elapsed time and event order; the reader phrases the answer and cites sources.
 Status: initial implementation, **not benchmarked end-to-end**. No claim of improvement over R1.
-Checks: 31 synthetic tests pass, including contract interoperability, a local HTTP reader fixture and official score.py.
+Checks: 35 synthetic tests pass, including contract interoperability, a local HTTP reader fixture and official score.py.
 Baseline: R1 at `de158d5`, same retrieval candidates, same machine; dev minus `splits/dev_holdout.txt`.
 Reader: team confirmed Qwen2.5-7B-Instruct 4-bit; local Q4_K_M/llama.cpp setup is in progress.
 Parts: all four contract stages in `rocket.py`; R1 retrieval, R4 enrichment/assembly/decision.
@@ -17,6 +17,7 @@ Limits: no local semantic event extractor or cross-session item counter yet; amb
 - Keeps weekends as ranges; omitted months/years and conversational month offsets are marked inferred.
 - Exact calculations require two uniquely grounded event dates (or one event and the question date).
 - Rejects plans, negations, assistant suggestions, conflicting matches and ambiguous multi-date sentences.
+- Matches coherent entity names/titles and question-provided aliases, not a bag of their words.
 - Adds computed facts and their `[E#]` labels only when their supporting text is included in the evidence pack.
 - Conservatively falls back to R1-style reading rather than generating an ungrounded count or date.
 - Accepts contract candidates without R1's private fields and session/fact units without a turn number.
@@ -54,5 +55,8 @@ R4 may
 omit an evidence session if date annotations would exceed the 24,000-character evidence budget. Computation
 coverage and automatic scorer matches are reported separately from reader answer accuracy; automatic partial
 matches do not establish independent fact correctness. Measurements under three percentage points are noise.
+An all-user-turn diagnostic (not R1 retrieval and not an answer benchmark) produced 14 computations on 107 temporal
+dev questions. One gold/source inconsistency was verified independently; see the R4 temporal-gold finding.
+Reproduce the parser-only diagnostic with `python -m rockets.r4.diagnose --data DEV --scorer SCORE_PY`.
 If the reader omits its final-answer marker, the runner records an empty response and a protocol-failure count;
 it does not convert that failure into an evidence-based abstention. Transport errors leave the run incomplete.

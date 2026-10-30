@@ -28,3 +28,13 @@
   still contain the actual supporting text. All 26 tests pass.
 - Added contract interoperability (no private R1 fields required), code selection of first/last events and
   rejection of future events as completed events. All 31 tests pass. Candidate caches remain unchanged R1 output.
+
+## 2026-10-30 — antek-codex — initial real-history diagnostic
+
+- An all-user-turn diagnostic (not R1 retrieval or a reader benchmark) produced 14 computations / 107 temporal
+  dev questions; the automatic scorer matched 8 and left 6 unjudged. These are not answer-accuracy numbers.
+- Checked one disagreement against the exact gold source ids: their stated event dates are 81 days apart,
+  while gold says 15 weeks. Recorded a data-quality finding; arithmetic is not forced to match that label.
+- A generic art-museum mention could match a specific named museum through scattered words. Fixed coherent
+  name/title matching and explicit aliases; added alphanumeric-name and question-as-event regression tests.
+- All 35 tests pass. Temporal questions now have preparation priority; completed multi-session caches are retained.
