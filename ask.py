@@ -2,8 +2,7 @@
 
     python ask.py plan-test.jsonl results-test.jsonl --base-url https://tNN... --agent-id agt_...   # REACTOR_ACCESS_KEY set
     python ask.py plan-dev.jsonl results-dev.jsonl --local http://127.0.0.1:8899                  # stand-in model
-    python reactor/predictions.py results-test.jsonl --histories ../data/test/histories.jsonl \\
-        --out predictions.jsonl --abstain-on agent
+    python reactor/predictions.py results-test.jsonl --out predictions.jsonl --abstain-on agent
 """
 import argparse
 import json
