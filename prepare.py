@@ -17,7 +17,7 @@ GUIDE = """
 - The final line holds only the short answer (a name, number, date or short phrase) and the labels of the excerpts that state it, e.g. "<answer> [E4]". One answer, no hedging, no alternatives. It is the last line of your reply: nothing after it.
 - Write INSUFFICIENT_EVIDENCE only if no excerpt states what is asked.{extra})"""
 DATES = """
-- Dates are tagged [YYYY-MM-DD, day N]: days between two dates = the difference of their day numbers (weeks = days / 7). The question date is day {today}. Use the date the event happened as stated, else the date of the conversation that reports it."""
+- Dates are tagged [YYYY-MM-DD, day N]: days between two dates = the difference of their day numbers (weeks = days / 7). The question date is day {today}. Use the date the event happened as stated, else the date of the conversation that reports it. Tags with "about" are approximate: prefer an exact date for the same event if one is given."""
 COUNT = """
 - Before the final line, list each distinct item with its label, without counting one item twice, then give the total."""
 COUNTING = re.compile(r"\bhow (many|much)\b|\btotal\b|\bcombined\b|\bin all\b|\baltogether\b", re.I)
