@@ -1,0 +1,6 @@
+# R1 retrieval; use a CPU build of torch on machines without CUDA/MPS.
+sentence-transformers
+torch
+rank_bm25
+numpy
+websockets>=14
