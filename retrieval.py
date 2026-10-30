@@ -2,6 +2,7 @@
 cross-encoder."""
 import json
 import math
+import os
 import pickle
 import re
 from pathlib import Path
@@ -13,6 +14,7 @@ EMB_MODEL = "BAAI/bge-base-en-v1.5"
 RERANK_MODEL = "BAAI/bge-reranker-v2-m3"
 QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
 CHUNK, OVERLAP = 900, 200
+DEVICE = os.environ.get("MEMSYS_DEVICE", "mps")  # cpu / cuda elsewhere
 
 STOP = set("""a an the and or but if of to in on at for with from by about as is are was were be been being am do does did
 have has had i me my mine we our you your yours he she it its they them their this that these those what which who whom
@@ -73,7 +75,7 @@ def tokens(text):
 class Embedder:
     """Session-id keyed cache of chunk embeddings (a session id always names the same content)."""
 
-    def __init__(self, cache_path, device="mps"):
+    def __init__(self, cache_path, device=DEVICE):
         self.path = Path(cache_path)
         self.cache = pickle.loads(self.path.read_bytes()) if self.path.exists() else {}
         self.device = device
@@ -114,7 +116,7 @@ class Embedder:
 _reranker = None
 
 
-def reranker(device="mps"):
+def reranker(device=DEVICE):
     global _reranker
     if _reranker is None:
         from sentence_transformers import CrossEncoder

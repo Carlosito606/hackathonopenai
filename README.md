@@ -30,15 +30,18 @@ python prepare.py ../data/test plan-test.jsonl --cache ../cache/test.pkl        
 
 printf 'Access key: '; read -rs REACTOR_ACCESS_KEY; echo; export REACTOR_ACCESS_KEY
 python ask.py plan-test.jsonl results-test.jsonl --base-url https://tNN.api.reactor-hackathon.rxai.dev --agent-id agt_...
-python reactor/predictions.py results-test.jsonl --histories ../data/test/histories.jsonl \
-    --out predictions.jsonl --abstain-on agent
+python reactor/predictions.py results-test.jsonl --out predictions.jsonl --abstain-on agent
 ```
 
 Dev without a Reactor key: `ask.py plan-dev.jsonl results-dev.jsonl --local http://127.0.0.1:8899` asks a local
 OpenAI-compatible model (e.g. `mlx_lm.server --model mlx-community/Qwen2.5-7B-Instruct-4bit --port 8899`) with the
 client's own message format, then `score.py` from the challenge repo scores it.
 
-Models run on Apple Silicon (`mps`); set `device="cpu"` in `memsys.py` elsewhere.
+Models run on Apple Silicon (`mps`) by default; elsewhere set `MEMSYS_DEVICE=cpu` (or `cuda`).
+
+`predictions.py` is run without `--histories`: the kit reads histories.jsonl with `str.splitlines()`, which also
+splits on Unicode line separators inside the conversations, and fails on both dev and test files. Our citations
+are session ids taken from histories.jsonl, so the check it skips is not needed.
 
 `reactor/` is the organizers' participant kit, unchanged.
 
