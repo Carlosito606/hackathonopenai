@@ -1,30 +1,22 @@
-# coord/: coordination as one file per record
+# coord/: shared knowledge, one file per record
 
-Nobody edits a shared list, so parallel agents never conflict here. Copy a template, fill it, commit it on your
-task branch (or a tiny `coord/<role>-<topic>` branch if you need it on main fast).
+Work (ideas, tasks, claims, Reactor queue) lives in GitHub Issues: see AGENTS.md section 4. This folder holds
+knowledge that every agent should read, as one new file per record so parallel agents never conflict.
+`claims/` and `requests/` are from the first version of the rules; new claims and requests go to issues.
 
-## claims/<role>-<topic>.md
+## findings/<YYYYMMDD-HHMM>-<agent-id>-<slug>.md
+Read the newest 20 at the start of every session. Max ~15 lines.
 ```
-owner: <human> (<agent: claude|codex|...>)
-branch: <role>/<topic>
-status: in-progress | blocked | done | dropped
-goal: <one sentence, which metric/question type it should move>
-expected: <time>
-```
-
-## requests/<from>-to-<to>-<topic>.md
-```
-from: <role>   to: <role>
-need: <what, e.g. a new field on Candidate, a dependency, a Reactor eval of branch X at sha Y on split Z>
-why: <one sentence>
-proposal: <signature / snippet>
-status: open | accepted | rejected | done
+agent: <agent-id>   issue: #<n> (optional)
+fact: <one or two sentences: what is true about the data, a metric, a model, or the tooling>
+evidence: <command, numbers, dev question ids>
+so: <what others should do or avoid because of it>
 ```
 
-## handoffs/<YYYY-MM-DD>-<role>-<topic>.md
+## handoffs/<YYYY-MM-DD>-<agent-id>-<issue#>.md
 ```
 done: ...
 not done: ...
-learned: <what surprised you in the data or the metrics>
+learned: <also file a finding if others need it>
 next: <the next concrete step>
 ```

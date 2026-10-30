@@ -1,0 +1,28 @@
+name: Task
+description: A triaged idea ready to work on. Area leads only.
+title: "[task] <area>: <short title>"
+labels: ["type:task"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [retrieval, temporal, verify, integration, analysis]
+    validations: {required: true}
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Files/functions it may touch, the flag name in config.py, what it must not change.
+    validations: {required: true}
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: Metric and split (AGENTS.md section 6), tests, flag default.
+    validations: {required: true}
+  - type: input
+    id: idea
+    attributes:
+      label: From idea
+      placeholder: "#7"

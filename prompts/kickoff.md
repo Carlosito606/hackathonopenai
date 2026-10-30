@@ -1,93 +1,85 @@
 # Kickoff prompts
 
-Paste the common header plus your role's block as the FIRST message to your agent (Claude Code, Codex, Codex
-cloud, any other). Replace `<...>`. The shared rules come from AGENTS.md in the repo.
+Paste the universal prompt plus your area's block as the FIRST message to your agent (Claude Code, Codex, Codex
+cloud, any other). Replace `<...>`. The rules themselves live in AGENTS.md; these prompts only point to them.
 
 ---
 
-## Common header (every role)
+## Universal prompt (every agent)
 
 ```
-You are one of four parallel coding agents on our Memory Retrieval Challenge team repo
-https://github.com/Carlosito606/hackathonopenai. Other agents, on other accounts and vendors (Claude, OpenAI),
-change this repo at the same time. Before doing anything:
-1. Read AGENTS.md and README.md completely. AGENTS.md is hard rules and overrides your habits.
-2. Work only on your own branch in your own worktree:
-   git fetch && git worktree add .worktrees/<role>-<topic> -b <role>/<topic> origin/main
-   (cloud agents are already isolated; just use the branch name). Never commit to main.
-3. Before the first edit, create coord/claims/<role>-<topic>.md (template in coord/README.md) and check no open
-   claim covers the same topic.
-4. Edit only your role's files/functions (AGENTS.md section 2). Anything else: write coord/requests/... and tell me.
-5. Never call Reactor, never ask for or handle its key. Test end-to-end with ask.py --local and a local model.
-6. Never commit data, *.pkl caches, plans/results/predictions, weights or secrets.
-7. Finish each work session with: the checks of AGENTS.md section 6, an experiment file in experiments/<role>/
-   (dev without splits/dev_holdout.txt, per question type, before and after), a handoff file, a small PR to main.
-Report back to me in at most 5 lines: what changed, which metric moved per question type, what is not done.
-Data is in ../data/dev (LongMemEval, with gold). On a machine without Apple Silicon use device "cpu"/"cuda"
-locally without committing it.
+You are agent <person>-<vendor>[-n] on our Memory Retrieval Challenge team repo
+https://github.com/Carlosito606/hackathonopenai. Many agents on other accounts and vendors (Claude, OpenAI)
+change this repo at the same time. Your area: <retrieval | temporal | verify | integration | analysis>.
+Your task: issue #<n> (if none yet: pick nothing, ask me).
+Before doing anything:
+1. git fetch. Read AGENTS.md completely (hard rules, they override your habits), README.md, your area's block
+   in prompts/kickoff.md, the issue, and the newest 20 files in coord/findings/.
+2. Check the issue is claimed for you (assignee is me, your agent id in a comment). If it is claimed by someone
+   else, stop and tell me.
+3. Branch <area>/<issue#>-<topic> in your own worktree, never main. Edit only your area's files; put new
+   behaviour behind a flag in config.py (default off); if config.py does not exist yet, ask me.
+4. Never run Reactor, never read, print or store REACTOR_ACCESS_KEY. Test end-to-end with ask.py --local.
+5. Never commit data, *.pkl caches, plans/results/predictions, weights or secrets.
+6. Measure as AGENTS.md section 6 says: baseline origin/main and your branch, same machine, same command.
+7. When you stop: experiment file, a finding if others need to know something, a handoff, a PR "Closes #<n>".
+First reply: in 3 lines, what you understood the task to be and how you will measure it. Then wait for my OK.
 ```
 
 ---
 
-## RETRIEVAL
+## retrieval
 
 ```
-Your role: RETRIEVAL. You own, in memsys.py: split_text, session_chunks, tokens, Embedder, reranker,
-sub_queries, retrieve, session_ranking; and eval_retrieval.py.
-Goal: all gold evidence sessions inside the evidence for multi-session and temporal questions (the weak types:
-several evidence sessions each), while keeping precision so the evidence fits the message budget.
-Known traps: facts hide in "By the way ..." asides inside off-topic sessions; questions paraphrase the evidence
-("piece of jewelry" vs "crystal chandelier"); test adds near-miss sessions about other people.
-Start by measuring eval_retrieval.py per question type on all of dev (not only 150 questions), then pick the
-worst type. Ideas: decomposing multi-part and counting questions ("how many X ...") into sub-queries, more
-candidates for counting questions, entity-aware query expansion, sentence-level chunks for asides.
-Keep retrieve()'s return format (list of dicts with session, turn, role, text, score): VERIFIER depends on it.
+Area block: retrieval. Files: retrieval.py, eval_retrieval.py (before the split PR: the retrieval functions in
+memsys.py). Keep retrieve()'s return format (list of dicts with session, turn, role, text, score): verify and
+evidence code depend on it. Weak spots: multi-session and temporal questions with several evidence sessions.
+Relevant findings: asides-and-paraphrase, near-miss-abstentions.
 ```
 
-## TEMPORAL
+## temporal
 
 ```
-Your role: TEMPORAL. You own the date code in memsys.py (EPOCH ... TEMPORAL, day_no, _mark, annotate_dates);
-put new logic in new files (e.g. dates_kupdate.py) until the INTEGRATOR splits memsys.py.
-Goal: make time and change explicit before evidence reaches Reactor, which is weak at arithmetic.
-Known traps: relative dates are relative to the SESSION date; the same session id has different dates in
-different histories; values change across sessions and even inside one session ("Actually, 120, not 300"),
-and the assistant sometimes states wrong numbers; same-day updates need the time of day.
-Ideas, in order: (1) check annotate_dates on every dev temporal question and list misses (e.g. "two weekends
-ago", "the 15th", "a couple of days ago"), (2) knowledge-update: mark superseded values so the evidence says
-which statement is the latest, (3) compute durations/orderings in code and state the result in the evidence.
-Unit-test every date rule on tiny examples.
+Area block: temporal. File: dates.py (before the split PR: the date code in memsys.py). Reactor is weak at
+arithmetic: resolve dates, mark superseded values, and compute durations/orderings/counts here, stating the
+result in the evidence. Unit-test every date rule on tiny examples.
+Relevant findings: relative-dates, in-session-corrections.
 ```
 
-## VERIFIER
+## verify
 
 ```
-Your role: VERIFIER. You own build_evidence in memsys.py, prepare.py (including GUIDE), and a new verify.py.
-Goal: abstain exactly when the history lacks the answer, send Reactor the right excerpts, cite the right sessions.
-Known traps: ~6-8% of questions are unanswerable near-misses: one entity swapped (violin vs guitar, Korea vs
-Japan, table tennis vs tennis, "Software Engineer Manager" vs "Senior Software Engineer") or half of a two-part
-question missing. Token/prefix overlap fails ("Korea" matched "Korean"): compare whole multi-word entities.
-Over-strict checks hurt too: gold sometimes paraphrases ("jewelry" answered by "crystal chandelier").
-Measured: a ready SQuAD 2.0 QA model (deepset/roberta-base-squad2, best span minus no-answer) separates
-answerable from unanswerable with AUC 0.95-0.99 on single-session-user and knowledge-update, only 0.65 on
-temporal and 0.81 on multi-session (answers are computed, not spans). So gate per question type.
-Ideas, in order: (1) verify.py: extract the question's specific entities and check each appears as a whole
-phrase in the evidence; missing one → tell Reactor in the notes or abstain, (2) the QA score for single-fact
-questions, (3) cite only sessions whose excerpts support the answer (evidence F1), (4) tune on dev without holdout.
-Ask the INTEGRATOR for any new dependency (transformers model) via coord/requests/.
+Area block: verify. Files: evidence.py, prepare.py (incl. GUIDE), verify.py. Decide abstain vs answer, choose
+excerpts, cite only sessions that support the answer (evidence F1). Gate any answerability score by question
+type. New models are dependencies: ask on the issue.
+Relevant findings: near-miss-abstentions, squad2-verifier, asides-and-paraphrase.
 ```
 
-## INTEGRATOR
+## integration (integrator)
 
 ```
-Your role: INTEGRATOR. You own ask.py, README.md, requirements.txt, .gitignore, AGENTS.md, CLAUDE.md and CI;
-reactor/ stays the organisers' kit, unchanged. You are the only one who runs Reactor and holds
-REACTOR_ACCESS_KEY (in your shell only, entered as the kit's QUICKSTART shows).
-First task: split memsys.py into retrieval.py, dates.py, evidence.py with NO behaviour change, keeping
-memsys.py as a re-export so prepare.py, eval_retrieval.py and others keep working; verify with eval_retrieval.py
-that numbers are identical; merge it fast and announce it, since three roles are waiting on it.
-Then: make the device configurable (env var, default mps), process coord/requests/ in order (dependencies,
-Reactor evals one at a time), review and merge PRs (reject ones that touch other roles' areas), and keep a
-running score table of main in experiments/integrator/.
-Never edit other roles' functions yourself: request it from the owner.
+Area block: integration. Files: ask.py, memsys.py, config.py, README.md, requirements.txt, .gitignore, .github/,
+AGENTS.md, CLAUDE.md, experiments/LEADERBOARD.md. Keep main runnable end-to-end. Create config.py (flags,
+device setting) if missing. Merge trains at fixed times; after each, re-run eval_retrieval.py on main and
+update the leaderboard; revert PRs that make main worse. Order the needs:reactor queue. Never edit other areas'
+files yourself: open a task for their lead.
+```
+
+## analysis
+
+```
+Area block: analysis. You change no pipeline code. Inputs: dev data, results-*.jsonl and score.py output the
+team shares, experiment files. Find where and why answers fail (per question type: retrieval miss, wrong date,
+stale value, near-miss accepted, false abstention, citation miss), and write each pattern as a finding in
+coord/findings/ and, where it suggests a fix, an idea issue for the right area with dev question ids as evidence.
+Scripts you write go to experiments/analysis/.
+```
+
+## Reactor operator (a person, not an agent)
+
+```
+Not for an agent. The operator runs Reactor by hand, in their own terminal: key entered at the kit's hidden
+prompt, one process per Reactor agent id, issues labelled needs:reactor one at a time, on
+splits/reactor_mini.txt unless the integrator says otherwise. Results go to the issue as a comment (accuracy,
+abstention, evidence F1 per type from score.py), never the key or the raw environment.
 ```
