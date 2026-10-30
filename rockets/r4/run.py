@@ -47,6 +47,21 @@ def verify_reader(endpoint, model):
         raise ValueError(f'expected exactly the team reader {model!r}; server advertises {models!r}')
 
 
+def prediction(result):
+    """A missing final answer is an empty, non-abstained response, scored as a failure.
+
+    Never turn a parser/transport failure into a claim that the evidence is insufficient.
+    The raw status is retained separately in the ignored result cache and summary counts.
+    """
+    answered = result.get('status') == 'answered'
+    abstained = answered and result.get('abstained', False)
+    citations = [c['id'] for c in result.get('citations', []) if c.get('id')] if answered else []
+    answer = result.get('answer', '') if answered else ''
+    answer = re.sub(r'\[[^\[\]]*\bE\d+\b[^\[\]]*\]', '', answer).strip()
+    return {'question_id': result['question_id'], 'abstain': abstained,
+            'answer': '' if abstained else answer, 'citations': list(dict.fromkeys(citations))}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data', required=True, type=Path)
@@ -121,13 +136,9 @@ def main():
             if ask is not None:
                 result = ask.local(args, plan)
                 write(args.candidate_cache / f'{q["question_id"]}-{name}-result.json', result)
-                citations = [c['id'] for c in result.get('citations', []) if c.get('id')]
-                answer = result.get('answer', '')
                 if result.get('status') != 'answered':
-                    raise RuntimeError(f'{q["question_id"]}: reader returned no final answer; run is incomplete')
-                answer = re.sub(r'\[[^\[\]]*\bE\d+\b[^\[\]]*\]', '', answer).strip()
-                append(folder / 'predictions.jsonl', {'question_id': q['question_id'], 'abstain': result['abstained'],
-                       'answer': '' if result['abstained'] else answer, 'citations': list(dict.fromkeys(citations))})
+                    stats['reader_no_final_' + name] += 1
+                append(folder / 'predictions.jsonl', prediction(result))
         computed = bool(packs['r4']['facts'])
         computation = rocket.grounded_computation(q, enriched, packs['r4']['evidence'])
         stats['questions'] += 1

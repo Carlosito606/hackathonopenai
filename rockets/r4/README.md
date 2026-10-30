@@ -2,9 +2,9 @@
 
 Bet: code computes event dates, elapsed time and event order; the reader phrases the answer and cites sources.
 Status: initial implementation, **not benchmarked end-to-end**. No claim of improvement over R1.
-Checks: 24 synthetic tests, including paired R1/R4 plans, a local HTTP reader fixture and official score.py.
+Checks: 25 synthetic tests pass, including paired R1/R4 plans, a local HTTP reader fixture and official score.py.
 Baseline: R1 at `de158d5`, same retrieval candidates, same machine; dev minus `splits/dev_holdout.txt`.
-Reader: team stand-in endpoint/model still pending (the fleet leaderboard contains a placeholder).
+Reader: team confirmed Qwen2.5-7B-Instruct 4-bit; local Q4_K_M/llama.cpp setup is in progress.
 Parts: all four contract stages in `rocket.py`; R1 retrieval, R4 enrichment/assembly/decision.
 Dates: `dates.py` forks the date block in R1 `memsys.py` at `de158d5` (there was no standalone dates.py).
 Limits: no local semantic event extractor or cross-session item counter yet; ambiguous events fall back to reading.
@@ -53,3 +53,5 @@ R4 may
 omit an evidence session if date annotations would exceed the 24,000-character evidence budget. Computation
 coverage and automatic scorer matches are reported separately from reader answer accuracy; automatic partial
 matches do not establish independent fact correctness. Measurements under three percentage points are noise.
+If the reader omits its final-answer marker, the runner records an empty response and a protocol-failure count;
+it does not convert that failure into an evidence-based abstention. Transport errors leave the run incomplete.
