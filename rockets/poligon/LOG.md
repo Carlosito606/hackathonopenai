@@ -25,3 +25,14 @@
 - R1 (`r1_run.py`, root memsys.py unchanged, device cpu): CPU embedding runs at 12 chunks/s; dev has 351,678
   chunks, so R1 dense retrieval on all of dev takes about 8-10 h here (115 s per history), reranking more.
   Not run yet; see the handoff.
+
+## 2026-10-30 23:45 karol-claude-2: judge, injection check, failure analysis (code only)
+
+- `judge.py`: LongMemEval judge prompts (default, temporal off-by-one, knowledge-update "updated answer wins") plus
+  the challenge rule "several answers, hedging or negation = wrong"; judges only score.py's unjudged rows; caches
+  verdicts. `--selftest` builds 490 cases with known verdicts from dev gold (gold in a sentence, another question's
+  answer, hedged, negated, temporal off by one (35) / five, knowledge-update old-then-new).
+- `check_injections.py`: 4 question-relevant sentences per injected session, asks whether they answer or contradict.
+- `failures.py`: outcomes per type. On R7's gate-only run (no reader) it shows 25/398 packs missing gold.
+- Tested only on a mock OpenAI-compatible server (plumbing, cache, table). The stand-in model (Qwen2.5-7B-Instruct
+  Q4_K_M, llama.cpp Vulkan build) is downloaded but not started yet.

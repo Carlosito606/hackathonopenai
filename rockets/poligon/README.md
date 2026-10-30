@@ -18,8 +18,8 @@ ss-asst 1.000 -> 0.989 (-1.1), ss-user 1.000 -> 1.000 (0), temporal 0.725 -> 0.5
 Compare your rocket: run it on ../data/dev and ../data/dev_hard, then
 `python rockets/poligon/compare_dev_hard.py ../data/dev ../data/dev_hard DEV/candidates.jsonl HARD/candidates.jsonl`.
 
-Next: local LLM judge for score.py's "unjudged"; an LLM check of every injected session (drop those that answer
-or contradict the question, via `--exclude`); failure analysis of every rocket's runs.
+Judge, injection check and failure analysis: written and tested on a mock server (`judge.py`, `check_injections.py`,
+`failures.py`); not yet run on the stand-in model (see LOG.md).
 
 ## How dev-hard is built
 
@@ -61,4 +61,7 @@ almost always); use it to rank rockets on robustness, not to predict the test sc
 | `make_dev_hard.py` | generator and `--check` |
 | `bm25_run.py` | plain BM25 baseline -> candidates.jsonl (fork of experiments/analysis/karol-claude/mkruns.py) |
 | `compare_dev_hard.py` | dev vs dev-hard retrieval per type, paired, plus near-miss intrusion |
+| `judge.py` | local LLM judge for score.py's "unjudged" (LongMemEval prompts, any OpenAI-compatible server), `--selftest` |
+| `check_injections.py` | LLM check of injected sessions -> exclude list for `make_dev_hard.py --exclude` |
+| `failures.py` | one outcome per question (retrieval miss, near-miss cited, stale value, wrong date, ...) per type |
 | `LOG.md` | what was tried, numbers |
