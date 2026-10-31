@@ -42,7 +42,7 @@ emb = Embedder(args.cache)
 res = defaultdict(lambda: defaultdict(list))
 for q in sample:
     h, g = hist[q["history_id"]], gold[q["question_id"]]
-    cands = retrieve(h, q["question"], emb)
+    cands = retrieve(h, q["question"], emb, question_date=q["question_date"])
     dates = bool(TEMPORAL.search(q["question"]))
     for name, fn in (("old", old.build_evidence), ("new", build_evidence)):
         ev = fn(h, cands, dates=dates)

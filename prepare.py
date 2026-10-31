@@ -26,7 +26,7 @@ COUNTING = re.compile(r"\bhow (many|much)\b|\btotal\b|\bcombined\b|\bin all\b|\b
 
 def plan_question(q, history, emb):
     temporal = bool(TEMPORAL.search(q["question"]))
-    cands = retrieve(history, q["question"], emb)
+    cands = retrieve(history, q["question"], emb, question_date=q["question_date"])
     evidence = build_evidence(history, cands, dates=temporal)
     extra = DATES.format(today=day_no(parse_date(q["question_date"]))) if temporal else ""
     if COUNTING.search(q["question"]) and not re.search(r"how many (days|weeks|months|years)", q["question"], re.I):

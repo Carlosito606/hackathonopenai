@@ -31,7 +31,7 @@ emb = Embedder(args.cache)
 res = defaultdict(lambda: defaultdict(list))
 for q in qs:
     h, g = hist[q["history_id"]], gold[q["question_id"]]
-    cands = retrieve(h, q["question"], emb)
+    cands = retrieve(h, q["question"], emb, question_date=q["question_date"])
     for b in args.budgets:
         ev = build_evidence(h, cands, budget=b, dates=bool(TEMPORAL.search(q["question"])))
         for t in (g["question_type"], "all"):
