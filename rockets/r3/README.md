@@ -5,11 +5,14 @@ the user stated (and maybe corrected) somewhere in the history.
 Idea: a local LLM extracts atomic facts per session `{subject, attribute, value, said_by, turn, is_correction,
 when}`; facts are extra retrieval keys pointing to their source turns (LongMemEval fact-augmented keys), and code
 decides "latest user statement wins" and states it to the reader in `Pack.facts`.
-Status: milestone 1 in progress (100 dev questions: 40 k-update, 30 ss-user, 30 multi; `m1_questions.txt`).
-Numbers: none yet.
+Status: DEADEND on dev (2026-10-31). Milestone cut to 15 k-update questions (CPU-only laptop, `ku15_questions.txt`).
+Numbers (Reactor t10, same R1@926005e candidates): R1 15/15, evidence F1 0.718; R3 (R1 pack + ledger) 13/15, F1 0.641,
+1 false abstention. R1 already has every gold session for k-update/ss-user (1.000), so the ledger only adds noise;
+its "latest wins" note hurt a "previous value" question. Do NOT adopt the ledger into the ship.
 Stages: retrieve = R1 turns + fact keys (RRF), enrich = dates per history + superseded_by, assemble = R1 evidence
 with fact source turns forced in + ledger, decide = question + ledger + R1 answering notes. All in `rocket.py`.
-Parts others may want: `rocket.render_ledger` (latest-wins ledger with [E#] labels), `extract.py` (fact cache).
+Parts others may want: `ab.py` (A/B on Reactor, each arm in its own history), `extract.py` pipe-format extraction
+(73 s/session, Qwen2.5-3B on CPU). Lessons: coord/findings/20261031-0105-patryk2-claude-fact-ledger-extraction.md.
 
 ## Run
 
