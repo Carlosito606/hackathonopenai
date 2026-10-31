@@ -118,6 +118,8 @@ def assemble(q, h, cands):
     evidence = bounded
     computation = grounded_computation(q, cands, evidence)
     facts = computation['facts']
+    if not facts:
+        return baseline_assemble(q, h, cands)
     # Labels refer to the final evidence order, not the ranked candidates.
     for index, item in enumerate(evidence, 1):
         facts = facts.replace('source ' + item['id'] + ',', f'source [E{index}],')
@@ -137,7 +139,10 @@ def baseline_decide(q, h, cands, pack):
 
 
 def decide(q, h, cands, pack):
-    text = baseline_decide(q, h, cands, pack)['question']
+    baseline = baseline_decide(q, h, cands, pack)
+    if not pack['facts']:
+        return baseline
+    text = baseline['question']
     if pack['facts']:
         text += ('\nCalendar computations for the matched events in the supplied excerpts:\n' + pack['facts'] +
                  '\nUse these computations only for the events named above. Keep their evidence labels in the final answer line.')

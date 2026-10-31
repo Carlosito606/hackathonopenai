@@ -100,3 +100,13 @@
 - Recognize shared action stems consistently. When a question explicitly asks about my event, a family member's
   solo event does not become mine just because that person is named as my companion in the question.
 - All 60 tests pass. The all-history diagnostic now records dirty source status as well as the commit.
+
+## 2026-10-31 — antek-codex — exact fallback and shared local inference
+
+- When R4 cannot supply a grounded calculation, its pack and prompt now equal R1 exactly. Date/precision
+  changes and computation instructions are applied only where R4 has a fact to supply.
+- The local runner compares complete plans and reuses the R1 result only for exact equality. Changed prompts
+  or evidence always trigger their own call. Both predictions are retained; `shared_reader_results` and the
+  per-question reader status record reuse. Recovery restores that counter as well as protocol failures.
+- The localhost integration test verifies one actual reader call for identical plans, equal paired predictions,
+  and a separate interrupted/recovered pair when the plans differ. All 61 tests pass.
