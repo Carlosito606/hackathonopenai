@@ -22,3 +22,14 @@ follow-up 05:36 UTC: v3 at clean 31a161b used the full named fee061f export for 
 next: v4 constrains entity decoding to unique literal source spans, rather than adding prompt retries or
   guessing corrections to invented names. Independent item/alias/coverage audits and paired scoring remain
   required. The default counting cache remains disabled. Current suite: 106 synthetic tests pass.
+
+follow-up 05:47 UTC: v4 at clean 5ebc2d2 used schema-constrained literal names on the same question. The
+  server obeyed a synthetic constraint, and the first real fragment supplied two valid literal labels without
+  the previously invented suffix. The second fragment was a plan/question about an already mentioned item;
+  the model returned complete=false, items=[] and the extractor stopped. Two calls, no repairs, one accepted
+  source, one unresolved source, zero accepted question caches/facts. Literal decoding solved this span failure,
+  not semantic coverage. It is still one question, not four independent accuracy examples.
+next: fixed v4 protocol on all remaining 56 non-holdout multi-session count questions, selected in data order
+  without reading gold answers. There are 57 count questions overall, 23 with supported distinct/time scopes;
+  34 therefore fall back before extraction. Keep terminal first-question results separate and combine only
+  with the same code/decoder hashes. Audit accepted ledgers before paired multi-session reader measurement.

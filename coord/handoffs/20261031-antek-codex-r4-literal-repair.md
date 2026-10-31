@@ -18,9 +18,12 @@ Both initial and repair responses repeated a nonliteral name: 2 calls, 1 invalid
 The local record /tmp/r4-counting-probe-v3.json now records rejection, not a running process.
 V4 constrains entity names to unique whole-word literal spans via llama.cpp JSON schema (24 words/200 chars).
 Alias links remain model hypotheses; source grammar proves no completeness or correct item semantics.
-Next: verify actual server constraints, probe the same question on a clean source, audit all items/aliases,
-then measure full paired multi-session accuracy. Defaults stay opt-in. Weighted sums, event counts and
-current inventories remain later work.
+V4 at clean 5ebc2d2 is terminal: server constraint check passed; first source's two literal labels passed;
+second source returned complete=false on a plan/question. Two local calls, zero repairs/accepted caches.
+Next: fixed v4 protocol over the remaining 56 dev count questions (all, not selected by gold outcomes),
+then audit accepted ledgers and measure full paired multi-session accuracy. In all 57 count questions,
+23 have supported distinct/time scopes. /tmp/r4-counting-v4-remainder.json records the new job when launched.
+Defaults stay opt-in. Weighted sums, event counts and current inventories remain later work.
 
 Temporal reader: original processes ended under heavy memory pressure; 11 pairs survived. The exact run/source
 42ab798 was resumed with the same weights/context/KV precision/batches/decoding and bounded host caches.

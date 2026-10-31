@@ -72,6 +72,9 @@ was accepted. V4 constrains name decoding to unique, whole-word source spans (up
 This requires llama.cpp's [schema-capable response_format](https://github.com/ggml-org/llama.cpp/blob/5047748f1/tools/server/README.md#post-v1chatcompletions-openai-compatible-chat-completions-api); the source-dependent grammar and decoder profile
 are hashed in the audit. It prevents invented name suffixes by construction, but does not prove item semantics
 or completeness. Names outside the span bounds require fallback, not truncation or approximate matching.
+V4's first real source passed literal validation, but the next source reported uncertainty: zero accepted
+question caches on that single probe. The fixed protocol is being validated on the remaining dev questions;
+23/57 multi-session count questions have supported distinct/time scopes. No counting accuracy result yet.
 Cache keys bind question/history/candidate text, extractor prompts/schema and the exact visible user-source
 footprint. Assembly changes that expose different fragments invalidate reuse. The paired runner records cache
 hashes and rejects changes on resume.
