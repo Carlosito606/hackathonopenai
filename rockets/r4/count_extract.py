@@ -282,7 +282,7 @@ def validate_response(q, h, cands, sources, response):
     if all(identity is None for identity in identities):
         identities = None
     ledger = count_distinct(h, items, window, identities)
-    if ledger['count'] is None:
+    if ledger['count'] is None or ledger['count'] == 0:
         return None
     return {'version': VERSION, 'key': cache_key(q, h, cands, sources), 'visible_sources_sha256': source_fingerprint(sources), 'window': window,
             'items': items, 'identities': identities, 'extractor_reported_complete': True,
@@ -331,7 +331,7 @@ def computation(q, h, record, evidence):
         if not any(e['id'] == item['session_id'] and quote in e['text'] for e in evidence):
             return None  # Never turn an omitted item into a smaller total.
     ledger = count_distinct(h, record['items'], record['window'], record.get('identities'))
-    if ledger['count'] is None:
+    if ledger['count'] is None or ledger['count'] == 0:
         return None
     facts = []
     for item in ledger['items']:

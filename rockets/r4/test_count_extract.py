@@ -72,6 +72,8 @@ class ExtractionTest(unittest.TestCase):
                       {**self.response, 'mode': 'unsupported'}]:
             self.assertIsNone(validate_response(self.q, self.h, self.cands, self.sources, value))
         self.assertIsNone(computation(self.q, self.h, {**self.record(), 'items': []}, self.evidence))
+        april = {**self.q, 'question': self.q['question'].replace('March', 'April'), 'question_date': '2024/04/30'}
+        self.assertIsNone(validate_response(april, self.h, self.cands, self.sources, self.response))
 
     def test_unknown_period_membership_falls_back(self):
         self.response['items'][0]['date'] = None
