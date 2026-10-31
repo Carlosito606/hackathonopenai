@@ -89,6 +89,16 @@ class CountingTest(unittest.TestCase):
             with self.subTest(text=text), self.assertRaises(ValueError):
                 count_distinct(self.h, [self.item('s_a', 'Amber Museum', 'today')])
 
+    def test_external_alias_partition_changes_arithmetic_without_certifying_semantics(self):
+        self.h['sessions'][0]['turns'][0]['content'] = 'I visited Amber Museum today. I call it AM.'
+        items = [self.item('s_a', 'Amber Museum'), self.item('s_a', 'AM')]
+        result = count_distinct(self.h, items, identities=[0, 0])
+        self.assertEqual(result['count'], 1)
+        self.assertFalse(result['item_semantics_verified'])
+        for identities in [[0], [0, 2], [0, True]]:
+            with self.subTest(identities=identities), self.assertRaises(ValueError):
+                count_distinct(self.h, items, identities=identities)
+
 
 if __name__ == '__main__':
     unittest.main()

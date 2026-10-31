@@ -166,3 +166,23 @@
 - Nine new synthetic invariants pass. Arithmetic provenance does not validate semantic extraction, ownership,
   completeness, aliases or inventory updates; result flags explicitly retain these limits. No dev count-accuracy
   claim. Next: a conservative item extractor, followed by paired multi-session scoring before enabling counts.
+
+## 2026-10-31 — antek-codex — opt-in item extraction and a failed global protocol
+
+- Connected cached item extractions to enrich/assemble/decide; no count cache is loaded by default. The reader
+  receives item/source links and code's count, with explicit uncertainty about local semantic extraction/aliases.
+- Cache keys bind the question, history and candidate text. Run/resume fingerprints cover the extraction files;
+  changing them during a run fails rather than mixing old and new facts. Missing source quotes do not shrink totals.
+- Literal closed lists have a rule path; other user excerpts require the local stand-in. Weighted sums, event
+  occurrence counts, current inventory changes and complex/vague periods remain pending and fall back to R1.
+- Development cache availability: 6/57 multi-session count questions had existing CPU R1 candidates, 3 with
+  supported scopes. Tested the first such question, not selected by gold outcome; the 15-source global prompt
+  produced one invalid response (rewritten quotes/labels, wrong source indices), rejected before supplying facts.
+- Replaced generated source ids/quotes with per-fragment requests. Code copies the sentence, exact repeats merge
+  deterministically, and local alias links refer only to known observed entities. Model completeness remains
+  unverified. Raw responses, loaded-source hashes and metadata stay in ignored caches. No count accuracy claim.
+- 95 synthetic tests pass, including full stage assembly, source hallucination rejection, partial-word rejection,
+  omitted evidence, period uncertainty, alias partition checks and official scorer/local-reader regression tests.
+- Full message budgeting now includes item facts and aliases; oversize inventories fall back without dropping
+  items. Computation artifacts distinguish a possible calculation from a fact actually supplied to the reader.
+  The identical-plan integration fixture checks this distinction; 96 tests pass.

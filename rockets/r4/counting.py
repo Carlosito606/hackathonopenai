@@ -50,6 +50,10 @@ def grounded_items(h, items):
         label = source['content'][left:right]
         if not entity_key(label):
             raise ValueError('empty item identity')
+        text = source['content']
+        if (left > 0 and text[left - 1].isalnum() and label[0].isalnum()) or (
+                right < len(text) and text[right].isalnum() and label[-1].isalnum()):
+            raise ValueError('item span cuts through a source word')
         dates = []
         if item.get('date_span') is not None:
             dates = [d for d in resolve_dates(source['content'], session['date'])
@@ -72,7 +76,7 @@ def grounded_items(h, items):
     return result
 
 
-def count_distinct(h, items, window=None):
+def count_distinct(h, items, window=None, identities=None):
     """Return an auditable count of the supplied grounded item set.
 
     window is an inclusive pair of ISO days. Unknown dates, inferred dates and
@@ -87,7 +91,15 @@ def count_distinct(h, items, window=None):
         if start > end:
             raise ValueError('counting window is reversed')
     grouped = defaultdict(list)
-    for item in grounded_items(h, items):
+    grounded = grounded_items(h, items)
+    if identities is not None:
+        if len(identities) != len(grounded) or any(type(i) is not int or i < 0 for i in identities):
+            raise ValueError('invalid external entity partition')
+        if set(identities) != set(range(max(identities, default=-1) + 1)):
+            raise ValueError('entity partition must use contiguous group ids')
+        for item, identity in zip(grounded, identities):
+            item['key'] = f'external_identity_{identity}'
+    for item in grounded:
         grouped[item['key']].append(item)
     counted, uncertain = [], []
     for key, mentions in grouped.items():

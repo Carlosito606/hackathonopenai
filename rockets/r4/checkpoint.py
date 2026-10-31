@@ -47,11 +47,11 @@ def recover(folder, question_ids, with_answers):
 
 
 def validate_resume(previous, current):
-    for key in ['git_sha', 'split', 'question_types', 'questions', 'reader', 'baseline_sha', 'candidate_manifest']:
+    for key in ['git_sha', 'split', 'question_types', 'questions', 'reader', 'baseline_sha', 'candidate_manifest', 'counting_cache_sha256']:
         if previous.get(key) != current.get(key):
             raise ValueError(f'cannot resume with changed {key}')
     if previous.get('source_dirty') or current.get('source_dirty'):
         raise ValueError('resume requires clean source files at the recorded commit')
-    for key in ['data', 'local', 'reader_revision', 'candidate_cache', 'prepare_only']:
+    for key in ['data', 'local', 'reader_revision', 'candidate_cache', 'prepare_only', 'counting_cache']:
         if previous['flags'].get(key) != current['flags'].get(key):
             raise ValueError(f'cannot resume with changed {key}')

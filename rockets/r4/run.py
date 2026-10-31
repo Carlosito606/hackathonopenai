@@ -19,6 +19,7 @@ from pathlib import Path
 from . import rocket
 from .checkpoint import recover, validate_resume
 from .manifest import CandidateManifest
+from .count_extract import cache_fingerprint
 
 ROOT = rocket.ROOT
 
@@ -78,8 +79,13 @@ def main():
     parser.add_argument('--candidate-cache', type=Path, default=ROOT / 'rockets/r4/cache/candidates')
     parser.add_argument('--candidate-manifest', type=Path,
                         help='R1 export folder with explicit chunk indices, evidence.jsonl and meta.json')
+    parser.add_argument('--counting-cache', type=Path, default=os.environ.get('R4_COUNT_CACHE'),
+                        help='opt-in, precomputed local item extractions; hashes are frozen for this run')
     parser.add_argument('--run-id', default=datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S'))
     args = parser.parse_args()
+    if args.counting_cache:
+        os.environ['R4_COUNT_CACHE'] = str(args.counting_cache)
+    counting_hash = cache_fingerprint(args.counting_cache)
     if not args.prepare_only and (not args.local or not args.reader or not args.scorer):
         parser.error('answer runs require --local, --reader and --scorer; otherwise use --prepare-only')
     if args.local and ('reactor-hackathon' in args.local or not args.local.startswith(('http://', 'https://'))):
@@ -117,10 +123,12 @@ def main():
                             'stages': {'retrieve': 'r1', 'enrich': 'r4', 'assemble': 'r4', 'decide': 'r4'},
                             'baseline_sha': sha, 'split': 'dev minus splits/dev_holdout.txt',
                             'candidate_manifest': manifest.provenance if manifest else None,
+                            'counting_cache_sha256': counting_hash,
                             'question_types': sorted(types), 'questions': len(questions),
                             'reader': args.reader, 'flags': vars(args) | {'data': str(args.data), 'scorer': str(args.scorer),
                                                                       'candidate_cache': str(args.candidate_cache),
-                                                                      'candidate_manifest': str(args.candidate_manifest) if manifest else None},
+                                                                      'candidate_manifest': str(args.candidate_manifest) if manifest else None,
+                                                                      'counting_cache': str(args.counting_cache) if args.counting_cache else None},
                             'retrieval_device': os.environ.get('R4_DEVICE', 'cpu'),
                             'cpu_threads': os.environ.get('OMP_NUM_THREADS'),
                             'complete': False}
@@ -160,6 +168,8 @@ def main():
             cands = rocket.retrieve(q, h)
             write(cache, cands)
         enriched = rocket.enrich(q, h, cands)
+        if cache_fingerprint(args.counting_cache) != counting_hash:
+            raise ValueError('counting cache changed during this run')
         packs = {'r1': rocket.baseline_assemble(q, h, cands), 'r4': rocket.assemble(q, h, enriched)}
         reader_status = {'question_id': q['question_id']}
         baseline_plan = baseline_result = None
@@ -189,7 +199,14 @@ def main():
                 reader_status[name] = result.get('status', 'unknown')
                 append(folder / 'predictions.jsonl', prediction(result))
         computed = bool(packs['r4']['facts'])
-        computation = rocket.grounded_computation(q, enriched, packs['r4']['evidence'])
+        computation = rocket.grounded_computation(q, enriched, packs['r4']['evidence'], h)
+        if not computed:
+            # A potential calculation is not a fact actually supplied to the
+            # reader (e.g. an oversize inventory fell back to the R1 pack).
+            computation.update(computed=False, sources=[], facts='', reason='not_supplied_in_final_pack')
+            computation.pop('answer', None)
+        elif not computation['computed']:
+            raise ValueError('reader facts cannot be reproduced from the final evidence')
         stats['questions'] += 1
         stats['computed'] += computed
         append(out / 'computations.jsonl', {'question_id': q['question_id'], **computation})
@@ -206,6 +223,8 @@ def main():
                                          str(folder / 'predictions.jsonl'), '--details', str(folder / 'details.jsonl')],
                                         capture_output=True, text=True, check=True)
                 (folder / 'score.txt').write_text(result.stdout)
+    if cache_fingerprint(args.counting_cache) != counting_hash:
+        raise ValueError('counting cache changed during this run')
     write(out / 'summary.json', dict(stats) | {'answer_scoring_complete': ask is not None})
     meta = json.loads((out / 'meta.json').read_text())
     meta['complete'] = ask is not None

@@ -178,6 +178,7 @@ class ContractTest(unittest.TestCase):
                     self.assertEqual(call.call_count, 1)
                     shared = root / 'runs/r4/identical-0000000'
                     self.assertEqual(json.loads((shared / 'summary.json').read_text())['shared_reader_results'], 1)
+                    self.assertFalse(run.rows(shared / 'computations.jsonl')[0]['computed'])
                     self.assertEqual(run.rows(shared / 'predictions.jsonl'),
                                      run.rows(shared / 'baseline-r1/predictions.jsonl'))
                 out = root / 'runs/r4/synthetic-0000000'
