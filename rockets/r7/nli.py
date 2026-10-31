@@ -36,6 +36,14 @@ def windows(text):
     return [" ".join(sents[i:i + WINDOW])[:MAX_CHARS] for i in range(max(1, len(sents) - WINDOW + 1))] if sents else []
 
 
+def invented(claim, question):
+    """The LLM wrote a name the question does not have ("I met Sophia in Paris." for "Where did I meet Sophia?"):
+    it filled in an answer, and no excerpt can entail a made-up one, so the claim is not checked."""
+    qw = set(re.findall(r"[a-z]+", question.lower()))
+    return any(t[0].isupper() and t.lower() not in qw and t not in ("I", "You")
+               for t in re.findall(r"[A-Za-z]+", claim)[1:])
+
+
 def entail(pairs):
     import torch
     tk, model = load()
@@ -71,7 +79,7 @@ def main():
                 if len(chunks) == N_CHUNKS:
                     break
             per_claim = []
-            for claim in r["claims"] or [q["question"]]:
+            for claim in [c for c in r["claims"] if not invented(c, q["question"])]:
                 role = "assistant" if re.match(r"(you|the assistant)\b", claim, re.I) else "user"
                 prem = [(w, c["session_id"]) for c in chunks if c["role"] == role for w in windows(c["text"])]
                 if not prem:
@@ -81,7 +89,9 @@ def main():
                 k = max(range(len(ps)), key=ps.__getitem__)
                 per_claim.append({"claim": claim, "best": round(ps[k], 4), "window": prem[k][0][:200],
                                   "session": prem[k][1]})
-            f.write(json.dumps({"question_id": r["question_id"], "support": min(c["best"] for c in per_claim),
+            # no claim left to check: no NLI decision (support 1.0)
+            f.write(json.dumps({"question_id": r["question_id"], "support": min((c["best"] for c in per_claim),
+                                                                                default=1.0),
                                 "claims": per_claim}) + "\n")
             f.flush()
             if i % 25 == 0:

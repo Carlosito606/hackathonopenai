@@ -5,11 +5,13 @@ Bet: verification first. Beat R1 on abstention and evidence F1 without false abs
 Stages: retrieve = R1 chunking + BM25 only (CPU machine; `--cands` reads R1's own candidates), assemble = R1,
 decide = R7 entity gate + SQuAD 2.0 no-answer gate (`--qa`). Best: policy `pack` with `--qa`, threshold -5.
 Numbers (no reader): dev minus holdout 13/25 abstentions right (0.52), 2/398 false (0.005); dev-hard v1 26/107
-right (0.24), 2/398 false. R1 abstains 0 before its reader. Threshold picked on dev, held on dev-hard.
+right (0.24), 2/398 false. Same on R1's real candidates. Threshold picked on dev, held on dev-hard.
+With Reactor (43 questions the gate abstains on, R1's prompt): Reactor abstained on 41 by itself; gate gain 1,
+loss 1. Verdict: do not lay the gate over the ship; it only predicts the reader's abstention (41/43).
 Lesson: injected near-miss sessions defeat both gates (they carry the missing names and give SQuAD confident
 spans); computed questions (counts, dates) are left to the reader.
-Status: milestones 1-3 done (entity gate, QA gate, error analysis). Next: the stand-in reader on `reactor_mini`
-(`plan.py`), R1's real candidates when committed, citation pruning.
+Status: milestones 1-4 done (entity gate, QA gate, error analysis, reader check). Experiments after: entity swap
+and answer-name co-location (dead ends), LLM claims + NLI (running).
 
 ## Design
 
