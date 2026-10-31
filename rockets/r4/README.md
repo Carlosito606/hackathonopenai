@@ -5,7 +5,8 @@ Status: initial implementation merged in PR #11; exact R1 chunk-manifest replay 
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 96 synthetic tests pass: temporal/item scope, paired recovery, official score.py and exact chunk selection.
+Checks: 99 synthetic tests pass on this branch: temporal/item scope, paired recovery, official score.py and exact chunk selection.
+Order: descending requests reverse the computed list; title words do not determine its direction or output form.
 Baseline: root R1 at each run's recorded `baseline_sha`, same candidates/machine; dev minus holdout.
 Historical smoke and the original in-progress CPU run use R1 at `de158d5`; their artifacts keep that provenance.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
@@ -28,6 +29,8 @@ Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, t
 - Keeps weekends as ranges; omitted months/years and conversational month offsets are marked inferred.
 - Exact calculations require two uniquely grounded event dates (or one event and the question date).
 - Chronological order also works for disjoint date ranges; overlapping ranges leave order unresolved.
+- Both list directions are supported; conflicting explicit directions defer to the reader. Facts retain an
+  ascending chronology and separately state the answer in the requested direction.
 - Complete calendar months/years use clamped anniversaries (January 31 → February 28, leap-day anniversaries).
 - Rejects plans, negations, assistant suggestions, conflicting matches and ambiguous multi-date sentences.
 - Keeps dates with their coordinated action; a dated recollection or discussion does not date the recalled event.

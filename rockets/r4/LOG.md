@@ -186,3 +186,15 @@
 - Full message budgeting now includes item facts and aliases; oversize inventories fall back without dropping
   items. Computation artifacts distinguish a possible calculation from a fact actually supplied to the reader.
   The identical-plan integration fixture checks this distinction; 96 tests pass.
+
+## 2026-10-31 — antek-codex — requested chronology direction
+
+- Ordering facts previously always returned a list from earliest to latest, including descending requests.
+  Lists now follow the explicit direction, while the source chronology stays ascending for inspection.
+- Ordering controls exclude quoted titles; words such as latest/order in an alternative after the comma do
+  not change an earliest-winner question into a latest-winner/list answer. Conflicting directions fall back.
+- 99 tests pass on this branch, including explicit ascending/descending lists, reverse chronological order,
+  whitespace/case, title collisions and contradictory directions. Touched Python files compile.
+- Rebuilt all 107 non-holdout temporal packs from the named fee061f export with the replay verifier at 5ebc2d2.
+  All 107 R1 and 107 R4 plans are identical to the frozen 42ab798 run; 12 computations remain. The fix does
+  not change this development slice's reader input, and no answer-accuracy improvement is claimed.
