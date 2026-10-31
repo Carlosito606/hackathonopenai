@@ -132,6 +132,7 @@ def main():
         stats['questions'] = start
         stats['computed'] = sum(item['computed'] for item in computations)
         for item in statuses:
+            stats['shared_reader_results'] += item.get('shared_identical_plan', False)
             for name in ['r1', 'r4']:
                 stats['reader_no_final_' + name] += item[name] != 'answered'
         print(f'Resuming after {start} complete paired questions.', flush=True)
@@ -146,6 +147,7 @@ def main():
         enriched = rocket.enrich(q, h, cands)
         packs = {'r1': rocket.baseline_assemble(q, h, cands), 'r4': rocket.assemble(q, h, enriched)}
         reader_status = {'question_id': q['question_id']}
+        baseline_plan = baseline_result = None
         for name, folder, stages in [('r1', baseline, cands), ('r4', out, enriched)]:
             pack = packs[name]
             decision = (rocket.baseline_decide if name == 'r1' else rocket.decide)(q, h, stages, pack)
@@ -158,7 +160,14 @@ def main():
             plan = {**q, 'question': decision['question'], 'evidence': pack['evidence']}
             write(plan_path, plan)
             if ask is not None:
-                result = ask.local(args, plan)
+                if name == 'r4' and plan == baseline_plan:
+                    result = {**baseline_result, 'reused_from': 'r1-identical-plan'}
+                    reader_status['shared_identical_plan'] = True
+                    stats['shared_reader_results'] += 1
+                else:
+                    result = ask.local(args, plan)
+                if name == 'r1':
+                    baseline_plan, baseline_result = plan, result
                 write(args.candidate_cache / f'{q["question_id"]}-{name}-result.json', result)
                 if result.get('status') != 'answered':
                     stats['reader_no_final_' + name] += 1

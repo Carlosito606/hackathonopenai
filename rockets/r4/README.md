@@ -5,7 +5,7 @@ Status: first end-to-end Reactor smoke completed; full paired stand-in evaluatio
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 60 synthetic tests pass, including date/actor-scope regressions, interrupted paired-run recovery and official score.py.
+Checks: 61 synthetic tests pass, including date/actor-scope regressions, interrupted paired-run recovery and official score.py.
 Baseline: R1 at `de158d5`, same retrieval candidates, same machine; dev minus `splits/dev_holdout.txt`.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
 Stand-in: Qwen2.5-7B-Instruct Q4_K_M downloaded; it starts after R1 preparation to fit 8 GiB RAM.
@@ -29,7 +29,7 @@ Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, t
 - A decision to act can date the decision; it does not establish that the planned action happened.
 - Matches coherent entity names/titles and question-provided aliases, not a bag of their words.
 - Adds computed facts and their `[E#]` labels only when their supporting text is included in the evidence pack.
-- Conservatively falls back to R1-style reading rather than generating an ungrounded count or date.
+- Without a grounded computation, returns the identical R1 evidence pack and prompt.
 - Accepts contract candidates without R1's private fields and session/fact units without a turn number.
 
 ## Reproduce
@@ -60,6 +60,9 @@ replies, candidate text and embedding caches stay under ignored `rockets/r4/cach
 supported by this development runner. It has no Reactor execution path and never accesses the operator's key.
 
 For a fair comparison, both variants use the same cached R1 candidates and the same stand-in endpoint.
+When their complete plans are identical, the local runner asks once and records the shared result for both.
+`summary.json:shared_reader_results` and `reader_status.jsonl` record this reuse; changed evidence or prompts
+always get a separate reader call. The protocol integration test checks actual call counts and paired outputs.
 Use `--resume --run-id ORIGINAL_ID` with the same options and clean source commit to resume an interrupted run.
 Recovery keeps only the common complete prefix of both variants and recomputes an interrupted pair. Changes
 to source, reader revision, endpoint or data path are rejected; a partial last JSON append can be recovered.
