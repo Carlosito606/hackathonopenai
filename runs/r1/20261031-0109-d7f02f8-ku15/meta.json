@@ -1,0 +1,18 @@
+{
+ "rocket": "r1",
+ "run_id": "20261031-0109-d7f02f8-ku15",
+ "git_sha": "d7f02f8",
+ "stages": {
+  "retrieve": "r1",
+  "enrich": "r1",
+  "assemble": "r1",
+  "decide": "r1"
+ },
+ "split": "ku15_questions.txt",
+ "reader": "reactor",
+ "flags": {
+  "top_sessions": 2,
+  "fact_min_score": -1.0,
+  "device": "cpu"
+ }
+}
