@@ -69,6 +69,7 @@ VARIANTS = {
     "quote2": {"GUIDE": QUOTE2, "build_evidence": budget(18000)},
     "quote8k": {"GUIDE": QUOTE, "build_evidence": budget(8000)},
     "final": {},
+    "final2": {},  # final after "labels count only on that line" was added to the GUIDE
 }
 
 
