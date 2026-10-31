@@ -110,3 +110,6 @@
   per-question reader status record reuse. Recovery restores that counter as well as protocol failures.
 - The localhost integration test verifies one actual reader call for identical plans, equal paired predictions,
   and a separate interrupted/recovered pair when the plans differ. All 61 tests pass.
+- JSONL checkpoint recovery uses actual file newlines, preserving Unicode line separators inside JSON strings;
+  the regression covers U+2028 and U+0085 in an answer. All 62 tests pass. This applies the data-format lesson
+  shared by Karol to R4's own recovery reader; the organisers' kit is unchanged.

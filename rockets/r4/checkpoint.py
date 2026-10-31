@@ -5,7 +5,10 @@ import json
 def read_checkpoint(path):
     if not path.exists():
         return []
-    lines = path.read_text(encoding='utf-8').splitlines(keepends=True)
+    # JSON permits U+2028/U+0085 inside strings; only actual JSONL record
+    # newlines delimit rows. str.splitlines() would corrupt such answers.
+    with path.open(encoding='utf-8') as source:
+        lines = list(source)
     items = []
     for index, line in enumerate(lines):
         if not line.strip():
