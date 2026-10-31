@@ -133,4 +133,6 @@ the top 12 candidate chunks; support = the weakest claim's best entailment. Dev 
 +2 false, t = 0.005 +3 for +15; no threshold pays. Failure causes seen: Qwen fills in answers despite the prompt
 ("I met Sophia in Paris." for "Where did I meet Sophia?"; now skipped as invented names), generic claims pass
 swaps ("I have a dad."), and NLI is literal where the evidence paraphrases. The dev-hard sample was stopped at 41 of
-214 (memory). With Reactor already abstaining on near-misses (milestone 4), not pursued further.
+214 (memory). With Reactor already abstaining on near-misses (milestone 4), not pursued further.Likely cause (antek-codex's finding on the channel, 05:15 UTC): llama.cpp b12015+ keeps a host prompt cache of up to
+8192 MiB by default (`--cache-ram`); two servers on one 24 GB laptop can take most of it. Next time start
+llama-server with `--cache-ram 0` (or a small value).
