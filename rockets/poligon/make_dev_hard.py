@@ -1,14 +1,19 @@
 """Build dev-hard: dev questions with injected near-miss sessions, plus unanswerable variants (local data only).
 
-    python rockets/poligon/make_dev_hard.py ../data/dev ../data/dev_hard --ids splits/dev_hard_ids.txt
-    python rockets/poligon/make_dev_hard.py ../data/dev ../data/dev_hard --check     # verify an existing build
+    X="--exclude rockets/poligon/exclude_v2.jsonl"
+    python rockets/poligon/make_dev_hard.py ../data/dev ../data/dev_hard $X --ids splits/dev_hard_ids.txt     # v2
+    python rockets/poligon/make_dev_hard.py ../data/dev ../data/dev_hard $X --check   # verify an existing build
+    python rockets/poligon/make_dev_hard.py ../data/dev ../data/dev_hard_long $X --pad-to 200 \\
+        --ids splits/dev_hard_long_ids.txt                                            # test-length histories
+    python rockets/poligon/make_dev_hard.py ../data/dev ../data/dev_hard_v1 --version 1   # v1, byte-identical
 
 Every non-holdout dev question gets one "inject" variant: its history plus 3-5 sessions from OTHER histories that
 are similar by BM25 (question words plus the evidence sessions' distinctive words), are no dev question's evidence,
 do not contain the gold answer, have no first-person user sentence holding most of the question's words, and are
 not near-copies of a session already there. They are dated inside the history's span (knowledge-update: before
-its first evidence session, so "latest wins" still holds). A seeded, per-type quarter of the answerable ones also gets a "remove" variant: the same injected
-history without its evidence sessions (gold: abstain, evidence empty), kept only if the answer no longer occurs.
+its first evidence session, so "latest wins" still holds). A seeded, per-type quarter of the answerable ones also
+gets a "remove" variant: the same injected history without its evidence sessions (gold: abstain, evidence empty),
+kept only if the answer no longer occurs. --pad-to N adds random filler sessions (same filters, original ids).
 
 Deterministic for a given --seed: ids are hashes, randomness comes from per-question seeded generators.
 Writes questions.jsonl, histories.jsonl, gold.jsonl (dev format) and manifest.jsonl (source question, variant,
@@ -189,6 +194,7 @@ def build(args):
     excluded = set()
     if args.exclude:
         excluded = {(r["source_qid"], r["source_session"]) for r in rj(args.exclude)}
+    traps = {r["source_qid"]: r for r in rj(args.traps)} if args.traps else {}
     keep = sorted((q for q in questions if q["question_id"] not in holdout), key=lambda q: q["question_id"])
     print(f"{len(keep)} questions after excluding {len(questions) - len(keep)} holdout", flush=True)
 
@@ -270,7 +276,7 @@ def build(args):
             if first_ev - lo > timedelta(days=1):
                 hi = first_ev
 
-        new_hid = hid("h_", args.seed, qid, "inject")
+        new_hid = hid("h_", args.seed, qid, "inject")  # v1's history id: seeds injected session ids in every version
         injected = []
         for i, score, risk in chosen:
             s = pool[i]["s"]
@@ -278,10 +284,42 @@ def build(args):
             injected.append({"session_id": new_sid, "date": fmt_date(pick_date(rng, lo, hi)),
                              "turns": [{**t, "turn_id": hid("t_", new_sid, j)} for j, t in enumerate(s["turns"])],
                              "_source": s["session_id"], "_score": score, "_risk": risk})
-        sessions = sorted(h["sessions"] + [{k: v for k, v in s.items() if not k.startswith("_")} for s in injected],
-                          key=lambda s: datetime.strptime(s["date"], FMT))
+        if qid in traps and injected:  # the test-like trap: an aside about someone else or a plan, other value
+            trng = rng_for(args.seed, qid, "trapsite")
+            site = trng.choice(injected)
+            users = [j for j, t in enumerate(site["turns"]) if t["role"] == "user"]
+            if users:
+                j = trng.choice(users)
+                site["session_id"] = hid("s_", args.seed, new_hid, site["_source"], "trap")
+                site["turns"] = [{**t, "turn_id": hid("t_", site["session_id"], k),
+                                  **({"content": t["content"].rstrip() + " " + traps[qid]["sentence"]} if k == j else {})}
+                                 for k, t in enumerate(site["turns"])]
+                site["_trap"] = traps[qid]["kind"]
+        padded = []
+        if args.pad_to:  # random filler from other histories up to test's length (200 sessions); own rng, so the
+            prng = rng_for(args.seed, qid, "pad")  # injected sessions stay the same as without padding
+            taken = {pool[i]["sid"] for i, _, _ in chosen}
+            seen_near = near_seen | {pool[i]["near"] for i, _, _ in chosen}
+            order = list(range(len(pool)))
+            prng.shuffle(order)
+            need = args.pad_to - len(h["sessions"]) - len(injected)
+            for i in order:
+                if len(padded) >= need:
+                    break
+                p = pool[i]
+                if (p["sid"] in own_ids or p["sid"] in taken or p["hash"] in own_hash or p["sid"] in ev
+                        or p["near"] in seen_near or (qid, p["sid"]) in excluded):
+                    continue
+                if match(stext(p["s"])) or self_overlap(q["question"], p["s"]) >= args.max_self_overlap:
+                    continue
+                seen_near.add(p["near"])
+                taken.add(p["sid"])  # keeps its own session id, as dev reuses sessions across histories, so
+                padded.append({**p["s"], "date": fmt_date(pick_date(prng, lo, hi))})  # embedding caches hit
+        sessions = sorted(h["sessions"] + [{k: v for k, v in s.items() if not k.startswith("_")} for s in injected]
+                          + padded, key=lambda s: datetime.strptime(s["date"], FMT))
         info = [{"session_id": s["session_id"], "source_session": s["_source"], "bm25": s["_score"],
-                 "self_overlap": s["_risk"], "date": s["date"]} for s in injected]
+                 "self_overlap": s["_risk"], "date": s["date"], **({"trap": s["_trap"]} if "_trap" in s else {})}
+                for s in injected]
 
         variants = [("inject", sessions, g)]
         if qid in remove_set:
@@ -292,14 +330,18 @@ def build(args):
                 variants.append(("remove", rest, {**g, "abstain": True, "answer": ABSTAIN_ANSWER, "aliases": [],
                                                   "evidence": []}))
         for variant, sess, vg in variants:
-            nq, nh = hid("q_", args.seed, qid, variant), hid("h_", args.seed, qid, variant)
+            salt = () if args.version == 1 else (f"v{args.version}",)  # new ids per version: no stale caches
+            salt += (f"pad{args.pad_to}",) if args.pad_to else ()
+            salt += ("trap",) if args.traps else ()
+            nq, nh = hid("q_", args.seed, qid, variant, *salt), hid("h_", args.seed, qid, variant, *salt)
             out_q.append({"question_id": nq, "history_id": nh, "question": q["question"],
                           "question_date": q["question_date"]})
             out_h.append({"history_id": nh, "sessions": sess})
             out_g.append({**vg, "question_id": nq})
             manifest.append({"question_id": nq, "source_qid": qid, "source_history": q["history_id"],
                              "variant": variant, "question_type": g["question_type"], "abstain": vg["abstain"],
-                             "removed": sorted(ev) if variant == "remove" else [], "injected": info})
+                             "removed": sorted(ev) if variant == "remove" else [], "injected": info,
+                             **({"padded": [s["session_id"] for s in padded]} if args.pad_to else {})})
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -350,6 +392,8 @@ def check(args):
         qd = datetime.strptime(q["question_date"], FMT)
         src_dates = [datetime.strptime(s["date"], FMT) for s in sh["sessions"]]
         inj = {i["session_id"] for i in m["injected"]}
+        trapped = {i["session_id"] for i in m["injected"] if "trap" in i}  # deliberately shares the question's words
+        pad = set(m.get("padded", []))
         n_inj.append(len(inj))
         keys = Counter(near_key(s) for s in h["sessions"])
         if any(keys[near_key(s)] > 1 for s in h["sessions"] if s["session_id"] in inj):
@@ -367,19 +411,27 @@ def check(args):
                     fail("inject_is_original", qid)
                 if match(stext(s)):
                     fail("inject_contains_answer", f"{qid} {s['session_id']}")
-                if self_overlap(q["question"], s) >= args.max_self_overlap:
+                if s["session_id"] not in trapped and self_overlap(q["question"], s) >= args.max_self_overlap:
                     fail("inject_states_own_fact", f"{qid} {s['session_id']}")
+            elif s["session_id"] in pad:
+                d = datetime.strptime(s["date"], FMT)
+                if not (min(src_dates) <= d <= max(src_dates)) or d > qd:
+                    fail("pad_date", f"{qid} {s['session_id']} {s['date']}")
+                if s["session_id"] in src_ids or s["session_id"] in sg["evidence"] or match(stext(s)):
+                    fail("pad_original_or_answer", f"{qid} {s['session_id']}")
             elif s["session_id"] not in src_ids:
                 fail("unknown_session", f"{qid} {s['session_id']}")
         if m["variant"] == "inject":
             if g["abstain"] != sg["abstain"] or g["evidence"] != sg["evidence"] or g["answer"] != sg["answer"]:
                 fail("inject_gold_changed", qid)
-            if set(sids) != src_ids | inj:
+            if set(sids) != src_ids | inj | pad:
                 fail("inject_lost_sessions", qid)
+            if args.pad_to and len(sids) != max(args.pad_to, len(src_ids) + len(inj)):
+                fail("pad_length", f"{qid}: {len(sids)}")
         else:
             if not g["abstain"] or g["evidence"]:
                 fail("remove_gold", qid)
-            if set(sids) & set(sg["evidence"]) or set(sids) != (src_ids - set(sg["evidence"])) | inj:
+            if set(sids) & set(sg["evidence"]) or set(sids) != (src_ids - set(sg["evidence"])) | inj | pad:
                 fail("remove_sessions", qid)
             if any(match(stext(s)) for s in h["sessions"]):
                 fail("remove_answer_present", qid)
@@ -392,7 +444,12 @@ def check(args):
     for m in man.values():
         if any(i["source_session"] in all_ev for i in m["injected"]):
             fail("inject_from_evidence", m["question_id"])
-    expected = {q["question_id"] for q in rj(src / "questions.jsonl") if q["question_id"] not in holdout}
+    if args.exclude:
+        excluded = {(r["source_qid"], r["source_session"]) for r in rj(args.exclude)}
+        for m in man.values():
+            if any((m["source_qid"], i["source_session"]) in excluded for i in m["injected"]):
+                fail("inject_excluded", m["question_id"])
+    expected ={q["question_id"] for q in rj(src / "questions.jsonl") if q["question_id"] not in holdout}
     if {m["source_qid"] for m in man.values() if m["variant"] == "inject"} != expected:
         fail("coverage", "not every non-holdout dev question has an inject variant")
     print(f"{len(qs)} questions, {Counter(m['variant'] for m in man.values())}, injected per question "
@@ -410,10 +467,15 @@ def main():
     ap.add_argument("--ids", help="write the generated question ids here (splits/dev_hard_ids.txt)")
     ap.add_argument("--exclude", help="JSONL of {source_qid, source_session} pairs never to inject")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--version", type=int, default=2, help="1 reproduces dev-hard v1 (no --exclude); question and "
+                    "history ids change with the version, injected session ids do not")
     ap.add_argument("--min-inject", type=int, default=3)
     ap.add_argument("--max-inject", type=int, default=5)
     ap.add_argument("--top", type=int, default=10, help="sample the injected sessions from this many best matches")
     ap.add_argument("--ev-terms", type=int, default=15, help="distinctive evidence words added to the query")
+    ap.add_argument("--traps", help="make_traps.py output: append each question's trap aside to one injected session")
+    ap.add_argument("--pad-to", type=int, default=0, help="add random filler sessions from other histories up to this "
+                    "many sessions per history (test has 200); a separate split with its own ids")
     ap.add_argument("--max-self-overlap", type=float, default=0.6,
                     help="drop candidates with a first-person user sentence holding this share of question words")
     ap.add_argument("--remove-frac", type=float, default=0.25)

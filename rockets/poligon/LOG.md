@@ -76,3 +76,22 @@ Top 5 sessions: multi 0.897 -> 0.629, all 0.937 -> 0.852. Injected sessions reac
 Injection audit, partial (486 of 1682 injected sessions): 21 suspect (4.3%), several of which change the gold of
 counting questions ("How many days a week do I attend fitness classes?" gold 4, injected session: 5) or state a
 conflicting own fact ("designer handbag" $800 vs $5,000). dev-hard v2 will exclude them.
+
+## 2026-10-31 01:00 karol-claude-2: pack studies on R1's candidates (kept), dev-hard v2 audit
+
+- `pack_budget.py` (R1's build_evidence on R1's own candidates, 926005e): dev-hard multi 0.722 / 0.814 / 0.845 at
+  18k / 22k / 26k; whole message max 27,234 chars at 26k. Rebuild matches the run's pack exactly for 60-75% of
+  questions (which chunk of a long turn was ranked is not in candidates.jsonl), levels within 1-3 points.
+- Crowding: of R1's 29 dev-hard losses (gold complete on dev), 21 come back when the injected sessions are removed
+  from the same ranking, 7 fell out of the 80 candidates, 1 other. Packs hold 3.0 injected sessions on average.
+- `pack_policies.py`: "sessdiv" (best chunk of every candidate session first) at 26k: dev-hard multi 0.959,
+  temporal 0.902, all 0.965 (R1 18k: 0.722 / 0.814 / 0.884); dev all 0.955 -> 0.992; 13.5 sessions per pack.
+  At 18k sessdiv loses ss-assistant answers (dev 49 -> 36 of 57). Rule-based query-driven pruning: dev-hard all
+  0.927 at 18k, weaker. Sent to R1 before its freeze; R1's final code already diversifies sessions for counting
+  questions (experiments/r1/20261031-0030-budget.md: multi 0.914 at 18k) and kept 18k.
+- Audit round 1 (`check_injections.py`, 1,682 injected sessions, 83 min with the CPU shared with R7): 93 suspect
+  (5.5%), 63 source questions. v2 excludes them (`exclude_v2.jsonl`, ids only) with new question/history ids
+  (`--version 2`); round 2 on the replacements: 148 new sessions, 20 suspect; the loop repeats until a round adds
+  nothing. BM25 dev -> dev-hard v2: same numbers as v1 (all 0.844 -> 0.714).
+- `--pad-to 200` (dev-hard-long): filler sessions up to test's 200 per history, original session ids; trial
+  build passes `--check` (1.1 GB of histories, 7.5 min build).
