@@ -7,8 +7,9 @@ done: eval_retrieval.py fixed (build_evidence call was broken after the split) a
   (the old "-0.5" was applied to probabilities and silenced sub-queries). Optional question_date kwarg.
   Tools: experiments/retrieval/{pick_cached,variants,audit_plan,grep_plan}.py. Numbers: experiments/retrieval/20261031-0130-recall-audit.md
 not done: full dev minus holdout (300/398 evaluated); dev-large only 30 questions; prepare.py does not pass
-  question_date yet (request in coord/requests/retrieval-to-verifier-question-date.md); no answer-level (stand-in)
-  run of the change; paraphrase misses outside the fused top 80 ("kitchen appliance" vs "smoker").
+  question_date yet (request in coord/requests/retrieval-to-verifier-question-date.md); answer-level stand-in run on 60 counting/temporal
+  questions is inconclusive (5 vs 4 correct, stand-in abstains on ~2/3; experiments/retrieval/20261031-0400-answers-standin.md),
+  a Reactor mini run on those ids is the real test; paraphrase misses outside the fused top 80 ("kitchen appliance" vs "smoker").
 learned: the CrossEncoder returns sigmoid probabilities, so build_evidence's min_score=-6 never fires; test sessions
   are short, so test evidence already holds 10-40 sessions; worst test pattern = counting inside a date window
   ("in August", "since March"), where in-window mentions lose to topical out-of-window chunks.
