@@ -1,15 +1,18 @@
 # R4 TIMELINE — antek-codex
 
 Bet: code computes event dates, elapsed time and event order; the reader phrases the answer and cites sources.
-Status: first end-to-end Reactor smoke completed; full paired stand-in evaluation is still running.
+Status: initial implementation merged in PR #11; exact R1 chunk-manifest replay now available for local evaluation.
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 68 synthetic tests pass, including date/actor-scope regressions, interrupted paired-run recovery and official score.py.
+Checks: 73 synthetic tests pass: date/actor scope, paired-run recovery, official score.py and exact chunk selection.
 Baseline: root R1 at each run's recorded `baseline_sha`, same candidates/machine; dev minus holdout.
 Historical smoke and the original in-progress CPU run use R1 at `de158d5`; their artifacts keep that provenance.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
 Stand-in: Qwen2.5-7B-Instruct Q4_K_M downloaded; it starts after R1 preparation to fit 8 GiB RAM.
+R1@fee061f export: all 107 temporal evidence manifests rebuilt with identical session order and character counts.
+Preparation: 94/102 answerable packs contain all gold sessions in both variants; 12/107 grounded computations.
+The same 12 exact claims have supported source audits; reader accuracy is still unmeasured on this full split.
 Parts: all four contract stages in `rocket.py`; R1 retrieval, R4 enrichment/assembly/decision.
 Dates: `dates.py` forks the date block in R1 `memsys.py` at `de158d5` (there was no standalone dates.py).
 Limits: no local semantic event extractor or cross-session item counter yet; ambiguous events fall back to reading.
@@ -48,6 +51,19 @@ R4_DEVICE=cpu python -m rockets.r4.run \
 
 The integration test uses the official scorer from `R4_SCORER` (default `./score.py`); otherwise it skips
 that test. Its reader is a protocol fixture and its perfect synthetic result is **not** a benchmark metric.
+
+Replay R1's shared, text-free chunk export without loading retrieval models:
+
+```bash
+python -m rockets.r4.run --data /path/to/dev --prepare-only \
+  --candidate-manifest runs/r1/20261031-0040-fee061f-temporal-chunks
+```
+
+For answers, replace `--prepare-only` with the local reader/scorer options above. The runner checks the R1
+source revision and every selected question's evidence manifest before any answer calls. Explicit chunk indices
+select text from the question's own history. Turn-only exports and mismatched session/character manifests fail;
+matching manifests validate those exported fields, not an independently exported hash of the full evidence text.
+Export hashes are recorded in both variants' metadata and cannot change during checkpoint resume.
 
 `--prepare-only` writes retrieval, evidence and computation artifacts without calling a reader. Such runs have
 `complete: false`; they deliberately have no fabricated predictions or answer scores. `report.py` audits partial
