@@ -71,6 +71,7 @@ class ExtractionTest(unittest.TestCase):
         for value in [{**self.response, 'items': []}, {**self.response, 'complete': False},
                       {**self.response, 'mode': 'unsupported'}]:
             self.assertIsNone(validate_response(self.q, self.h, self.cands, self.sources, value))
+        self.assertIsNone(computation(self.q, self.h, {**self.record(), 'items': []}, self.evidence))
 
     def test_unknown_period_membership_falls_back(self):
         self.response['items'][0]['date'] = None
@@ -87,9 +88,13 @@ class ExtractionTest(unittest.TestCase):
                          (True, ['2024-03-04', '2024-03-10']))
         self.assertEqual(requested_window('How many books did I read in December?', '2024/03/13'),
                          (True, ['2023-12-01', '2023-12-31']))
+        self.assertEqual(requested_window('How many books in the past month?', '2024/03/31'),
+                         (True, ['2024-02-29', '2024-03-31']))
         for question in ['How many books did I read recently?', 'How many books did I read before the move?',
                          'How many books do I currently own?', 'How many books in the past few months?',
-                         'How many books in the past two weeks and last month?']:
+                         'How many books in the past two weeks and last month?',
+                         'How many books in the past fortnight?', 'How many books in March and April?',
+                         'How many books in March 2024 and last week?']:
             self.assertFalse(requested_window(question, '2024/03/13')[0])
         self.assertEqual(requested_window("How many books titled 'Last Week' did I buy?", '2024/03/13'), (True, None))
 

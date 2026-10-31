@@ -39,20 +39,31 @@ def requested_window(question, question_date):
     question = re.sub(r'''(?<!\w)(['"])(.*?)\1(?!\w)''', '', question)
     if re.search(r'\b(?:since|before|after|between|until|currently|typical|initially)\b|\bdo I (?:own|have)\b', question, re.I):
         return False, None
-    rolling = re.search(r'\b(?:past|last)\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+(days?|weeks?|months?)\b', question, re.I)
+    quantity = r'\d+|an?|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve'
+    rolling = re.search(rf'\b(past|last)\s+(?:({quantity})\s+)?(days?|weeks?|months?|years?)\b', question, re.I)
+    if rolling and rolling[2] is None and (rolling[1].lower() == 'last' or rolling[3].lower().endswith('s')):
+        rolling = None  # "last month" is a calendar period; "past months" is vague.
     if rolling:
         extra = [d for d in resolve_dates(question, question_date)
                  if not (rolling.start() <= d['span'][0] and d['span'][1] <= rolling.end())]
         if extra or len(re.findall(r'\b(?:past|last)\s+(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+(?:days?|weeks?|months?)\b', question, re.I)) > 1:
             return False, None
-        raw, unit = rolling.groups()
+        raw, unit = rolling[2] or 'one', rolling[3]
         n = int(raw) if raw.isdigit() else NUMBERS[raw.lower()]
         if n < 1:
             return False, None
-        start = shift_months(today, -n) if unit.lower().startswith('month') else today - timedelta(days=n * (7 if unit.lower().startswith('week') else 1))
+        if unit.lower().startswith(('month', 'year')):
+            start = shift_months(today, -n * (12 if unit.lower().startswith('year') else 1))
+        else:
+            start = today - timedelta(days=n * (7 if unit.lower().startswith('week') else 1))
         return True, [start.isoformat(), today.isoformat()]
     named = re.search(rf'\b(?:in|during)\s+({MONTH})(?:\s+(20\d{{2}}))?\b', question, re.I)
     if named:
+        remaining = question[:named.start()] + question[named.end():]
+        extra = [d for d in resolve_dates(question, question_date)
+                 if not (named.start() <= d['span'][0] and d['span'][1] <= named.end())]
+        if extra or re.search(rf'\b{MONTH}\b', remaining, re.I):
+            return False, None
         if len(re.findall(rf'\b(?:in|during)\s+({MONTH})(?:\s+(20\d{{2}}))?\b', question, re.I)) > 1:
             return False, None
         month = list(calendar.month_abbr).index(named[1][:3].title())
@@ -65,7 +76,7 @@ def requested_window(question, question_date):
         item = periods[0]
         if item['end'] <= today.isoformat():
             return True, [item['start'], item['end']]
-    if periods or re.search(r'\b(?:recent|recently|few|since|before|after|between|ago|from|until|currently|typical|initially)\b', question, re.I):
+    if periods or re.search(r'\b(?:recent|recently|few|past|last|next|this|during|since|before|after|between|ago|from|until|currently|typical|initially)\b', question, re.I):
         return False, None
     return True, None
 
@@ -261,7 +272,7 @@ def cache_fingerprint(folder):
 
 
 def computation(q, h, record, evidence):
-    if not record or not (record.get('extractor_reported_complete') is True or record.get('model_reported_complete') is True):
+    if not record or not record.get('items') or not (record.get('extractor_reported_complete') is True or record.get('model_reported_complete') is True):
         return None
     supported, window = requested_window(q['question'], q['question_date'])
     if not supported or window != record['window']:
