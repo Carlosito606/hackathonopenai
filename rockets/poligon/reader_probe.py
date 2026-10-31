@@ -16,6 +16,7 @@ import argparse
 import json
 import re
 import sys
+import urllib.request
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -50,6 +51,21 @@ def with_trap(h, m, sentence, seed):
     return dict(h, sessions=sessions), site_id
 
 
+def n_tokens(url, text):
+    req = urllib.request.Request(url + "/tokenize", json.dumps({"content": text}).encode(),
+                                 {"Content-Type": "application/json"})
+    return len(json.loads(urllib.request.urlopen(req, timeout=120).read())["tokens"])
+
+
+def fitted_message(q, h, budget, url, limit):
+    """ask_message, shrinking the evidence budget (as prepare.py does for chars) until it fits the context."""
+    while True:
+        msg, ids = ask_message(q, h, budget)
+        if budget <= 2000 or n_tokens(url, msg) <= limit:
+            return msg, ids
+        budget -= 1000
+
+
 def ask_message(q, h, budget):
     si = {s["session_id"]: i for i, s in enumerate(h["sessions"])}
     cands = []
@@ -76,9 +92,10 @@ def main():
     ap.add_argument("--local", required=True)
     ap.add_argument("--model", default="")
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--budget", type=int, default=9000)
-    ap.add_argument("--max-tokens", type=int, default=400)
+    ap.add_argument("--budget", type=int, default=7000)
+    ap.add_argument("--max-tokens", type=int, default=300)
     ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--ctx", type=int, default=4096, help="the server's context per slot (tokens)")
     ap.add_argument("--cache", default=str(Path.home() / ".cache" / "poligon-reader.jsonl"))
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
@@ -100,7 +117,7 @@ def main():
         h = hist[q["history_id"]]
         trapped, site = with_trap(h, m, traps[m["source_qid"]]["sentence"], args.seed)
         for name, hh in (("plain", h), ("trap", trapped)):
-            msg, ids = ask_message(q, hh, args.budget)
+            msg, ids = fitted_message(q, hh, args.budget, args.local.rstrip("/"), args.ctx - args.max_tokens - 64)
             jobs.append((name, m, g, site, site in ids, msg))
     print(f"{len(jobs)} reader calls ({len(jobs) // 2} questions x plain/trap)", flush=True)
     judge = Judge(args.local, args.model, args.cache)
@@ -109,7 +126,9 @@ def main():
     for (name, m, g, site, in_pack, _), reply in zip(jobs, replies):
         trap = traps[m["source_qid"]]
         ans = kit.final_answers(reply or "").get(REF)
-        if ans is None:
+        if (reply or "").startswith("ERROR"):
+            out = "server error"
+        elif ans is None:
             out = "no final line"
         elif kit._INSUFFICIENT.match(ans):
             out = "abstained"
@@ -128,7 +147,8 @@ def main():
         f.writelines(json.dumps(r, ensure_ascii=False) + "\n" for r in rows)
     for (name, variant), c in sorted(res.items()):
         print(f"{name:5s} {variant:6s} " + "  ".join(f"{k}={c[k]}" for k in
-              ("n", "gold", "abstained", "trap taken", "other answer", "no final line", "trap session in pack")))
+              ("n", "gold", "abstained", "trap taken", "other answer", "no final line", "server error",
+               "trap session in pack")))
 
 
 if __name__ == "__main__":

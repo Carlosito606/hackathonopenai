@@ -95,3 +95,18 @@ conflicting own fact ("designer handbag" $800 vs $5,000). dev-hard v2 will exclu
   nothing. BM25 dev -> dev-hard v2: same numbers as v1 (all 0.844 -> 0.714).
 - `--pad-to 200` (dev-hard-long): filler sessions up to test's 200 per history, original session ids; trial
   build passes `--check` (1.1 GB of histories, 7.5 min build).
+
+## 2026-10-31 01:25 karol-claude-2: v2 audit rounds, test-like traps
+
+- Audit loop on v2 replacements: rounds found 93, 20, 8, 4, 4, 3, 2, 1 new suspect pairs (135 in all). From round 4
+  on nearly every replacement was itself flagged: a few questions sit in a dense topical neighbourhood. Claude Code
+  stopped the loop in round 8 (machine memory under 2 GB: two llama-servers, 13 GB + 6 GB private). Not converged.
+- R1's GPT audit of test evidence (experiments/r1/20261030-2300-*) says test traps are mostly facts about other
+  people and plans/undone changes inside the user's own history; dev-hard's injected sessions are other users'
+  first-person chats. So `make_traps.py`: the stand-in rewrites the gold sentence into an aside about another
+  person (43) or a plan (40) with another value; 83 traps from 93 rewrites (rejected: 3 without the person word,
+  7 without a plan word); 215 questions have no checkable phrase answer or no single answer sentence. 14 read by
+  hand: none changes the gold; most are real near-misses ("my roommate's Fitbit Versa 2 for 6 months" vs "my
+  Fitbit Charge 3, 9 months"), a few are off-topic and harmless.
+- `reader_probe.py`: first run died on HTTP 500 (a prompt over the 4096-token slot); now each message is fitted
+  with the server's /tokenize and judge.py records server errors per row instead of crashing.

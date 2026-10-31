@@ -22,6 +22,7 @@ import random
 import re
 import threading
 import time
+import urllib.error
 import urllib.request
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
@@ -91,7 +92,10 @@ class Judge:
                 body["model"] = self.model
             req = urllib.request.Request(self.url + "/v1/chat/completions", json.dumps(body).encode(),
                                          {"Content-Type": "application/json"})
-            raw = json.loads(urllib.request.urlopen(req, timeout=600).read())["choices"][0]["message"]["content"]
+            try:
+                raw = json.loads(urllib.request.urlopen(req, timeout=600).read())["choices"][0]["message"]["content"]
+            except urllib.error.HTTPError as e:  # e.g. a prompt over the server's context: one row, not the run
+                return {"key": key, "verdict": None, "raw": f"ERROR {e.code}: {e.read()[:150]!r}"}
             m = re.search(r"\b(yes|no)\b", raw.lower())
             row = {"key": key, "verdict": m.group(1) if m else None, "raw": raw[:200]}
             with self.lock:
