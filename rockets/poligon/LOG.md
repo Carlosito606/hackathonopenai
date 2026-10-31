@@ -157,3 +157,7 @@ dev / v2 / long: all 0.972 / 0.935 / 0.905; multi 0.969 / 0.907 / 0.825; tempora
 v2: 7 crowded, 7 retrieval, 1 other. sessdiv + prune at 18k: gold 0.992 / 0.965 / 0.937; answer phrase dev 0.714
 (vs 0.692), v2 0.671 (0.654), long 147/234 (151): not a clear win at test length. Local dev_hard rebuilt with all
 135 exclusions to match. Finding 20261031-0325.
+- cite_expand.py on the final R1 dev packs (simulated reader citing the one gold session with most question
+  words): evidence F1 0.765 -> 0.805 (k-update 0.667 -> 0.868, multi 0.587 -> 0.652, temporal 0.664 -> 0.721,
+  ss-asst 1.000 -> 0.933, ss-user 1.000 -> 0.967). An answerable question we abstain on scores F1 0 today
+  (predictions.py writes citations []); citing the best pack session gives it 0.646 on average (--cite-abstentions).

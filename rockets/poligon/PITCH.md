@@ -22,8 +22,11 @@ Proponowane miejsce: po slajdzie 5 („Liczby: wyszukiwanie”).
   (`coord/findings/20261031-0115-karol-claude-2-r1-near-miss-displacement.md`). Lekarstwo: różnorodność sesji w
   paczce; w kodzie finałowym R1 multi-session na dev-hard 0,714 → 0,914 przy tym samym budżecie
   (`experiments/r1/20261031-0030-budget.md`, `coord/findings/20261031-0125-karol-claude-2-sessdiv-pack.md`).
+  Kod finałowy R1 na poligonie: wszystkie dowody w paczce dev 0,972 → dev-hard 0,935 → historie długości testu
+  0,905; straty z tłoku spadły z 23 do 7 (`coord/findings/20261031-0325-karol-claude-2-final-r1-robustness.md`).
 - Lokalny sędzia dla odpowiedzi, których `score.py` nie rozstrzyga: 95% zgodności na 490 przypadkach o znanym
-  wyniku (`rockets/poligon/LOG.md`).
+  wyniku i 21 z 22 zgodnych z oceną człowieka na prawdziwych odpowiedziach Reactora
+  (`coord/findings/20261031-0315-karol-claude-2-judge-vs-human.md`).
 
 **Notatka:** Nie ufaliśmy wynikom na łatwym dev. Poligon pokazał, gdzie potok pęka (pytania z wielu rozmów, gdy
 pułapki zajmują miejsce w paczce), i to zmieniło kod finałowy, zanim cokolwiek poszło do Reactora.
