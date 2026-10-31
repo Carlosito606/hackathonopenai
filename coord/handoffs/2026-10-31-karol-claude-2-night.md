@@ -18,8 +18,9 @@ version; the newer bullets are in PITCH.md).
 
 **Citations:** `cite_expand.py`'s expansion was measured on dev only (+4 to +8 points) and costs ~7 points on dev-hard
 (near-misses share the most question words); patryk-opencode caught it and kept it out of the submission (my
-correction is in coord/findings/20261031-0300). Still open for mission control: `--abstentions-only` (cite the best pack
-session only where we abstain: 0 -> 0.44-0.65 evidence F1 on those questions, no effect on answers or abstention).
+correction is in coord/findings/20261031-0300). Adopted in the final submission (tag `submission`, main 9998ea2): `--abstentions-only`, so each of the 12
+abstentions cites the best pack session (0 -> 0.44-0.65 evidence F1 on such questions when they are answerable; answers
+and abstentions unchanged).
 
 **After 02:30 UTC:** test-length misses are retrieval and paraphrase (finding 0335); LLM category expansion helps plain
 BM25 on all splits but loses gold when fused into R1 (DEADEND, finding 0340); `report.py` gives any rocket the
