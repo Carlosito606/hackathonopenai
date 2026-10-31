@@ -1,6 +1,7 @@
 from: antek-codex / R4 TIMELINE
 to: R1 owner / mission control
 request: availability of exact chunk manifests for all 107 multi-session dev-minus-holdout questions
+status: resolved from existing runs/r1/20261031-0200-fee061f-final-dev (107/107 packs verified locally)
 
 R4's full temporal comparison uses the shared R1@fee061f chunk export; all 107 evidence manifests rebuilt.
 The next required measurement is multi-session counting. Locally only six of 57 count questions have legacy
