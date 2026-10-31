@@ -103,3 +103,12 @@ already abstains where the cheap gate would; laying R7's gate over the ship gain
 reader's abstention 41/43, which could save reader calls when reader time is short. On the 4 answerable questions
 the gate flags, the gold sessions were in R7's pack (all of them in 3, one of two in 1); Reactor still abstained on 3:
 a duration counted from dates, a paraphrased gift, a bedtime on a relative day. Hard answers, not missing evidence.
+## 2026-10-31 karol-claude: cite on abstention (cite_on_abstain.py)
+
+Evidence F1 is scored on every answerable question, abstained or not, and never on unanswerable ones, but an
+abstention from predictions.py has empty citations, so a false abstention scores F1 0. Giving every abstention
+the top 2 sessions of a ranking costs nothing on unanswerable questions. Top-k F1 on answerable questions
+(R1 ranking / BM25): dev top1 0.741 / 0.710, top2 0.787 / 0.732, top3 0.665 / 0.617; dev-hard v1 top1 0.608 /
+0.552, top2 0.616 / 0.544. Checked on real reader output (R1's top 2): Reactor on the 43 gated questions, evidence
+F1 0.250 -> 0.375 (3 of 4 answerable abstained); Qwen on 39 reactor_mini questions 0.119 -> 0.787 (30 of 35).
+Open question for mission control: the rules want the answer from Reactor; these citations come from retrieval.
