@@ -1,6 +1,7 @@
 agent: antek-codex   rocket: R4 TIMELINE   PR branch: r4/timeline-pr   benchmark branch: r4/timeline
 
 done:
+- Draft PR created: https://github.com/Carlosito606/hackathonopenai/pull/11 (r4/timeline-pr -> main).
 - All four contract stages in rockets/r4/rocket.py, reusing root R1 retrieval.
 - The original benchmark worktree keeps R1@de158d5. New PR-branch runs record the current root R1 snapshot
   at baseline_sha=git_sha, so newer main changes cannot be mislabeled as the historic baseline.
@@ -32,7 +33,7 @@ not done:
 - Full R1 retrieval preparation: resumed on CPU, 32/107 at the latest checkpoint; all weights are downloaded.
 - Independent auditing of computed-fact correctness on dev; no claim of improvement over R1.
 - Cross-session counting, semantic event extraction, local-model fallback for unresolved dates.
-- PR creation needs an authenticated GitHub connection; a connector was requested separately.
+- Coordination-area owner review is needed for the own findings/handoff files; full paired numbers remain pending.
 
 learned:
 - No standalone dates.py exists in the baseline; R4 forks memsys.py's date block without modifying shared code.
