@@ -1,0 +1,505 @@
+{"question_id": "q_008159eda509", "sessions": ["s_4f5eb8517ebb", "s_05a22b2d3991", "s_6d907d705289", "s_0aeb82c15da5", "s_b33fc2837192", "s_8c4000421386"], "chars": 16890}
+{"question_id": "q_009b606bd780", "sessions": ["s_bf3f23a0eee0", "s_f809ff00a3e2", "s_f38cd78a4e14", "s_804bd9343be2", "s_2c5dd76fdaa8", "s_9e4eef95e1a9", "s_4790c32d2a87", "s_83f0669ece7a"], "chars": 17709}
+{"question_id": "q_01a421117c27", "sessions": ["s_2619e25f43ac", "s_11834e1c855c", "s_84229f2116c5", "s_c3c34880650f", "s_63fae13c94a4", "s_bba0e82ae2f8"], "chars": 16848}
+{"question_id": "q_0276697c08bd", "sessions": ["s_d81888d3d49c", "s_e2348d32930e", "s_fac2160ace62", "s_8de02b914187", "s_0b105211b543", "s_5f8b2f094da5", "s_e512278e5256", "s_382cf5482f34"], "chars": 17514}
+{"question_id": "q_0391de8a577b", "sessions": ["s_5263c4c22520", "s_70a32c8c5408", "s_5eece9cc6227", "s_87af3d5b617f", "s_ba67a1d09eec", "s_8ef1c3f79934", "s_1eb5d9756919"], "chars": 17906}
+{"question_id": "q_03bdb9d71548", "sessions": ["s_9ebfa97cfa83", "s_d1806fc5710a", "s_e711f6eb4823", "s_3bed833256fa", "s_035061a40c0d", "s_1b389ad532c8"], "chars": 16862}
+{"question_id": "q_03f52e2f3c6a", "sessions": ["s_fea4221a4770", "s_16bc01480fde", "s_04bdb33d19f7", "s_f962f11047f2", "s_c48e099539df", "s_26b010c0c517", "s_3aa7201d2914"], "chars": 17096}
+{"question_id": "q_058db0711f0d", "sessions": ["s_efad9f087e1b", "s_86a922c088b2", "s_656fa4a6f94e", "s_c2ca9adacea0", "s_e5a3d9dad774", "s_6d1dba1463bd"], "chars": 17364}
+{"question_id": "q_06f6eb01c924", "sessions": ["s_605e472609e9", "s_61591f7df237", "s_f35b83838ac7", "s_6d7dfb5ca902", "s_973e09146283", "s_ceb81c9ca85b", "s_da735dde1362", "s_54b226503c54", "s_31b80f428ab2"], "chars": 16981}
+{"question_id": "q_072d88b943be", "sessions": ["s_18088da6e1c4", "s_67c5f4455316", "s_df831ef850ba", "s_863449ea8088", "s_43a4f4fc2143", "s_23429d370bec", "s_b428f5eb3e49", "s_976d60038bad"], "chars": 16941}
+{"question_id": "q_07a19915c949", "sessions": ["s_012a210b0dee", "s_3e88b5c71469", "s_ac589d72f57d", "s_500bd6f37fdd", "s_9c1146ad9eb3", "s_281d34fb443e", "s_6bd8e6f20580", "s_0db4cf8da786", "s_af3d49b28a5e", "s_57fbdef2279f", "s_3eaf951510a9"], "chars": 17784}
+{"question_id": "q_07ab076b22f4", "sessions": ["s_d0ba11c3ca62", "s_025811f61b32", "s_d7fc57c33c7d", "s_af244ce9591d", "s_f82cbfe383a3", "s_29788ccca605", "s_080890df56c6", "s_6f64463b7616", "s_b7936918f185", "s_5940478cbfe5", "s_24495ba9dada", "s_c82d98fc9662", "s_8075111a2c60"], "chars": 16994}
+{"question_id": "q_082f1419a0a5", "sessions": ["s_d60421f5c220", "s_bc6f33f89971"], "chars": 16803}
+{"question_id": "q_096c29c3117b", "sessions": ["s_5d2c505426fc", "s_f7091a9841f3", "s_44142bf145a1", "s_ee1d16285a03", "s_c691bf410181", "s_0d7260952852"], "chars": 17109}
+{"question_id": "q_096ca07538e9", "sessions": ["s_5fa169297f87", "s_2f080d05075a", "s_73b185313bde", "s_dc491522c2c0", "s_3fe446ac04bb", "s_ae90cc6bc124"], "chars": 17002}
+{"question_id": "q_0bc488fd0c7f", "sessions": ["s_b7555d78b150", "s_76d8cc31b24c", "s_35d0e63c8ef6", "s_0767df55034e", "s_e3868514727d", "s_473c03750ab9", "s_46e7ca8bd5e4", "s_6489b56bd8ad", "s_3f1587e9e869", "s_f18d6abc4d13", "s_5e94dd5b92d5", "s_619b6279cee4"], "chars": 17622}
+{"question_id": "q_0c94854f86c7", "sessions": ["s_2c8f1a203446", "s_e39e5ad6e81c", "s_c53536475b6a", "s_f018daa2183f", "s_7b50a8b7e403"], "chars": 17299}
+{"question_id": "q_0cc63647c7b5", "sessions": ["s_e67b82670621", "s_ca4b2c78b037", "s_0dd3490f8986", "s_8eb019716a9b", "s_7964b0fb6af0", "s_8caa6d7120bf", "s_19fb142dba2f", "s_4e3312f4748c"], "chars": 17173}
+{"question_id": "q_0cd329336337", "sessions": ["s_28d3309d6a49", "s_199445c7f81d", "s_5a7fb39ee647", "s_53fdf70ec55a"], "chars": 16909}
+{"question_id": "q_0ce9936ada7a", "sessions": ["s_2c8c5cf22ca4", "s_e45ce36e0abb", "s_1f16a65a4a22", "s_1c94f839881a", "s_6b6685d5fb94", "s_a4ba03096dc9"], "chars": 17026}
+{"question_id": "q_0dfb116bac4a", "sessions": ["s_45859677ec1e", "s_bd66eb238c0a", "s_a581732340b4", "s_47811b04cf66"], "chars": 16843}
+{"question_id": "q_0e1dea57b3f4", "sessions": ["s_3a6fc5c59b35", "s_a45064ff4f89", "s_8fd44fc3e6d4", "s_11f7b1c28ef9", "s_0c6e8c5fdf80", "s_0164b7324dd3", "s_05ff3f3cfba3", "s_b3e0c854b771"], "chars": 17116}
+{"question_id": "q_0e7250eddaf0", "sessions": ["s_6915c64c318a", "s_60e908ef7bbb", "s_ee2e1117f259", "s_e410b6830f9f", "s_eb0dbc51ee30", "s_e9b2d4f86626", "s_15e46d23fc0b", "s_27b97d9ecdc9", "s_b811a1b3c764"], "chars": 17326}
+{"question_id": "q_0fbcae2e16c6", "sessions": ["s_22bad4e63cd8", "s_71ef8116eff4", "s_8f36ca7b6cfc", "s_8a72de8ee468", "s_a2839bb33be7", "s_aa018bb048cf", "s_a8e986078e66", "s_9d253e097900"], "chars": 17018}
+{"question_id": "q_109c2433b5e5", "sessions": ["s_d8977849769a", "s_8de02b914187", "s_c99fcc9d821e", "s_dd66f6dfdc8f", "s_1bd6bf18bde5"], "chars": 16958}
+{"question_id": "q_10dd54383c94", "sessions": ["s_39a55bcf2c1d", "s_2c4baabcef17", "s_72c21a2e16f6", "s_e62d7d6a030c", "s_bc5b96cbb7d9"], "chars": 16971}
+{"question_id": "q_118d38536570", "sessions": ["s_c8e71f23b2d3", "s_17ceae296ba5", "s_37dbd4badd66", "s_d05593c805c9", "s_8c72137336c0", "s_40f39bd5e058", "s_1a2b755b04b2", "s_bed720ae2419"], "chars": 17030}
+{"question_id": "q_11dc1402dc0d", "sessions": ["s_d0262a4a9029", "s_2c8cd1a1125e", "s_ed7da97c3e16", "s_996d514e5774", "s_b0b7efa9d4ad", "s_5f95fe4c1c8f", "s_154413dde673"], "chars": 17425}
+{"question_id": "q_11dd9be5ebea", "sessions": ["s_c7dd610dff9c", "s_ebc91494bc30", "s_84beb60ed330", "s_fc81767fdfee", "s_6288532159d7"], "chars": 16968}
+{"question_id": "q_128079b97e4b", "sessions": ["s_eddd4b7ea5c6", "s_63904117b507", "s_da503e74139b", "s_249065493d10", "s_b16d4bbfc6c5", "s_7be9b8569aa3", "s_8ace31113104"], "chars": 17185}
+{"question_id": "q_12b246402e6d", "sessions": ["s_fea4221a4770", "s_16bc01480fde", "s_04bdb33d19f7", "s_b003fd29cbf7", "s_f962f11047f2", "s_e4de04b97afb", "s_2b807ecbf239", "s_8e5e15e75e66", "s_26b010c0c517"], "chars": 16867}
+{"question_id": "q_12d006d34783", "sessions": ["s_387f05f0b8da", "s_3085279ab124", "s_0840918c4451", "s_3eed2b9a52cf", "s_d79b4cbf7cb4", "s_ad275604593f", "s_830b45ea6aa6"], "chars": 17211}
+{"question_id": "q_13c8e2933045", "sessions": ["s_8df702b93d82", "s_dd4135f0b190", "s_d1313204a11e", "s_70d46d8d5973", "s_720f2e37b122", "s_8bf02e9e5390", "s_e312b8b37fae", "s_d278125541e9", "s_5e6bc65836db", "s_ce73038689fa", "s_db1bf0059aa0", "s_7d94ef440a92"], "chars": 17024}
+{"question_id": "q_14227dd94ffc", "sessions": ["s_86930b893561", "s_16725c7c476e", "s_bc65a35af897"], "chars": 16967}
+{"question_id": "q_14b725566f74", "sessions": ["s_b0c01e01e495", "s_681c8f361a36", "s_906e1502a23f", "s_1cf776372c9c", "s_1ad325a87307", "s_3a0c29346f4f", "s_1daed9cd5a30", "s_3cc310adf5ac", "s_907d3ed641ed"], "chars": 17650}
+{"question_id": "q_15724b712286", "sessions": ["s_992f901e348b", "s_23908b97e35f", "s_ce80a691437b", "s_05e701457810", "s_b19a8e347eb1", "s_1563580420b1", "s_13bd4bd6917b", "s_d38e39cbaa1e", "s_61160d9c99cc", "s_583b315bbb26"], "chars": 16954}
+{"question_id": "q_160ca70edce0", "sessions": ["s_f221da8c2705", "s_0e9b43beff11", "s_c3c8b0ae60fb", "s_c6a06e778cdf"], "chars": 17196}
+{"question_id": "q_164a4949e2c8", "sessions": ["s_683e5a270da6", "s_763bce4d4857", "s_c15ccc9b8b9b", "s_7bbefc0531b4", "s_2233664e5c77", "s_2673208e0175"], "chars": 17101}
+{"question_id": "q_172ebe4ed0ea", "sessions": ["s_413a221eaebd", "s_7bc17e9704f4", "s_840200363a45", "s_d432ba802fe9", "s_12aa284db290", "s_9ccd422ff9a6", "s_629ce4560d83", "s_4a9238702eb9", "s_a30e3fc6cd54", "s_d06d78f4966d"], "chars": 17605}
+{"question_id": "q_1770b47226d9", "sessions": ["s_89ec78275801", "s_30ca0f028a15", "s_137ae8eb1eb2", "s_7e4f0eb1523a", "s_7c91604e698a", "s_38aa49a18ed2", "s_52c5636027f7", "s_695035a091cf", "s_b6da22d95628"], "chars": 17219}
+{"question_id": "q_17f9060c0c2b", "sessions": ["s_64dfdd634799", "s_51f8388fb836", "s_c5a193106b9d", "s_f5aeb55439ae", "s_a95902a00052", "s_8dc5685a039f", "s_0091cc27e2c4"], "chars": 17553}
+{"question_id": "q_188ab2719578", "sessions": ["s_4006fd7ba335", "s_199df567f14c", "s_99cce1a2f76f", "s_d762a8b40aaf", "s_281cbbe08151", "s_ed049edcc7bd", "s_889bea67e4e6", "s_a6f316888dc7", "s_fb7ffe77421b", "s_7ed22e65ada9", "s_19feef178b0b", "s_bf22f01b4ff8"], "chars": 17838}
+{"question_id": "q_195f56887fac", "sessions": ["s_09f8485c9c28", "s_e3aa848572e8", "s_12b9f66cc3ea", "s_58048a284372"], "chars": 16960}
+{"question_id": "q_1983152ff41e", "sessions": ["s_34fdd05d0a4d", "s_96d36fc43030", "s_de513a129619"], "chars": 16248}
+{"question_id": "q_19c56a8572de", "sessions": ["s_798ebc36a8d5", "s_1e362d780d6e", "s_f39e6f3df58e", "s_25df6cf230cb", "s_4c79c48ff6ea", "s_f837447295ce"], "chars": 16994}
+{"question_id": "q_1a140c44afdd", "sessions": ["s_6c496cfba2ba", "s_aa6ad28aa6e1", "s_d817e84a7071", "s_f6de1ba69c7a", "s_7b21827597f2", "s_622a853be326", "s_7d66cd537411", "s_adf4ddab2a7a", "s_96dfb0ee78f7", "s_5d8d104b28f0", "s_358d4fa68136"], "chars": 18005}
+{"question_id": "q_1a923a398f17", "sessions": ["s_3987b1f0998f", "s_2619e25f43ac", "s_11834e1c855c", "s_84229f2116c5", "s_bba0e82ae2f8"], "chars": 17018}
+{"question_id": "q_1acffa7bf4d7", "sessions": ["s_c40520182f45", "s_678157ac77b2", "s_d6bcb0f1658f", "s_77737516108c", "s_d191ed0a8dfb"], "chars": 17052}
+{"question_id": "q_1ae5c0f05a59", "sessions": ["s_ee6b3d9ae201", "s_6151b8f17265", "s_2d7331868cf5", "s_a5c3b127bb82", "s_3f899e0a476d"], "chars": 16993}
+{"question_id": "q_1cbb42ab5102", "sessions": ["s_1747cdc89ce4", "s_2f102aa3b8b6", "s_5cd56791a1d0", "s_99967ccd4053", "s_6cae6200d38f", "s_d9b3fcb35ce2"], "chars": 17270}
+{"question_id": "q_1d7ce8ad321f", "sessions": ["s_53b228ad0817", "s_7796c2ceba57", "s_3d5faa883e62", "s_deb366f11f78", "s_525bb0358989", "s_da0a70ea7361", "s_ec50e9bf957b", "s_810bc6bf52dd"], "chars": 17088}
+{"question_id": "q_1e1590020c48", "sessions": ["s_b69acda786f0", "s_14402071b3e9", "s_c8f5b0feb50e"], "chars": 17141}
+{"question_id": "q_1e2ea2012e90", "sessions": ["s_7ea023dc3fbf", "s_cee884f1a0ad", "s_eee8aef4eba4", "s_dd1bacd0b743", "s_2a4a6488e748", "s_cfd42a63951c"], "chars": 17173}
+{"question_id": "q_1e490e51f490", "sessions": ["s_264be62fc397", "s_039a1d93c03c", "s_3e3fcc6ec74a", "s_92895a547c0e", "s_ea0321484db7", "s_c1960c80a1ad", "s_f9d54eca2420", "s_aa0a86474223", "s_e7b7a55b4b1a"], "chars": 17582}
+{"question_id": "q_200e8306b832", "sessions": ["s_2f080d05075a", "s_66c95e121035", "s_de51d2ecabc6", "s_73b185313bde", "s_dc491522c2c0", "s_3fe446ac04bb", "s_ae90cc6bc124"], "chars": 17216}
+{"question_id": "q_20a5defb80de", "sessions": ["s_80c1e8a1a860", "s_5cf1095b3ce8", "s_730a957f1aa5", "s_4c629fc87dcb", "s_d0f8021cabe1"], "chars": 16757}
+{"question_id": "q_20eda29cfc7f", "sessions": ["s_e5ee85cab860", "s_e5f98f9a6ea9", "s_46387ce97bb2", "s_b6e8569fc5e0", "s_4e1f1a4d75be", "s_4cf401edb620", "s_1769c73f8f77", "s_a2f8c4b68c11", "s_841ce93532e7", "s_c5092b667d79"], "chars": 17713}
+{"question_id": "q_21a7a7598483", "sessions": ["s_cceb3ed6b8b9", "s_29a0e7f10180", "s_916010244aeb", "s_bc84f7b8491c", "s_47e81c26ea29", "s_2b70452fae6a", "s_1989f1f7bcb6"], "chars": 17318}
+{"question_id": "q_22309ce19109", "sessions": ["s_9ce13ecce3a5", "s_b017d8abbe26", "s_e60ed5607e9e", "s_d213cf070124", "s_314cbbd79342", "s_96eb392d3385", "s_8ef394b61ba0", "s_a24c8cb02795", "s_f520be7872c6", "s_5dd3687d346a", "s_ec88882c8df1", "s_7e5384da6c4d"], "chars": 17721}
+{"question_id": "q_2378a7604476", "sessions": ["s_bae87004864e", "s_9bdbb9303dca", "s_095d874544a3", "s_1a7038cddfdc", "s_c2e72004d1ab", "s_348a5a90ba96", "s_5866bf23f99a"], "chars": 16769}
+{"question_id": "q_23897bdef229", "sessions": ["s_248d2a53bc77", "s_7ee040843096", "s_749a238c0278", "s_b93c9dee5193", "s_a2f5005d905d", "s_45e63ef80507", "s_a61bbf8930da", "s_e8309216e26b", "s_82ccea45db3c"], "chars": 17458}
+{"question_id": "q_23a8cb601cd7", "sessions": ["s_e0c365484764", "s_fd78e6aa8cf5", "s_4ce9668e7224", "s_6af1bb9d097b"], "chars": 16865}
+{"question_id": "q_245f4dd80557", "sessions": ["s_0ea3f76b1cc5", "s_6c20dd14c9ad", "s_c9e0f49a7ba9", "s_d408be2ef85f", "s_bf6ee7fc0bb0"], "chars": 17448}
+{"question_id": "q_24a8fc4415c8", "sessions": ["s_423b6dd6d649", "s_52ad86cb43ea", "s_88a29d539319"], "chars": 16929}
+{"question_id": "q_2545b015d7e1", "sessions": ["s_068f17b9fe0a", "s_1f52f5fc0c31", "s_4ec81142c390", "s_5d220f156f06", "s_0268f5b25d77", "s_8625a19481f2", "s_0e2955a7623c", "s_51afbc69b2e9"], "chars": 17216}
+{"question_id": "q_262f4a372baf", "sessions": ["s_282198f1c76c", "s_4d9626d44d51", "s_b97b55b9ef90", "s_6c7a71a37442", "s_6f50c48703a1"], "chars": 17044}
+{"question_id": "q_268d2089023a", "sessions": ["s_f6a23701aa62", "s_eddd4b7ea5c6", "s_63904117b507", "s_998e528ddb28", "s_da503e74139b", "s_249065493d10", "s_b16d4bbfc6c5", "s_7be9b8569aa3"], "chars": 17190}
+{"question_id": "q_26da786c7b4d", "sessions": ["s_9a7a24235e81", "s_6a3a0ed6fea1", "s_fa81864113aa", "s_2c25880381d4", "s_b9452019e617", "s_8cf1939a4d6c", "s_d31137fbad39", "s_8a0b00f0f70d", "s_5f52498f112d"], "chars": 17715}
+{"question_id": "q_27919ce37147", "sessions": ["s_d416365737bc", "s_f68c4c2b084c", "s_bc077dd5c913", "s_3db9083bc615", "s_7600f78413e3", "s_fade7017f45d", "s_92d41fa23566", "s_439bcb0d02de"], "chars": 17518}
+{"question_id": "q_286a455af9ef", "sessions": ["s_206a917f77d9", "s_c8a370d4967e", "s_eef2248c8d81", "s_ac6948d305bc", "s_78a8351cfd15", "s_8441b13f218b"], "chars": 17143}
+{"question_id": "q_29065e080619", "sessions": ["s_e8999bff7814", "s_ce88e2a0e7c4", "s_880f1185f0a8", "s_8c89f572f05b"], "chars": 17039}
+{"question_id": "q_2971bb238c54", "sessions": ["s_9819489c7e05", "s_290cacb0c23b", "s_17af48b28b59", "s_b685224b00fe", "s_eb9dd75b7475", "s_5f711b776396", "s_17fa43aa678d"], "chars": 17526}
+{"question_id": "q_29c07ba72837", "sessions": ["s_0b9db904c4c4", "s_f7f22eb82ff6", "s_44a242cdf89d", "s_f72304e9597c", "s_e1ef75a81ff8"], "chars": 16891}
+{"question_id": "q_29c11c719765", "sessions": ["s_34a8b9ee03dc", "s_5d4aa6661b3f", "s_353b27b2cfde", "s_4f53a1244b5d", "s_fbe584bff789"], "chars": 17040}
+{"question_id": "q_2b1a1a82dd98", "sessions": ["s_f1bd1c2ef754", "s_9a5f8bcd57bf", "s_af903e231f35", "s_4d4f4b2894b4", "s_489ecafe3872", "s_09565d52df96", "s_49278a7a63b8", "s_e9bd2c678ddb"], "chars": 17627}
+{"question_id": "q_2be088c96817", "sessions": ["s_9d88f86302d3", "s_7d695ee58bf1", "s_e70d5b62ed42", "s_0fe68545ae15", "s_de49d1444934", "s_7128cac53b6f", "s_dd9da2380a83"], "chars": 17094}
+{"question_id": "q_2dd45ddd9550", "sessions": ["s_45859677ec1e", "s_bbccbe4f1dba", "s_bd66eb238c0a", "s_7abd0a10a01c", "s_a581732340b4", "s_f44e40d2f401"], "chars": 16816}
+{"question_id": "q_2e38139c47b8", "sessions": ["s_576f9d55d624", "s_be92e94dde17", "s_fc9ed65b5330", "s_8b67faf6291e"], "chars": 17075}
+{"question_id": "q_2e4081d9e99e", "sessions": ["s_0405b48865f4", "s_dba3b240f121", "s_0fb8b3944801", "s_f2a55cc75a92", "s_a6603d779bf1", "s_01237a3c7bd5"], "chars": 17000}
+{"question_id": "q_2eb5d4c4efb8", "sessions": ["s_a9e9445509ec", "s_62a51ab24b25", "s_7f02220c5f9e", "s_954e7ec708ab", "s_c2e3e45ea207", "s_445109827b4e", "s_884a75cded02", "s_44c3af286f28", "s_d1f3f305be1a", "s_a442de18ba6d", "s_fd5a714b4058", "s_3b1a01fbeea5", "s_0f2b5615db9c", "s_0ade0af2c225"], "chars": 17923}
+{"question_id": "q_2f5cc8f3704f", "sessions": ["s_320c271343c1", "s_e0a0f263f48c", "s_21709fc088f1", "s_40dbf81dac7c", "s_d40cd53bc83d", "s_563dbbc83988", "s_9cb75e5ab32d", "s_3a5eeb2aaec2", "s_312c230a6d8e", "s_2fb1d056ee19", "s_c066b28e8731"], "chars": 17714}
+{"question_id": "q_2f7422f80c47", "sessions": ["s_cd16145317be", "s_ec761dc2aaf0", "s_34fe70e34e18", "s_332c8f63eee2", "s_3cb9adc6c145", "s_a36af64ead27", "s_437ff29a3948"], "chars": 17204}
+{"question_id": "q_2fa50a539c9c", "sessions": ["s_c1998127bd08", "s_049c78e91a4a", "s_7bd8e6648134", "s_14a9db2cae0f"], "chars": 16906}
+{"question_id": "q_2febde50e983", "sessions": ["s_e0df5f65672f", "s_f706f51260b9", "s_b72458399c04", "s_6b155c1b7bb3", "s_a935bd9fa5ab", "s_d762a8b40aaf"], "chars": 17317}
+{"question_id": "q_301c752e9934", "sessions": ["s_683e5a270da6", "s_3ba95487f559", "s_763bce4d4857", "s_e8b43c7fb9f8", "s_7bbefc0531b4", "s_2233664e5c77", "s_8c87a9321585", "s_c65c1828ad78", "s_2673208e0175"], "chars": 17065}
+{"question_id": "q_31af0616b821", "sessions": ["s_992f901e348b", "s_7282b5300e67", "s_81e854278ee0", "s_05e701457810", "s_215d6c81bc9c", "s_d38e39cbaa1e", "s_29618339035f", "s_61160d9c99cc", "s_583b315bbb26"], "chars": 17120}
+{"question_id": "q_3225d17ef392", "sessions": ["s_dc0fedc0d2ed", "s_db29104f7812", "s_2bfd2c1d36a7", "s_eb9fb6e18cc0", "s_e43ef090074d", "s_e998d483e418"], "chars": 17302}
+{"question_id": "q_3312cf9398fd", "sessions": ["s_082059470df8", "s_50221acbeadf", "s_49328abbf5b1", "s_8545b9cae44a", "s_5476a70c60dd", "s_1f4c9cbd3f6a", "s_a628fe347271", "s_fd98b3168d49", "s_8953c8e3b139", "s_e6e17f732bc6"], "chars": 17010}
+{"question_id": "q_33751c2b0bbf", "sessions": ["s_fbce596c1dcb", "s_6d4a6121f1d9", "s_eb08dcf5d4c6", "s_c1709c8e5a78"], "chars": 17039}
+{"question_id": "q_33b743813adc", "sessions": ["s_e1116e8c9d71", "s_0ef58ad90082", "s_3f58f0fe1f83", "s_598a44d095e3", "s_79981aaaa2a3", "s_edf558324835", "s_a605bf99e25f"], "chars": 17161}
+{"question_id": "q_340999f61e25", "sessions": ["s_2c647f623b5d", "s_f840ef62a37c", "s_1dfa88bb256e", "s_82ba170c589a", "s_7e487aee2b18", "s_e6bb7a16e61f", "s_9aed28e7cdea"], "chars": 17103}
+{"question_id": "q_355b686e71a7", "sessions": ["s_5656a857fba0", "s_e049b6c7b8c5", "s_ce40ed7514dd", "s_819ba380d3ff", "s_9e73cb160e25", "s_69e973e39be8", "s_be337c2e1816"], "chars": 17650}
+{"question_id": "q_365827ceb07f", "sessions": ["s_2bbfcec9ad2e", "s_80337cf4bad3", "s_974a145fe40c", "s_35ba2c767133", "s_4ea7109119ba", "s_aa3a6f52113b", "s_902c21a2f352", "s_4684081692f2", "s_6360ea436f87", "s_6d4cf6878376", "s_234c9d746d63"], "chars": 17174}
+{"question_id": "q_366d2ad315b8", "sessions": ["s_4faa5f45fc9d", "s_3fbd1b9aec8a", "s_6026e3c5b6c9", "s_73862d7dd45e", "s_77c8bbcf286c", "s_8e4136de28a1"], "chars": 17051}
+{"question_id": "q_369a016b9328", "sessions": ["s_1ab207e891fe", "s_2d56a0a2e63b", "s_0867c4bb71ae", "s_6b22cd2b99d0", "s_a3fbea8aa336"], "chars": 17541}
+{"question_id": "q_377ada7d9185", "sessions": ["s_8872f3de2581", "s_aba08ea9764a", "s_d852ba8c23ae", "s_16c11ddfc9b7", "s_612aca9cfbfa", "s_5acd7bfa36a3", "s_fae83a6af8cb", "s_ef7b678b364c"], "chars": 17463}
+{"question_id": "q_387aeb070089", "sessions": ["s_a9498e60638f", "s_64a7a38da2b0", "s_3cca0d4bad9f", "s_52f0c8efd6e2", "s_f2b48ecab712"], "chars": 17011}
+{"question_id": "q_38e8ea7cb799", "sessions": ["s_0f46dbcff595", "s_595ac86b24bb", "s_67d362f3d17e", "s_bc9e21d6b3b6", "s_b9e992b0c341", "s_5b1669c057e3", "s_4bbaabafe0b2", "s_a21c4708acdf", "s_d4e2264a7899"], "chars": 17255}
+{"question_id": "q_39c9c2c46baf", "sessions": ["s_f459f48806fb", "s_fe5a58a81696", "s_4777b678b836", "s_f4beb66ae489", "s_8246941b1e96"], "chars": 16978}
+{"question_id": "q_3a2d920f86c5", "sessions": ["s_aa58364049d2", "s_9273e3703133", "s_34c92595e82d", "s_a6343f840977"], "chars": 16967}
+{"question_id": "q_3d1020ebcfde", "sessions": ["s_ce5a2131c769", "s_61444b87cb32", "s_435aa5e56311", "s_7a67c301984e", "s_44755d2080f0", "s_c3341c2833b9", "s_b256d031c600", "s_76546519873f", "s_803173523a64"], "chars": 18134}
+{"question_id": "q_3d60f64697a7", "sessions": ["s_b1f5daf18c9b", "s_4167552908c2", "s_aec20076386f", "s_a0e805689445", "s_ccd0e4f9f55c", "s_9cb4255a6d24", "s_9a0adca7e8ed", "s_b615aa2271bc", "s_13d79333cdbf", "s_1d4deb1bf028"], "chars": 17276}
+{"question_id": "q_3dd7e56c4859", "sessions": ["s_b79124126fb8", "s_875df850d5fd", "s_1ed625f24bc2", "s_157edcc03b8e", "s_acf55a8cf9fe", "s_a4687a038195"], "chars": 17138}
+{"question_id": "q_3e433b498ee9", "sessions": ["s_a9485794faf2", "s_c24ac886ec70", "s_efbe88295a08", "s_bcd1e5581895", "s_864a5f36ff98"], "chars": 17117}
+{"question_id": "q_3e9b75a5afec", "sessions": ["s_b40f070e4346", "s_3bbe1ff4fd25", "s_e27e7457b7d4", "s_152621ae1b63", "s_89bd0dba325d", "s_a2593206db44"], "chars": 17099}
+{"question_id": "q_3fa25b8f2671", "sessions": ["s_76da34efd7e4", "s_9e42a6829fa6", "s_901bb4c2390d", "s_e89bf3bdace8", "s_7d744cacdcf1", "s_ce70bdcad85c", "s_d3ea346d54f1", "s_e5013d49cc15"], "chars": 17163}
+{"question_id": "q_403c9c91b009", "sessions": ["s_f9a9e9ad7c51", "s_4984687ab36b", "s_09a262311be7", "s_dd9369214063", "s_b17accb60fa7"], "chars": 17011}
+{"question_id": "q_406c87cb56e8", "sessions": ["s_56edd3c0dfa8", "s_f812933b489f", "s_a77ae582aa5c", "s_2e558100e387", "s_385cb8535c10"], "chars": 16963}
+{"question_id": "q_41ea61cafbdd", "sessions": ["s_bffc28672ceb", "s_5780729cef7a", "s_f9a9e9ad7c51", "s_4984687ab36b", "s_09a262311be7", "s_dd9369214063", "s_b17accb60fa7"], "chars": 17036}
+{"question_id": "q_4239bb362a37", "sessions": ["s_718c2558f005", "s_248498e91081", "s_d0e7d9044034"], "chars": 17097}
+{"question_id": "q_42441a710258", "sessions": ["s_d0e734d40b71", "s_ec5b3e0ea957", "s_ff49f7e1f8ce", "s_10d1caefa53a", "s_d20f1ab79838", "s_5cdc340f9e8a", "s_f1df664dd29a", "s_57dee782f0a9", "s_16a858d185d7"], "chars": 16790}
+{"question_id": "q_424476932c61", "sessions": ["s_6d9075f4847c", "s_65dabb0a23fb", "s_bff7552bd23d", "s_6d3dde625782"], "chars": 16762}
+{"question_id": "q_439e8e793926", "sessions": ["s_55278988cc96", "s_de4de753da2b", "s_b076d980f279", "s_5e81eb45d055", "s_bb00c821d804", "s_9c2d88df74e6", "s_95e27075b215", "s_c2870250442b", "s_e72020f0edd4"], "chars": 17159}
+{"question_id": "q_46797a196ef8", "sessions": ["s_fda7fef4ca47", "s_cd9d2e02e0b4", "s_9bbfcd725098", "s_d141f99f6fc5"], "chars": 17233}
+{"question_id": "q_46e106315c99", "sessions": ["s_1800f6eb8984", "s_2110aa297794", "s_16e21cfaf30c", "s_f1cef3e720c7", "s_fc0859edb6f4", "s_00e3901dca6e", "s_bbac22a11ca5"], "chars": 16889}
+{"question_id": "q_4781af5d3f8e", "sessions": ["s_cfa9d5281064", "s_c68ef51b792b", "s_13b10223453c", "s_94e36d065a50", "s_8a62d0aa747b", "s_251378b9f1a9", "s_e357ed1b3174"], "chars": 16799}
+{"question_id": "q_489b9a0c80a6", "sessions": ["s_6fbbe479cb17", "s_db4602c87a1f", "s_74a0354c22ed", "s_54624c9c9bfd"], "chars": 17316}
+{"question_id": "q_48d5a72f4050", "sessions": ["s_32eaa5935455", "s_16d9bdf28889", "s_d15fb716631f", "s_e1547ada56d3", "s_c7b8de7739c5", "s_e69a76a2c4bf", "s_a988bcd23652", "s_4cd0bbec9f40", "s_02afcd40f4dc", "s_7ab01d69d77c"], "chars": 16851}
+{"question_id": "q_4a04b5a062b4", "sessions": ["s_7c47a7819ad4", "s_c179f67b4e85", "s_6dfea663f5d7", "s_820c6481629c", "s_6d71588d33fa", "s_0ad2c5535249", "s_0b0106eb01ff", "s_433685af40c6", "s_b6b9cc895217", "s_ad184c2794ec", "s_4eb4af6d8e13"], "chars": 17675}
+{"question_id": "q_4a4125344db0", "sessions": ["s_541e093efb7a", "s_f38c1311e5a7", "s_aea08aef57fd", "s_690f587fceee", "s_01b1a84c9a62"], "chars": 17041}
+{"question_id": "q_4a67196649b9", "sessions": ["s_9a56b22b23f6", "s_725c6cf9feed", "s_c46290fe6fb2", "s_125e08597aea", "s_ce33e8fa8c0d", "s_c6e4e4ea4d77", "s_024f19c3f444", "s_22915820b664", "s_556b14a3f284"], "chars": 17471}
+{"question_id": "q_4aa56b563f78", "sessions": ["s_c590b7a4b0fb", "s_db29104f7812", "s_2bfd2c1d36a7", "s_16176ced5525", "s_e43ef090074d", "s_699d88553f64", "s_d1e107b9aacf", "s_e998d483e418"], "chars": 17537}
+{"question_id": "q_4aa840ffb1c6", "sessions": ["s_33f84b10e5a0", "s_3603ae9e120d", "s_ae12e52640e3", "s_af9622c12bee", "s_73f2cb6268cd", "s_2c2ab43eef2d", "s_79e4894cfc53", "s_96aae2c26fdf"], "chars": 17095}
+{"question_id": "q_4aedce4f9b89", "sessions": ["s_e45a325bd6f8", "s_62469c25715e", "s_2d33e594c69f", "s_31a6689c8a5c", "s_026cc8594650"], "chars": 17051}
+{"question_id": "q_4b063ce0461b", "sessions": ["s_46cc4d84c44a", "s_5a78b0df46ac", "s_beec489b02d2", "s_9ae0c30038a8", "s_e206f7d9b13c", "s_1704fe4c207d", "s_6d86e4d88f4c"], "chars": 17554}
+{"question_id": "q_4cc28e9c8f2a", "sessions": ["s_abacb0ad6fbd", "s_7b260fbeec63", "s_fa0ab01a15cf", "s_3bed833256fa", "s_f42db168059d"], "chars": 16873}
+{"question_id": "q_4cdd3a181e7d", "sessions": ["s_4898cbacf6f3", "s_515b35a95699", "s_032ef2ab3ade", "s_5f1fd86c9779", "s_a65440486d7e", "s_dc491522c2c0", "s_af2b2e0b300d", "s_ea1d5bfe374f"], "chars": 17074}
+{"question_id": "q_4e4516cc714c", "sessions": ["s_365498f9985c", "s_b027a9a9306c", "s_031c81b73a1f", "s_a4f6cef250f9", "s_288cebb5090e", "s_929c87bfe0a2", "s_dda5db040fab"], "chars": 17057}
+{"question_id": "q_4e775602a471", "sessions": ["s_e1fbd0846a67", "s_357639fe5229", "s_374701e6da27", "s_b86d99df0fa7", "s_21396da13300", "s_874eceb78123", "s_0cebc9a5d796"], "chars": 17454}
+{"question_id": "q_4ecd7a92ad94", "sessions": ["s_0de79321078a", "s_4a57d711fe1c", "s_3e004f61533f", "s_0d9d70169e2c", "s_c2ccbacff124"], "chars": 16784}
+{"question_id": "q_4f43deeaff93", "sessions": ["s_7974dd067d59", "s_fe2fa763b5e2", "s_b03b0af21cb2"], "chars": 17028}
+{"question_id": "q_4f9230804757", "sessions": ["s_d9a58c2befbb", "s_c03f62dd82db", "s_f625a8f3bd9c", "s_9152eb5801ee", "s_b9313c93954d"], "chars": 17134}
+{"question_id": "q_4fd3f2de8d58", "sessions": ["s_5b68e417abf5", "s_d3b6d0fec4b1", "s_b04cc5aeaa85", "s_f00783cb3190", "s_59b00811415f"], "chars": 16884}
+{"question_id": "q_4fd851640529", "sessions": ["s_aa56bcdf53a8", "s_de9ae1a49a67", "s_76048c7dd548", "s_b461db996645", "s_350ee74d4970", "s_9c2fd1d9bfba", "s_2d7e65efdf85"], "chars": 17724}
+{"question_id": "q_50d8503551aa", "sessions": ["s_0cae9ae77359", "s_42dab82f16c9", "s_5b07127d3694", "s_c5bfe17fa8c9", "s_a590a69a7ab3", "s_2cf46a4b1696", "s_b94af78588bc", "s_c2d193fbe5f3", "s_15be09232254"], "chars": 17502}
+{"question_id": "q_514d2163a53f", "sessions": ["s_8df702b93d82", "s_d1313204a11e", "s_70d46d8d5973", "s_004c9c851011", "s_720f2e37b122", "s_8bf02e9e5390", "s_e312b8b37fae", "s_5e6bc65836db", "s_ce73038689fa", "s_db1bf0059aa0", "s_7d94ef440a92"], "chars": 17133}
+{"question_id": "q_51bdaceb196b", "sessions": ["s_e320f6bebbc9", "s_68e4cb9b7d6c", "s_2b5939770dda", "s_2b0b8895c51b", "s_9bbcab245b56", "s_a6d8b506a049", "s_6a16d0be5a9b", "s_5afe32d93dca"], "chars": 17548}
+{"question_id": "q_51ca142e0102", "sessions": ["s_88042d07c97e", "s_8a76e5952ee1", "s_dad58576bac7", "s_367d671961c1", "s_34cce67a6edf", "s_062a0275992e", "s_c187f5f9070a", "s_a4c86d8fb1b8"], "chars": 17068}
+{"question_id": "q_522643b4aaf9", "sessions": ["s_2b247c505369", "s_de6b0cf4ea24", "s_678fd1dd5b02", "s_12cfa640260e", "s_14cd2c4a1886", "s_c1fea91115d2"], "chars": 16835}
+{"question_id": "q_525233a27fa4", "sessions": ["s_238267085332", "s_3f2e497dc8a1", "s_f1db89a6bb45", "s_042cab045460", "s_3163f6f4d2b6", "s_836bbcd83f7e"], "chars": 17202}
+{"question_id": "q_52dde1ba613d", "sessions": ["s_48a0a2661438", "s_d3dc2697b0a5", "s_39a209a0fa49", "s_68188e170580", "s_249d99316475", "s_4febc610e6bb"], "chars": 17527}
+{"question_id": "q_532acf383312", "sessions": ["s_ae7d1388deca", "s_6d124c62635d", "s_2e91227a706a", "s_a18e3d1d4fb5", "s_0e0b2654db46", "s_2cb07527bb01", "s_bd750ab956b1", "s_3dec45063127", "s_d68e1f249661"], "chars": 17507}
+{"question_id": "q_5342b91bdd05", "sessions": ["s_2ad7b6877a1a", "s_1e39af627895", "s_7404023028b6", "s_247d0a8cf736", "s_bf0647e39966", "s_53eb4252aec5", "s_199b0cb4faff", "s_013c9d16d3b6", "s_fbc6e8d4e5f2", "s_02e9a36be2ce", "s_10e31ee3f9d0", "s_56fa32cc5ea0"], "chars": 17245}
+{"question_id": "q_537b3dd4aef1", "sessions": ["s_9e093ed456b7", "s_a561b7954e55", "s_207e7a938681", "s_1e219e25b8df", "s_b6c90cfab2ad"], "chars": 17236}
+{"question_id": "q_552175665846", "sessions": ["s_9041507cee76", "s_a83668e9c355", "s_f2f3fe9c119a", "s_a61fe15fe602"], "chars": 16744}
+{"question_id": "q_553cf2639d8c", "sessions": ["s_d7d7292c6cdb", "s_74d6cad374ca", "s_4c011913fbb6", "s_4976a7617560", "s_5936ce0ee0c0", "s_eb856ea9e6d0", "s_245ad35f43dd", "s_d7896bbd14f7"], "chars": 17086}
+{"question_id": "q_55c2c166fc01", "sessions": ["s_50621351fde8", "s_3f55b1164e48", "s_e8d503b12767", "s_02f0d9cfd548", "s_0690fe0f7032", "s_e450c325c0c7", "s_2650c76c8521"], "chars": 17206}
+{"question_id": "q_55ccfdc3bc10", "sessions": ["s_a2185f9c253a", "s_410d4da985b3", "s_b163f0543b4a", "s_92c575ddae96", "s_ce13259a6358"], "chars": 16844}
+{"question_id": "q_56548eea7161", "sessions": ["s_01e576fc2075", "s_2f17047ee854", "s_dcfaaab63d75", "s_a1988217e8e5", "s_496458d1d78a", "s_9ee87c504697", "s_df0438831615"], "chars": 17075}
+{"question_id": "q_572e6a08589f", "sessions": ["s_497f13cf0654", "s_4dab541e2233", "s_fac25fef32ae", "s_667e9f172c4a", "s_03d12ddb2787", "s_23110106480b"], "chars": 17463}
+{"question_id": "q_5779060ff2b7", "sessions": ["s_f7d3b1c70aea", "s_ac21e2c91ea5", "s_15334a42b148", "s_c59167b7d3c5", "s_12aef4844685", "s_ab5ec3a9b995", "s_cff4bc58ce31", "s_010c9d2d1cfd", "s_4a5f08b5daf2", "s_bddb78bcf87b", "s_71feb1d1c399", "s_a40e234c587b", "s_426b363806ea", "s_ca483d67a4f8"], "chars": 18023}
+{"question_id": "q_58d192f1c5f8", "sessions": ["s_38d0d9881243", "s_8a0ea16adce5", "s_f458c6276273", "s_c7211af148c4", "s_9a0de02ac0e0", "s_11c5c0bc0941"], "chars": 16957}
+{"question_id": "q_5979bf9ebb33", "sessions": ["s_f1900d1126d2", "s_8c2a86259a38", "s_8bd825a4c547", "s_a0f74bff83e1", "s_d479f15621ef"], "chars": 17281}
+{"question_id": "q_5aa4d29a9571", "sessions": ["s_145648b26248", "s_a1eeea65561a", "s_a11257259638", "s_0d7acc61c9e0", "s_d08d5712a981", "s_1d9dce351a95"], "chars": 16985}
+{"question_id": "q_5c5a5ca66ab7", "sessions": ["s_7e97de80e156", "s_53e0239082fc", "s_fc8602784d7e", "s_d38c14e49e7d", "s_a80ac0126d07", "s_63e0fb12ec21", "s_da5aa4ac21cc"], "chars": 16969}
+{"question_id": "q_5c5f182cf504", "sessions": ["s_792c0d2abb57", "s_cb6d2747dcd5", "s_33102400cc61", "s_edc8b1baa7c0", "s_187490ced4d5", "s_709078bec2ed"], "chars": 17930}
+{"question_id": "q_5cda43a4364b", "sessions": ["s_e7978a53c585", "s_3b2dafd02fad", "s_ba69f27cc001", "s_f03b85391968", "s_9e14e84ccbaf", "s_5a1ee9522ca4", "s_f7f9268be226", "s_d9dd7ebaa7f4"], "chars": 17152}
+{"question_id": "q_5ceeee8a05c9", "sessions": ["s_cbd171dae206", "s_bd7ebae11867", "s_3b3bb213a812", "s_60f910d4e2d7", "s_e5ed4da772a2", "s_fdb63421d35d", "s_443a9ab61c80", "s_6fec7a3fd5c1"], "chars": 17277}
+{"question_id": "q_5f42c7dc9a9b", "sessions": ["s_df2ef96a2835", "s_848af4e90f79", "s_d7325628545a", "s_259f509687ea", "s_3a57bc231a7e", "s_ee45f220854f", "s_f3ab44dacf09"], "chars": 17745}
+{"question_id": "q_5f495f9148a5", "sessions": ["s_7ea023dc3fbf", "s_f812933b489f", "s_cee884f1a0ad", "s_eee8aef4eba4", "s_dd1bacd0b743", "s_2a4a6488e748", "s_cfd42a63951c"], "chars": 16992}
+{"question_id": "q_5fa27f198928", "sessions": ["s_cfac1e7eedb9", "s_794c772973da", "s_af930955465e", "s_7ade1011f60d", "s_837c6ec2d911", "s_6e735f1194b9"], "chars": 17373}
+{"question_id": "q_60adee5c8547", "sessions": ["s_59474648c3a8", "s_0f240925f353", "s_61e6a1d06f16", "s_eb17e40762d8", "s_f2014051192b", "s_62b9ff201578", "s_1cd7362d3f98", "s_cb2699c3b05a", "s_86ae3715b9b6"], "chars": 17055}
+{"question_id": "q_60c95502d2fd", "sessions": ["s_527d5b03eff5", "s_d44ef6af5c28", "s_b1671a303e02", "s_6e171a19cccd"], "chars": 16951}
+{"question_id": "q_60ec5db6402f", "sessions": ["s_c5279344a767", "s_9cce95fe8e68", "s_1fb45bd93e9f", "s_d54e529eb03b", "s_70ecbc498fc6", "s_1411cb738f0a"], "chars": 17367}
+{"question_id": "q_61ad4f6d8e6a", "sessions": ["s_e6e4f6ad3dd3", "s_fd949e50f5b0", "s_92bb2dae0628"], "chars": 16648}
+{"question_id": "q_6249f6aa1599", "sessions": ["s_8badc92cda75", "s_e1f988bf70f4", "s_34fe36f7b22b", "s_0f5abb466261"], "chars": 16875}
+{"question_id": "q_62c7e8a39e3c", "sessions": ["s_4dee97aa7da0", "s_0ba911def9fe", "s_d11ebbf78f5d", "s_0ba245abe054", "s_4e8e029d2fb3", "s_948b9a073c23", "s_6a01cceaa740", "s_24ce22e0beea", "s_f2406fd19898", "s_60c10f29eb29", "s_d7cd662ab7d5", "s_5c98be8e9c92", "s_3dd7857807d2"], "chars": 17899}
+{"question_id": "q_63d9caa95559", "sessions": ["s_4f59fb653669", "s_c2d193fbe5f3", "s_5cc57d678e47", "s_4a258a022239", "s_e667297ff2a2", "s_6d86d76ce359", "s_790c7518ffda", "s_fb48a274cb86", "s_21d1e8ef6a63", "s_c8aaea15a211"], "chars": 16981}
+{"question_id": "q_64e844f63773", "sessions": ["s_d2ef68509f72", "s_302f6f3a4de3", "s_7722ea5eb842", "s_112437e0c4ea", "s_e72b791edec6", "s_496346cdd805", "s_ca3be89e9ca2", "s_0b02c074cb94"], "chars": 17483}
+{"question_id": "q_6664d2b61f1d", "sessions": ["s_5780aa909ff1", "s_4fdfb46e21c5", "s_b158b606c40a", "s_bffbfe13309f", "s_76c4fe822cc7", "s_9e9c9b590def", "s_61b0485ba7dc"], "chars": 17485}
+{"question_id": "q_6714811c0834", "sessions": ["s_13092a1a7e04", "s_1c86276a4916", "s_7a0e4e631681", "s_149635000991", "s_7a9c58490292", "s_394b034c53cf", "s_7b5730ee6e8b"], "chars": 17427}
+{"question_id": "q_67fc37f62688", "sessions": ["s_6720a349bc34", "s_515b35a95699", "s_7a5e5aac141c", "s_0d44427dccfb", "s_1ac4cae1bf16", "s_dc491522c2c0", "s_9ac88d2e093c", "s_f7ef121101f9", "s_af2b2e0b300d", "s_ea1d5bfe374f"], "chars": 17210}
+{"question_id": "q_689e7290a070", "sessions": ["s_8efcfe5f39cd", "s_e5c40a8005e0", "s_d97f2ae1bb0c", "s_0ee62fbf34a2", "s_b7d0ecb8ce86", "s_c38300551eae", "s_1cd094dc182f", "s_307b58e51ea4", "s_bf4250b6863d", "s_a75b6ebd7cb7", "s_dc14ac4eee0f"], "chars": 17862}
+{"question_id": "q_691605b6f6c1", "sessions": ["s_6d9a9ae02191", "s_d6f1dc43abf6", "s_0d6864199b11", "s_1904a6068d1c"], "chars": 17002}
+{"question_id": "q_69e21c0109e3", "sessions": ["s_ce88e2a0e7c4", "s_b70bf3870091", "s_271bec63c5f5", "s_2a0202932ae1"], "chars": 17131}
+{"question_id": "q_6a1dd4e5f3d4", "sessions": ["s_76dcbd8fad9d", "s_edd87d27570c", "s_034518acda8f", "s_8cb950869cf7", "s_7ecded3a5baa", "s_c616d6d53cf2"], "chars": 17121}
+{"question_id": "q_6ad1c8e6fcde", "sessions": ["s_a5ba803a490c", "s_f4a790784fac", "s_e9b48a47318e", "s_e79cca9dc047", "s_e10d1eb1561a", "s_9e12d7aa5514"], "chars": 17084}
+{"question_id": "q_6aec2b763833", "sessions": ["s_e92458603914", "s_d8d1ad651813", "s_c3c809971db7", "s_343b8061b67d", "s_6b9275815a06", "s_266b37df6918", "s_b812e47bf707", "s_9298e960c9e6"], "chars": 17068}
+{"question_id": "q_6b0b5605e03f", "sessions": ["s_eb78025b2697", "s_21b85dc42c75", "s_56ebc0e9f2e3", "s_24dc335bf1d4", "s_7db033cfebb4", "s_d3e389fa1d8c", "s_184cf9c500ba", "s_a9aa717e80fd"], "chars": 16860}
+{"question_id": "q_6b21fc69c309", "sessions": ["s_718c2558f005", "s_b04cc5aeaa85", "s_248498e91081", "s_d0e7d9044034"], "chars": 17002}
+{"question_id": "q_6b7cca2739fa", "sessions": ["s_b6ca0049f6dc", "s_16bf6ae097ec", "s_0eb63df22330", "s_8e3487acf5f1", "s_6c1f693764dd", "s_af6ce427ef87"], "chars": 17517}
+{"question_id": "q_6c54633edfc3", "sessions": ["s_d0ba11c3ca62", "s_025811f61b32", "s_d7fc57c33c7d", "s_af244ce9591d", "s_29788ccca605", "s_080890df56c6", "s_5940478cbfe5", "s_7f5eaa8056a3", "s_24495ba9dada", "s_c82d98fc9662", "s_8075111a2c60"], "chars": 17061}
+{"question_id": "q_6c8e9960d14a", "sessions": ["s_80b8e2cf36e3", "s_2dfe35997ebb", "s_c3ca07a2a055", "s_8213a265f545", "s_bf91c5451ce7", "s_5ecf3ddf88a7", "s_a0bac5dcf43c", "s_3c59c4921e80", "s_70bc847e1f09", "s_af2b60beb345"], "chars": 17262}
+{"question_id": "q_6cdf58293706", "sessions": ["s_02ac4bd59dfb", "s_802511ca5ee1", "s_2a07fd5cf736", "s_ace206299298", "s_b1ec5ef50aaa", "s_d325d26ef91e", "s_b94722a3ed73", "s_e402c9de7f65", "s_0c28c4fd45a2", "s_7ebd927e7fb1"], "chars": 17130}
+{"question_id": "q_6d7176318396", "sessions": ["s_0be66a1a3d8d", "s_022edf4c17bb", "s_16b74ceb97e1", "s_47be49a14584", "s_fe9f7e41488e"], "chars": 16964}
+{"question_id": "q_6dab8b6acd45", "sessions": ["s_3e33715cd994", "s_ae3a2fdb7ebb", "s_7906c7c4b9bc", "s_28b8d6bab797", "s_0a8670222f6c", "s_3e7696ca648e", "s_ba4eb966c50d"], "chars": 17224}
+{"question_id": "q_6db18c43cfa9", "sessions": ["s_b79124126fb8", "s_875df850d5fd", "s_e7041b7f359d", "s_1ed625f24bc2", "s_157edcc03b8e", "s_acf55a8cf9fe"], "chars": 16973}
+{"question_id": "q_6e14dd67510c", "sessions": ["s_b31d37153877", "s_65ac25da053e", "s_24a26468d76f", "s_dd1540edd030"], "chars": 17000}
+{"question_id": "q_6e6d086c1e62", "sessions": ["s_614efef38a82", "s_9b440a48c83e", "s_4b1f4e962764", "s_0ab6650ba25d", "s_a8034f720304", "s_1036b54d29ec"], "chars": 17403}
+{"question_id": "q_6f3fa168757e", "sessions": ["s_39a125055c5c", "s_3475e79f5d85"], "chars": 16840}
+{"question_id": "q_6f517d8b3bd6", "sessions": ["s_3cad373ab885", "s_c9a49a8e1354", "s_f0a1e60db179", "s_da2b186023e1", "s_7eeaedeacda0", "s_c514dbcb14fe", "s_fa34d5b7bfc0", "s_2d75c6bc9d6a", "s_378ab9ee29e2", "s_769f6e25f68a", "s_33eba7cf0bbf"], "chars": 17050}
+{"question_id": "q_6f620a61980c", "sessions": ["s_4f67a5c072db", "s_859e2ee4221b", "s_4c124a80ac92", "s_8ab95ed86017", "s_296cb55ba90e", "s_12ce3f0524ec", "s_272737963065"], "chars": 16680}
+{"question_id": "q_6f7831798097", "sessions": ["s_a85f40b99658", "s_e548be60cb73", "s_52326cdfdff8", "s_d470ce41d7a6", "s_b5b7bb8dc3d7", "s_ce0d9e60b0d0", "s_3616e6add4ba"], "chars": 17444}
+{"question_id": "q_6fececa96e95", "sessions": ["s_a9820e441397", "s_ffbb1950e9a3", "s_b7ebfc0edcf8", "s_82b845ac4f11", "s_b9fe7588831a", "s_5a0a8f0eef48", "s_d53b7f6c1547", "s_7205999eff43"], "chars": 16925}
+{"question_id": "q_712a6371c45d", "sessions": ["s_017432f2b503", "s_5619750cbc9b", "s_ae7f67f3b488", "s_85f9cc4ae5de", "s_7cf11d3bc6ce", "s_0cedd7ee0ec2", "s_718c7e2f1c08"], "chars": 17306}
+{"question_id": "q_716c51c226d2", "sessions": ["s_13692d031833", "s_2ef2c59feea5", "s_da12ce0e2149", "s_7129051a25b4", "s_c9ff5e6bc4b7", "s_5a8bdb440dbb", "s_7036886fd873"], "chars": 17172}
+{"question_id": "q_71878fc9ae29", "sessions": ["s_80aa3e5ebf14", "s_8dea22550cfe", "s_0c4c5b26bbf9", "s_bdf45907d0f7", "s_10d6aafac519", "s_eb18b0929b12", "s_1c4fcd90b733", "s_e40ad4d78206", "s_7cade97ed94a", "s_89ac0daacf53"], "chars": 16929}
+{"question_id": "q_71cfc29311e5", "sessions": ["s_b5612dc64113", "s_90da4ecb62d9", "s_b889fd879f5d", "s_5eee3a2a3fac", "s_a3d85f8d4a58", "s_a2049ce53969", "s_5bce4985cf40", "s_feea154848e0", "s_c08f8ebd8c6f", "s_5827a06daeec", "s_fbcc49517991"], "chars": 16848}
+{"question_id": "q_724f258932e0", "sessions": ["s_1cca96b3fddf", "s_162b9ce296f0", "s_5dcbe4fef0ca", "s_a9295bc43ac8", "s_4d25d3379c1b", "s_e28fac3ecd40"], "chars": 16906}
+{"question_id": "q_72d7fe412615", "sessions": ["s_f7f211a7aacb", "s_3d0933ece46d", "s_cd36a5eab446", "s_38a23d6b9f12", "s_51cf566495dc"], "chars": 17191}
+{"question_id": "q_735225644b91", "sessions": ["s_a05a52844561", "s_bc1c78ef24c1", "s_402b5e7f3d7b", "s_fda6830c0321", "s_846331aaa25e", "s_647ab700eb4a", "s_b19aaa34874a", "s_3aa2548da29a", "s_850f94034b81", "s_02b404afe77e", "s_00fca9be3393"], "chars": 18083}
+{"question_id": "q_739d28946eee", "sessions": ["s_ac5f9ddf8c83", "s_8e9563bccacb", "s_f58334be723b", "s_1f92dbfc060c", "s_aef14fa56ac1", "s_31653c573c06"], "chars": 17649}
+{"question_id": "q_73e32bc497f6", "sessions": ["s_56bd9586cf43", "s_4c852817b961", "s_b1fc24e4bad1", "s_b2295f46acd6", "s_b9da6b722f7c", "s_b2d56132a071", "s_b9ad2e2773a6", "s_2ff7bc45689a"], "chars": 17217}
+{"question_id": "q_73ee29a49168", "sessions": ["s_6d4a6121f1d9", "s_eb08dcf5d4c6", "s_c1709c8e5a78", "s_1ca5f2603f3c", "s_7cc24bbb3879"], "chars": 17028}
+{"question_id": "q_74615cf856b6", "sessions": ["s_c2cce2859e6a", "s_d3a75830e730", "s_f8da0e31ce28", "s_ce007f8114de", "s_a7d10981d739", "s_35a5831a2510", "s_81abc64ca504", "s_61d2ecd2d5b9"], "chars": 17102}
+{"question_id": "q_75f48c12cb03", "sessions": ["s_f459f48806fb", "s_97b8dcfdcfc7", "s_a3eefc392de6", "s_740eb8ea83df"], "chars": 17073}
+{"question_id": "q_76acd9420fd1", "sessions": ["s_2bbfcec9ad2e", "s_80337cf4bad3", "s_974a145fe40c", "s_35ba2c767133", "s_4ea7109119ba", "s_aa3a6f52113b", "s_902c21a2f352", "s_4684081692f2", "s_6360ea436f87", "s_eb30f0c343ed", "s_6d4cf6878376", "s_234c9d746d63"], "chars": 17078}
+{"question_id": "q_76be4896c82f", "sessions": ["s_af7c4e8b9fe0", "s_bcdc5c7beac7", "s_991b1cbb2235", "s_c90a3ccf78cb", "s_4923dd73775b", "s_0c8d150a8df6"], "chars": 17135}
+{"question_id": "q_7718512bce3f", "sessions": ["s_18354449a7e5", "s_b5d34b414077", "s_6902b5ba6366", "s_66622bd72d32", "s_3135da048149"], "chars": 16926}
+{"question_id": "q_77330dbb50b3", "sessions": ["s_3110c87630ad", "s_e5caf46758f7", "s_9d3d6db7b321", "s_e3489363fa91", "s_8fa61adc0480"], "chars": 17061}
+{"question_id": "q_77662c20c4c3", "sessions": ["s_40dbc68824d7", "s_f13301d9f969", "s_49a44cce9787", "s_f25d0bc1dba4", "s_46e0db89c29c"], "chars": 16906}
+{"question_id": "q_776d926f3b0d", "sessions": ["s_d7829d911a1c", "s_f964717ba538", "s_6f198431097a", "s_728e5cf4bf64", "s_961f13c090cf"], "chars": 17076}
+{"question_id": "q_7793ebeaabd8", "sessions": ["s_67b7b9b8e890", "s_beb62ef841e9", "s_d841bec37b6b", "s_29067e65c74a", "s_d7184865ade3"], "chars": 17119}
+{"question_id": "q_779a0b5f64d2", "sessions": ["s_c4c2afaa1a9a", "s_db91b8ce6249", "s_3478e4ab9492", "s_3221606d10de", "s_32750b1edcd6", "s_d8f5ccb05f7f", "s_5dd36971f03c", "s_56cb4a37f602", "s_1fe18e680a2e", "s_79e5e1c9eff2"], "chars": 17078}
+{"question_id": "q_790e7946be08", "sessions": ["s_82de56e02c82", "s_bf4fab0c9efd", "s_eb18b0929b12", "s_f4c1ba2b6344", "s_f9da1cf0000f", "s_ec78bac8f128", "s_87e013c9c2fb", "s_4c436ec7b8c1"], "chars": 16798}
+{"question_id": "q_7976522bd177", "sessions": ["s_be44e96af0b7", "s_b4e61b911e1a", "s_0f46096bb06f", "s_bc8194b4aab8", "s_da2a015d5fcf", "s_889d02777691", "s_587351f8ca01", "s_9ace68f35c26"], "chars": 17599}
+{"question_id": "q_7984299af14c", "sessions": ["s_c6923a6f9d40", "s_b6ee35ddd762", "s_33d4cad20e77", "s_b4a5715bafcd", "s_41695e322b02"], "chars": 17272}
+{"question_id": "q_79fabca3e991", "sessions": ["s_73d8f18a2724", "s_012a210b0dee", "s_ac589d72f57d", "s_500bd6f37fdd", "s_9c1146ad9eb3", "s_281d34fb443e", "s_6bd8e6f20580", "s_64e150c2834d", "s_57fbdef2279f", "s_3eaf951510a9"], "chars": 17628}
+{"question_id": "q_7a0b9d2b48b8", "sessions": ["s_4c2e2eb21d16", "s_c40520182f45", "s_b41e20a3d93f", "s_d0fb8e6b8f3b", "s_5f32e7f4987f"], "chars": 17036}
+{"question_id": "q_7a2bf138f67f", "sessions": ["s_7b1e3101178d", "s_07ff30c769c2", "s_dd7d0bc97350", "s_2f2ee975c02f", "s_ab99bb2ac237"], "chars": 16820}
+{"question_id": "q_7a36b6ef1ab8", "sessions": ["s_527d5b03eff5", "s_2e83050548a2", "s_d44ef6af5c28", "s_91fb4949af4b"], "chars": 16990}
+{"question_id": "q_7aebfda7c2f2", "sessions": ["s_08dcdad305a7", "s_a2f877a9b5d1", "s_b78bd5064b1b", "s_3bb1928cf46c", "s_2b96864800c3"], "chars": 16754}
+{"question_id": "q_7b169d912ee2", "sessions": ["s_338dc6e98d7c", "s_c552ee52a06c", "s_24ef8859b66a", "s_de6b224d3980", "s_a332f6ce8c5a", "s_0648135bc0a3", "s_06f304fd7228", "s_bc06f088e418", "s_ee44dca2bfbd", "s_f466801a7b52", "s_e05ad4f40b4c"], "chars": 17011}
+{"question_id": "q_7bae4171bb77", "sessions": ["s_0da0254e8229", "s_1db6783b48b5", "s_bf9b1d16b454", "s_053f3f416e57", "s_c7ea090f0c8c", "s_c2743cf7b2ce", "s_9da14cd5e1ff", "s_e26f015cd8bf"], "chars": 17158}
+{"question_id": "q_7c3758dd8e96", "sessions": ["s_b1f5daf18c9b", "s_70abba7b352e", "s_4167552908c2", "s_3b3f693449da", "s_a0e805689445", "s_ccd0e4f9f55c", "s_81c0f70e05ab", "s_9a0adca7e8ed", "s_b615aa2271bc", "s_670c1715e0df", "s_1d4deb1bf028", "s_981b69af4583", "s_b5a087c10bf9"], "chars": 17167}
+{"question_id": "q_7d8305d718e0", "sessions": ["s_b2a305417997", "s_63c20691ab69", "s_62f0f6a99dc6", "s_4ef7a9aba83c", "s_e390284d9323"], "chars": 16955}
+{"question_id": "q_7dcc1820817d", "sessions": ["s_e1635809af82", "s_3474102cb5e2", "s_c4a75491c4af", "s_9e0fc3f164af", "s_578ca0fabf77", "s_4c75f78fda7e", "s_d9f352b6a38d", "s_97853c1c4444", "s_08dc346acae9", "s_7a72c3363e4d"], "chars": 17259}
+{"question_id": "q_7e0c4078f08e", "sessions": ["s_66eef433f1cc", "s_baa6e9117b03", "s_f616acf85ebd", "s_34b9a1a1f468", "s_300b99e4c407", "s_a3cdb29da1ad", "s_f0db01875781"], "chars": 17050}
+{"question_id": "q_7e4648da1c6f", "sessions": ["s_293454542fc4", "s_99cb79f3538d", "s_e6a0638efabc", "s_4366cbf38ef8", "s_a91156c05dd7", "s_475e4a9ba267", "s_73889e40d205"], "chars": 16935}
+{"question_id": "q_7e86e7928b03", "sessions": ["s_cceb3ed6b8b9", "s_03049d15158b", "s_916010244aeb", "s_bc84f7b8491c", "s_2b70452fae6a", "s_c3753c0ba48d", "s_1989f1f7bcb6"], "chars": 17063}
+{"question_id": "q_80ae20017bd3", "sessions": ["s_c9d6427b3c6e", "s_e8e822391d51", "s_61143e3445d1", "s_59b472d806b1", "s_12baf79ec0a6", "s_80d9bf5e96a0", "s_e716fc737587", "s_aeb19140127c", "s_aed1b55a68bc", "s_d4bb66112863"], "chars": 16815}
+{"question_id": "q_8122b9b43633", "sessions": ["s_7ba65a3ec69e", "s_c93e98c48a93", "s_0009483b9ef0", "s_32e513f1097f"], "chars": 16928}
+{"question_id": "q_81b882464731", "sessions": ["s_251ef94de76c", "s_94a2c9f23964", "s_785c4d9086c9", "s_0789ca79f1ee", "s_b86c55fffa33", "s_66386059c5b0"], "chars": 16894}
+{"question_id": "q_8234a01438c0", "sessions": ["s_723981cff50c", "s_34d0a9fe68d0", "s_dd15ff654294", "s_ed8deb5bc377", "s_dcd1a758e49e", "s_6a45009591e0", "s_92a3eabbf4b1"], "chars": 17108}
+{"question_id": "q_830f70cf1232", "sessions": ["s_ec3a04a9285c", "s_734a8f457a1c", "s_1510317f3166", "s_26dda3828e03", "s_1cdf2a750481"], "chars": 17025}
+{"question_id": "q_832fe19a2916", "sessions": ["s_5837f4076ef8", "s_d89efc62e379", "s_bf90c5621eec", "s_e1b20fa910aa", "s_df906a0d226a", "s_77d3615dc110"], "chars": 16704}
+{"question_id": "q_835dfd67d269", "sessions": ["s_b9fae5d20a67", "s_484f849a2529", "s_2bd4ac1b8135", "s_d1a5d1c45bb7", "s_c36f99f890ba", "s_9c21bd75c3fe", "s_08384a1ab08e", "s_74d424a3e802", "s_f5659429cd2d"], "chars": 18111}
+{"question_id": "q_843ad94858bd", "sessions": ["s_779000a1af65", "s_ee6f399d4d5e", "s_11cfbd04722d", "s_43e000bfb398", "s_8fcfc59f3179"], "chars": 16957}
+{"question_id": "q_8535b74b81b5", "sessions": ["s_3742445e1bd1", "s_ee954ec1749d", "s_b50e573e4d82", "s_fd949e50f5b0", "s_879e8e6f4974"], "chars": 17054}
+{"question_id": "q_85475f235e1c", "sessions": ["s_fcf1009a19cd", "s_39eb68c87aa3", "s_bf4c5d7ee576", "s_8f1643c3227f", "s_907a76e9df08", "s_ff5aff1f1162"], "chars": 17038}
+{"question_id": "q_8563ef4c4199", "sessions": ["s_008f30692e7c", "s_542cee57950e", "s_af49847d54f5", "s_c5e1b1789ebf", "s_d494fa68f704", "s_4e54274da2f3", "s_4f7786476564"], "chars": 17119}
+{"question_id": "q_856933a652af", "sessions": ["s_96d36fc43030", "s_fa7609db991a", "s_e38a8cde472e"], "chars": 16479}
+{"question_id": "q_862cb58ee22b", "sessions": ["s_f43306dad2d6", "s_ac5dcf37774e", "s_c626e3219a53", "s_6aa866ff7a30", "s_125e08597aea", "s_2a32206e4632", "s_e9dfdb2297ee"], "chars": 17344}
+{"question_id": "q_8652ebe84d22", "sessions": ["s_8e226cd3f1fd", "s_e2c4a9c926a9", "s_4d9626d44d51", "s_4756d4746a1e", "s_d783b6eb844a", "s_7f813efe909b", "s_b0b5a7abee75"], "chars": 16777}
+{"question_id": "q_8655697ca5eb", "sessions": ["s_cbac788d91c9", "s_cd63454fabcf", "s_72cfde5fff62", "s_bc06dc4d6be7", "s_382ce101d557", "s_447160a4c725", "s_e39ea1fa514e", "s_380d8d2049f3"], "chars": 17629}
+{"question_id": "q_8664a2b130d4", "sessions": ["s_55c615920f21", "s_b94da95ac95d", "s_0069e8591668", "s_807e4105a457", "s_c6fc959b0761"], "chars": 17171}
+{"question_id": "q_8721868d5f57", "sessions": ["s_6d124c62635d", "s_4135de74602d", "s_2e91227a706a", "s_a18e3d1d4fb5", "s_0e0b2654db46", "s_3dec45063127", "s_d68e1f249661", "s_87c7da57fc7b"], "chars": 17544}
+{"question_id": "q_873ca9ab3fc0", "sessions": ["s_6f11c312e9ea", "s_5c315662af40", "s_fc2bbb965eec", "s_f8fb924f223c", "s_90cc6fc9f9de", "s_f3ab5aa17b1f"], "chars": 17736}
+{"question_id": "q_87537644762b", "sessions": ["s_df172516c713", "s_eb3961d3d3e2", "s_6d5d1ac8561c", "s_eceaf844ef9a"], "chars": 17251}
+{"question_id": "q_8958bbca368d", "sessions": ["s_5cc1c6936bf3", "s_717747006050", "s_ddfb33be8e42", "s_8d77cc272cf2", "s_2bfd9da41343", "s_070776203a88", "s_bf4a814be9e2", "s_594c25522928", "s_5f95c65b4caa"], "chars": 17691}
+{"question_id": "q_899c3efcfaae", "sessions": ["s_54d445a37ee3", "s_5d8a19f6e1f5", "s_9091d590bcef", "s_b4e44678243e", "s_f3858e5f6b3a", "s_f1bf7168f9d5"], "chars": 17137}
+{"question_id": "q_89d7c37acd73", "sessions": ["s_5004056bf825", "s_709eb2af485c", "s_00777fad3667", "s_eebae81b971a", "s_c71a7b213ddc", "s_a6b16cfa159f", "s_8df00692fb06"], "chars": 17650}
+{"question_id": "q_8a1f4fbb16fa", "sessions": ["s_f7f211a7aacb", "s_015e857029dc", "s_38a23d6b9f12", "s_976fa54dc653", "s_6d0593f1083f"], "chars": 16817}
+{"question_id": "q_8a4f03392d82", "sessions": ["s_dd4135f0b190", "s_d50d93553347", "s_d278125541e9", "s_11a5e797a7d5", "s_bba49838dc6c", "s_1acb7a999608"], "chars": 17148}
+{"question_id": "q_8aa26707f4fa", "sessions": ["s_ef33c8006c37", "s_f52520d4ab77", "s_808b95108022", "s_ab3989bdbc17"], "chars": 17085}
+{"question_id": "q_8afc2c563dcd", "sessions": ["s_f147c5d9d082", "s_6ec937a09e10"], "chars": 16921}
+{"question_id": "q_8b3ffe0920e6", "sessions": ["s_d4e7188bad30", "s_deb6dc00db10", "s_6ca98fa25690", "s_6525cf26f07c", "s_4dfa1ee2d25a", "s_64f362e2f9b2", "s_3ae964091d8a", "s_6675791a68f4", "s_d5bbdebca0fc", "s_f740690bfea4"], "chars": 17076}
+{"question_id": "q_8b5c30c5a3d7", "sessions": ["s_ebe2c05c5935", "s_14d9cd42eb18", "s_875e1b62349d", "s_0c3e9395dbb7", "s_73c638675e79", "s_6737a1e93447", "s_71517f4a671a", "s_d282d7d68f4f", "s_fd5e8b03dcc6", "s_d2d106c59ec3", "s_8b590c3da536", "s_cbf46bdba7dc", "s_9f59efdfaa1a"], "chars": 17699}
+{"question_id": "q_8b7b5f7c0f22", "sessions": ["s_2ddad6a278ed", "s_ee5cf71bc5e8", "s_255559c77838", "s_c241aa2f83d1", "s_16022bc898d9", "s_3d3a481cd306", "s_69da37bb330b", "s_5f52498f112d"], "chars": 17585}
+{"question_id": "q_8baa0a7d256b", "sessions": ["s_2c5de9b09f4c", "s_b2c87b18df01", "s_91721d5ea83d", "s_2fa4cceb5744", "s_10045727a51f", "s_c9fdfe41f1a7"], "chars": 17118}
+{"question_id": "q_8c07b01610d9", "sessions": ["s_a738b3719927", "s_253139b07c7a", "s_1ee60b825f16", "s_a86bea459665", "s_cff6deff9408", "s_332224b01d86", "s_a3799b8e814f", "s_ed5968588f97", "s_d6d02e8f9734", "s_12a45adc5972", "s_f6027e59519c", "s_3c3807337c06"], "chars": 17182}
+{"question_id": "q_8c5acd1fca0b", "sessions": ["s_f090ce60a70c", "s_36a39d57f321", "s_43d576f6fc83", "s_666b1b281e79", "s_7722ea5eb842", "s_9b664dda9812", "s_112437e0c4ea", "s_496346cdd805", "s_ca3be89e9ca2", "s_0b02c074cb94"], "chars": 17606}
+{"question_id": "q_8c638f344f0c", "sessions": ["s_f7091a9841f3", "s_44142bf145a1", "s_ee1d16285a03", "s_c691bf410181", "s_0d7260952852"], "chars": 17108}
+{"question_id": "q_8c8ea5eacaaf", "sessions": ["s_e0c6ea4d28b4", "s_d3aeb69df56a", "s_3a0fb4558670", "s_8f77973b2437", "s_c20b68e214c1", "s_e36540b7beeb"], "chars": 17481}
+{"question_id": "q_8c9b6e2811c8", "sessions": ["s_64247f06cefa", "s_0822aad986cc", "s_d85a4531c5ab", "s_3eb48fe693f4", "s_8ce79454cd55", "s_10f81a90687f", "s_c554553ffe08", "s_114d7bc0c13c", "s_ece642caca14"], "chars": 17303}
+{"question_id": "q_8ca6bb54e881", "sessions": ["s_53594a75babf", "s_f1900d1126d2", "s_da0c382ffdc1", "s_8c2a86259a38", "s_8bd825a4c547", "s_d479f15621ef"], "chars": 17276}
+{"question_id": "q_8e061901d800", "sessions": ["s_5bb1b500abb5", "s_2352e09db625", "s_a7ff15c71905", "s_ba4626e396d1", "s_e834a61e40cd"], "chars": 17266}
+{"question_id": "q_8e07a12bdbec", "sessions": ["s_29deeec1f80e", "s_2593910edf62", "s_4bfa1332d279", "s_b7f900f63ddb", "s_9c683603861b", "s_bbbf464dd214", "s_e5278605be35", "s_5ec216a80f22", "s_0c53e8b16648", "s_ee160c1237dc"], "chars": 17710}
+{"question_id": "q_8fe0667f3538", "sessions": ["s_37723207782a", "s_59789ac593c1", "s_e447f65027f6", "s_09a7dbf760a7", "s_2226e984eef5", "s_586c917c1fc6"], "chars": 16790}
+{"question_id": "q_8ff59b33ea63", "sessions": ["s_8cd41a4ef15a", "s_cd15b2ff42f4", "s_d3f98c055afe", "s_6d3dde625782"], "chars": 16871}
+{"question_id": "q_8fff456681c5", "sessions": ["s_0d7d9a6231af", "s_9c57cc7caa14", "s_49c7f270dfc6", "s_0b052ff1415e", "s_7a10706956c1", "s_5f99843df4ab", "s_586314edd8f7", "s_81441b49dff8", "s_29989902fdbf", "s_651698313122", "s_df2d51e34b2a"], "chars": 17678}
+{"question_id": "q_904a41b9856d", "sessions": ["s_db92b362c865", "s_bce23e752730", "s_f3a0c2110eb3", "s_703df3b8d44d", "s_33a574a821d6", "s_4b49fa84fb22", "s_09e952bf90b3", "s_49ae108dfa93", "s_06e66755e9c7", "s_7e58572dfccd", "s_e89e89e90e45", "s_9b3cd5859ab0", "s_51384f181d15", "s_ed300d2008e5", "s_297cce91d12f", "s_b49877ef5240"], "chars": 17804}
+{"question_id": "q_906ce2015c04", "sessions": ["s_6432d0d81620", "s_2d03335679a5", "s_d2e4241e12c5", "s_d7dc35a2026d", "s_24717edcb73d", "s_5ff6a60a2721", "s_bec97c2c7007", "s_ea7f624cb0a0", "s_5b4f3aaf8e1c"], "chars": 17534}
+{"question_id": "q_90ebb8113283", "sessions": ["s_9a56b22b23f6", "s_8aa50c79fbe1", "s_725c6cf9feed", "s_c46290fe6fb2", "s_125e08597aea", "s_ce33e8fa8c0d", "s_c6e4e4ea4d77", "s_72646d393b22", "s_22915820b664", "s_556b14a3f284"], "chars": 17522}
+{"question_id": "q_91229ab19d2e", "sessions": ["s_4898cbacf6f3", "s_6720a349bc34", "s_515b35a95699", "s_0d44427dccfb", "s_1ac4cae1bf16", "s_9ac88d2e093c", "s_f7ef121101f9", "s_af2b2e0b300d"], "chars": 17103}
+{"question_id": "q_927deb250d4b", "sessions": ["s_12b81a20bec9", "s_9771cfbb907e", "s_47361c671b57", "s_e6e804a7e6b7"], "chars": 16947}
+{"question_id": "q_93994244cc12", "sessions": ["s_07b1f98af4ea", "s_3dd93a4b7ff4", "s_dd2780256033", "s_7bd01e958814", "s_0498695937b9", "s_44343c778f02"], "chars": 17041}
+{"question_id": "q_9424793ff7e9", "sessions": ["s_fb259abb44e5", "s_50b1f040269c", "s_e4b774e1ca05", "s_8c6a8668f1e7"], "chars": 16778}
+{"question_id": "q_94354082e958", "sessions": ["s_331a13a29c22", "s_8a0ad36a80d3", "s_e03ab420e751", "s_0f150d97b646", "s_2c1c1735747a"], "chars": 16873}
+{"question_id": "q_9467f104c1fa", "sessions": ["s_964d32eb52d8", "s_b2a305417997", "s_96079fd90d90", "s_416366303890", "s_4015a6b8c9a5", "s_eacce91f84af", "s_210f8e537fc5"], "chars": 17205}
+{"question_id": "q_94eb3bfa8b4a", "sessions": ["s_4ac7b9810d4f", "s_18820ce2cc84", "s_1f746425af81", "s_4de611c0cff9", "s_e21b87d464d9", "s_8885e3b3115d", "s_f717094f6ff1", "s_38c320f0044c", "s_cc59eb3cb16f"], "chars": 16965}
+{"question_id": "q_961f7af398d4", "sessions": ["s_09705818f365", "s_26c401e936c0", "s_eb0928f218ff", "s_3f6af91305c2", "s_02b92d463abc", "s_31d875898265", "s_88c626d88585"], "chars": 17006}
+{"question_id": "q_96daec91abcc", "sessions": ["s_c4fc5b3edaaf", "s_759cb12bf3e7", "s_a80c4ddbb442", "s_885a03e5ec98", "s_369a503ceb73", "s_509d9f079761"], "chars": 17344}
+{"question_id": "q_96fc6948501c", "sessions": ["s_8d97711c8821", "s_c06461d32748", "s_20410f2c2bdb", "s_c6c19df20f84", "s_58515d87a980", "s_84871c949a77", "s_1cc24e6f0da2", "s_ef00072ee2d1"], "chars": 17128}
+{"question_id": "q_972eb3f5d4ca", "sessions": ["s_7ef425f3a3a0", "s_84de3d651e81", "s_e05110cc68f6", "s_00a7ae3102c0"], "chars": 16872}
+{"question_id": "q_973c4dd313d5", "sessions": ["s_84766534eb6d", "s_4b820bb51804", "s_843cfef2144e", "s_060dd8f9dfe6", "s_8bbd850248d8", "s_a816f94e005a", "s_1b54367fbb86", "s_dc5debff4d3d", "s_1c6d608c42d5"], "chars": 17298}
+{"question_id": "q_97ee4dc2af0a", "sessions": ["s_2cff57aa2b14", "s_85d8debc65bc", "s_401bc51c8926", "s_f629fd9bcb49", "s_1229a5d67568", "s_5326ef0ba3a1", "s_ddf939625a2f", "s_57c1c3397c05", "s_1e857143eef0", "s_ec7fffa554d9", "s_30d2a5ae666c"], "chars": 17146}
+{"question_id": "q_987ec4341ce0", "sessions": ["s_57b0ddb0e1c3", "s_6a74bd7ea8b2", "s_1b1170365c56", "s_2753b152c951", "s_e18e19a86766", "s_332e8e698dce", "s_d05897235504", "s_31dbc7682cba"], "chars": 17143}
+{"question_id": "q_98ff4c6b0eee", "sessions": ["s_28df7975abc5", "s_e1984046b606", "s_6c620e94e5c9", "s_2f2bff607eb9"], "chars": 17024}
+{"question_id": "q_993728a2da4b", "sessions": ["s_0b4d23d7ef40", "s_85aba9a08ce3", "s_29618339035f", "s_ac33aeb275b5", "s_b2af141f8198", "s_24950a9b8f23", "s_43bd7b20ac8c", "s_791bfbda173e", "s_5bacf8c1222a", "s_47a91cb361b3"], "chars": 17616}
+{"question_id": "q_996fcf738427", "sessions": ["s_620dd8821a17", "s_afb627249f58", "s_1cabf96dbfb9", "s_59c0af546726", "s_1c2eb8b62728", "s_88538caa93d9"], "chars": 17440}
+{"question_id": "q_9974482ef0e5", "sessions": ["s_0f3e59857f24", "s_272a166658c2", "s_467c74d8defb", "s_3d28008e3bf9", "s_70e94965be8d", "s_23a1573f3bbb", "s_c7d27708fd33", "s_735a69405e2c", "s_103536b45dc8", "s_754e37506902"], "chars": 17122}
+{"question_id": "q_997a7e2ab937", "sessions": ["s_bef6eef88ddc", "s_e829f16bf216", "s_a6eb86453630", "s_86c4118c940c", "s_ba503a1ef128", "s_07d5c26ba2cc", "s_9c0429616d5b", "s_219456211a3b"], "chars": 17795}
+{"question_id": "q_9b217f0b8850", "sessions": ["s_84766534eb6d", "s_4b820bb51804", "s_843cfef2144e", "s_060dd8f9dfe6", "s_8adc485146ac", "s_8bbd850248d8", "s_a816f94e005a", "s_1c6d608c42d5", "s_1a6769d03923"], "chars": 17074}
+{"question_id": "q_9b45ff000c2e", "sessions": ["s_3bd22498cb98", "s_783696510b81", "s_1da4f1176339", "s_fd78e6aa8cf5", "s_086923fc44b8", "s_54cef2ff51bc", "s_625f06c03d28", "s_6af1bb9d097b"], "chars": 17204}
+{"question_id": "q_9cfe2724bdd3", "sessions": ["s_2c5de9b09f4c", "s_1cb38cc303ad", "s_d77d4d7095c8", "s_90ccc528f376"], "chars": 17128}
+{"question_id": "q_9e0d3a6d99c8", "sessions": ["s_f2331618fc70", "s_cc6701a5457d", "s_4bedf03ccd80", "s_6085a146160c", "s_51df732e152c"], "chars": 16960}
+{"question_id": "q_9f13819afec6", "sessions": ["s_eedd5883ed60", "s_47c177242d35", "s_607abb557017", "s_df29e071b4fb", "s_842418bbd56c", "s_efff53e6410f", "s_f25ed28f611b", "s_f87d1d617e3a", "s_e834f4b725e7", "s_8e76f8400563", "s_f8532d4a6187", "s_d26933dda6c4", "s_218fa9346fcc"], "chars": 17797}
+{"question_id": "q_9fa0e757c653", "sessions": ["s_51db78170fb6", "s_a41f7d2e2ba1", "s_d756c1d10cc0", "s_5fce1a97aca5", "s_52f4e5a007d4"], "chars": 16937}
+{"question_id": "q_9fd3953a1b86", "sessions": ["s_c26b2508a559", "s_07ea7ad7123e", "s_9d3bdaef235e", "s_214fc335318c"], "chars": 16974}
+{"question_id": "q_a0cceb3e7297", "sessions": ["s_5da4dd1fb38b", "s_5a311aa9b385", "s_de1fce1ca4d1", "s_c69343dfb5f2", "s_90fe87e53287"], "chars": 17138}
+{"question_id": "q_a0f0a61cb0ec", "sessions": ["s_2973250fc009", "s_6fe24456ccd5", "s_c86e89e71c06", "s_c26ba1c08bdf", "s_c4b806297632", "s_3baea020abf3"], "chars": 17560}
+{"question_id": "q_a4be27375a36", "sessions": ["s_65dabb0a23fb", "s_121b14e7c737", "s_31455ba07d18", "s_6552b5474c8e"], "chars": 16631}
+{"question_id": "q_a4c8fea431dc", "sessions": ["s_680e2a217304", "s_d3eb1ac11c5e", "s_d48beae571c5", "s_b2a633e7c06f"], "chars": 17171}
+{"question_id": "q_a4e1217b31d7", "sessions": ["s_463006cb6a6c", "s_dce71f962496", "s_26b9231e5990", "s_f2300ba8876b", "s_fc0d26999671", "s_5b99a62ff87c"], "chars": 16707}
+{"question_id": "q_a5829de66ab0", "sessions": ["s_9ec2f15a506b", "s_5d947660ab34", "s_c98c534115e2", "s_0982769a9d31", "s_8deaad45ddce", "s_59b82a94e61b", "s_26a7c3ee1e4b", "s_eda015b876af"], "chars": 17121}
+{"question_id": "q_a5fca650c73f", "sessions": ["s_65d404ecac3e", "s_815e33818b8b", "s_a7c3d41a80ad", "s_592f4199a84f", "s_a8c02dde8bdf", "s_3d225caa8438", "s_eee18b99193d", "s_d0fefaecd46d", "s_4f4b333bd0db"], "chars": 17014}
+{"question_id": "q_a6330f06b940", "sessions": ["s_3b2dafd02fad", "s_f03b85391968", "s_5a1ee9522ca4", "s_f7f9268be226", "s_d9dd7ebaa7f4"], "chars": 16831}
+{"question_id": "q_a6f248ef202c", "sessions": ["s_f52520d4ab77", "s_808b95108022", "s_ab3989bdbc17", "s_cd2b1ab072ec", "s_f6615757cd40"], "chars": 17169}
+{"question_id": "q_a6f87668eac6", "sessions": ["s_e3aa848572e8", "s_0481cd2f5400", "s_9a61707f9117", "s_e7246df75a29", "s_3d3b30c2882e", "s_58048a284372", "s_392d32cdfe96"], "chars": 16989}
+{"question_id": "q_a7c89bfe7d6f", "sessions": ["s_282198f1c76c", "s_4d9626d44d51", "s_b97b55b9ef90", "s_6f50c48703a1", "s_d783b6eb844a"], "chars": 16825}
+{"question_id": "q_a7e8aa6fc6e7", "sessions": ["s_6ab9001007a3", "s_d165b47c4f07", "s_f1a167487bdc", "s_929c87bfe0a2", "s_de86e1cbe8bf", "s_dff24195d170", "s_412c4858d5da", "s_ec4fcc8aefe7", "s_44ec1e69c0c3", "s_23315f7a1f4e", "s_3a2bb2680133", "s_021e70efdd45"], "chars": 17726}
+{"question_id": "q_a8f472d43069", "sessions": ["s_5d72a1a70fff", "s_26bc56614018", "s_f3e20f9b6584", "s_5269bac9038b"], "chars": 16755}
+{"question_id": "q_aa5cca96ffe4", "sessions": ["s_6e2b04517029", "s_9cf97e8ff58f", "s_11353adf5218", "s_500219bb9613", "s_bf151ca68055", "s_cb57ecfe0870", "s_e5f2009e9140", "s_65d149a367e3", "s_131bd12fbda5", "s_4528f1810e0e", "s_6b18896a12f7"], "chars": 17424}
+{"question_id": "q_ab04eb207b4b", "sessions": ["s_ac5dcf37774e", "s_fec75189ec42", "s_c626e3219a53", "s_6aa866ff7a30", "s_2a32206e4632", "s_e9dfdb2297ee", "s_9c7a8cae27ab"], "chars": 17446}
+{"question_id": "q_ab58f03bcba2", "sessions": ["s_2867d24112f1", "s_f69a02456353", "s_6de68712251e", "s_3b39a157d038", "s_ca3009d5b0ee", "s_b69be8e14562", "s_fa242ca05b77"], "chars": 17052}
+{"question_id": "q_ab6013f52f06", "sessions": ["s_b0542b9e6061", "s_15a8a1b67fad", "s_f9b7d486b146", "s_07a1dfa472bf", "s_5d951fb9dfdc", "s_8e410a4450b7", "s_ee9d1eb3e8d7", "s_d5ace1ddb879", "s_3869c4045073", "s_99b8527fa200", "s_10f1856475ad"], "chars": 17686}
+{"question_id": "q_ab9cbb1bf73f", "sessions": ["s_82511e1e431f", "s_a36a936f0d9a", "s_b8544d3c349d", "s_2db6c059fc47", "s_575a869e228a", "s_1b4265703387", "s_5fee0dd4008e", "s_565e596a4521", "s_b6bacb318f24"], "chars": 17200}
+{"question_id": "q_ac57e067453e", "sessions": ["s_8c56e3adce01", "s_773260571e9c", "s_3eca09040c31", "s_454bd6e60aa0", "s_63b42234dc55"], "chars": 17459}
+{"question_id": "q_ac7f75976615", "sessions": ["s_2c8f1a203446", "s_e39e5ad6e81c", "s_c53536475b6a", "s_8519c9a9ba13", "s_7f83b8b44706", "s_f018daa2183f", "s_7b50a8b7e403"], "chars": 17479}
+{"question_id": "q_ac999aecf2ec", "sessions": ["s_0150ebe40e41", "s_313b66cafe9d", "s_025fc77bee4a", "s_ea585b411a28", "s_cbebe22b38ed", "s_de60099237fa", "s_6fa4c66d5480"], "chars": 16913}
+{"question_id": "q_acad782f8e7d", "sessions": ["s_09fd9bb8be4b", "s_eb6ef584b90f", "s_f7fc773cf635", "s_3b0bd5cc0753", "s_bf53cbf48bf4", "s_0cf7bf1a512c"], "chars": 17149}
+{"question_id": "q_acbe1a202b21", "sessions": ["s_986790b09afb", "s_e166505bff18", "s_a22902da2082", "s_abc7b565a997", "s_663d37528705", "s_28bd430453ef", "s_3bb1928cf46c"], "chars": 16627}
+{"question_id": "q_adc9cd2b38f4", "sessions": ["s_5a298373667d", "s_764e4f2e8781", "s_01aabb0ded5f", "s_5b7b784e6ffa", "s_36ca1c550309", "s_c2f8965ec6e9", "s_7ceba6bec661"], "chars": 17620}
+{"question_id": "q_ae0a07ea7e22", "sessions": ["s_ee432f036673", "s_eca495baa0af", "s_0c47d4e0595c", "s_a400bd964d2e", "s_6c9a0f115d09", "s_96996dc2565a", "s_aedcdd0bf292", "s_ea1a0274c956"], "chars": 17026}
+{"question_id": "q_afa6682f34a9", "sessions": ["s_b3aca345e498", "s_8dbbdbcdaaf5", "s_6c13f119e637", "s_e11e6efe03a9", "s_c8b2b7e88f7b", "s_0ad1ac867024", "s_61f6820729c2", "s_8994c761cd87", "s_3b3fc4db482b", "s_c97ec24a1595", "s_f9e11bf25f65", "s_fbaa41b0978e"], "chars": 17294}
+{"question_id": "q_b000972135fe", "sessions": ["s_5da2c9e07a25", "s_e09aff90ce2c", "s_4cfb602a4156", "s_754b3004ee66", "s_b13037d3ea55", "s_5b266d292c67", "s_5f84de57c44e", "s_f1db3e86ccf0"], "chars": 17033}
+{"question_id": "q_b005a66dd3a4", "sessions": ["s_3a32ab47c904", "s_3fa2cfb75394", "s_6cef7db7ea59", "s_9a53600961fb", "s_5450908bc058", "s_1ef0cc6fbfb9", "s_1c5a2c8a4829", "s_3dd266811c21"], "chars": 16837}
+{"question_id": "q_b03417d7ef2c", "sessions": ["s_02f7886d76f2", "s_0770c30ee513", "s_dac69c548c54", "s_230bb43b5793", "s_2a94187a4a2f", "s_d32f49622e1a", "s_dca456b9459a"], "chars": 16967}
+{"question_id": "q_b11147adb9d9", "sessions": ["s_f6e7e301f8ca", "s_710bad749ad2", "s_41e8db19bcdc", "s_bc9b8393a0e5", "s_a59fd5a4e1fe", "s_39ff448ef3c4", "s_4b5a43ef6180"], "chars": 16848}
+{"question_id": "q_b29a7915360c", "sessions": ["s_ad4662d30d5f", "s_10ab4f74f143", "s_f3f2a1cc48d1", "s_57c8a43a0995", "s_7228c1ff4c05"], "chars": 16919}
+{"question_id": "q_b2dca2cfeba2", "sessions": ["s_f68c4c2b084c", "s_a9b36636c49c", "s_3db9083bc615", "s_fade7017f45d", "s_80d38cf9fe84", "s_a5855359df04", "s_92d41fa23566", "s_439bcb0d02de"], "chars": 17390}
+{"question_id": "q_b2ed0653b607", "sessions": ["s_b14df84a520d", "s_3480660bda7c", "s_d8cd15627740", "s_bc15196d2882", "s_1ceed3342270", "s_5f8e641517f1", "s_6b543cfd278f", "s_8f24f759c0b7", "s_44dfd34b02a4"], "chars": 17198}
+{"question_id": "q_b37522a9e42b", "sessions": ["s_5c692b89f3c5", "s_8032661a422f", "s_278c3b147a8a", "s_dfd040f39614", "s_7bbfc52cb202", "s_9f117c334947"], "chars": 16705}
+{"question_id": "q_b38fcb6b236c", "sessions": ["s_3abce1feaeb8", "s_798f05d1b677", "s_cf582da7386e", "s_49d27f0dd881", "s_d0797dda1b21", "s_362f69340297", "s_4e2d917ba9d4"], "chars": 17132}
+{"question_id": "q_b3dcd4dea568", "sessions": ["s_cdd68063f84f", "s_125c3b0ed844", "s_9f691a6a7d78", "s_a7529eea75aa", "s_50ca10df7ad5", "s_b01548d3f59d"], "chars": 17365}
+{"question_id": "q_b418d3d530d3", "sessions": ["s_31ec14bbb4fe", "s_e599011596a8", "s_94dec685f085", "s_1fcc2ae86a4e", "s_7fdcd700d79d"], "chars": 17208}
+{"question_id": "q_b4ac35d3c99d", "sessions": ["s_d3df1374a77c", "s_efa3d6733fea", "s_76c1e4ebc7ff", "s_b5d34b414077", "s_9c6f5dcea04d", "s_e23043143041"], "chars": 17026}
+{"question_id": "q_b5259cc469a6", "sessions": ["s_cae393695e5c", "s_3aee6da64eca", "s_f2297073ee02", "s_c1206809bcc3", "s_4220d843d205", "s_7b86ae8cd34a", "s_55baf2ed8c35", "s_940ce869bd2b"], "chars": 17175}
+{"question_id": "q_b54b3364fea9", "sessions": ["s_6e8dfe9bad8d", "s_5ced7169df32", "s_e1a8365e2302", "s_b5df87cc5f9f", "s_1d37416d1b46", "s_3c2c459e59a7", "s_7bd8e6648134", "s_bf78328c3a6a"], "chars": 17034}
+{"question_id": "q_b59474ff66d1", "sessions": ["s_8a5ccd9c8fa6", "s_eb3d930975f3", "s_16710000927c", "s_1f058681e8e2", "s_84f08dca1718"], "chars": 17155}
+{"question_id": "q_b5ae35121bd7", "sessions": ["s_59474648c3a8", "s_2dad5ceee2e6", "s_61e6a1d06f16", "s_0b3bf930cfb9", "s_1cd7362d3f98", "s_cb2699c3b05a", "s_86ae3715b9b6"], "chars": 17230}
+{"question_id": "q_b5cbd85cca1c", "sessions": ["s_896e9be4d802", "s_c8d3d6d8b44d", "s_4cf2265d999d", "s_ca6fe82f92f5", "s_4056ece89b6e", "s_e05a5c9dde45"], "chars": 17473}
+{"question_id": "q_b679bcc3579c", "sessions": ["s_a1ca81b61251", "s_ae0decd743aa", "s_2018995868d0", "s_cffcbdf30fd6", "s_cca434f4ec40"], "chars": 16987}
+{"question_id": "q_b6f9707a05de", "sessions": ["s_9dfc0d1e3190", "s_c84a60d88669", "s_85b7cd925993", "s_57085dacbbbe", "s_e19b2ad155a0"], "chars": 16915}
+{"question_id": "q_b71473f833d7", "sessions": ["s_f37a327dfc7d", "s_ee7d8ee4d240", "s_3dafb3f9889a", "s_eb7b7fe4d152", "s_8803f8deaee6", "s_2c094290d644", "s_008997c68837", "s_79e3db3c910d", "s_dcbb804da547", "s_618c615c3f6a"], "chars": 17076}
+{"question_id": "q_b76a4e87ec4f", "sessions": ["s_920e2a8be3b9", "s_9bae935da8fa", "s_0db898479066", "s_35d8da012121", "s_ae2b9f979748", "s_18fe60933840"], "chars": 17317}
+{"question_id": "q_b88b51ba96d9", "sessions": ["s_fb1dea8da080", "s_4d49eb49e2ec", "s_fc488848fc00", "s_b79124126fb8", "s_e7041b7f359d", "s_a217a5340e90"], "chars": 16922}
+{"question_id": "q_b8b5dd9d2f86", "sessions": ["s_f36b0aae7285", "s_b7e1634d0b49", "s_6c1f375ac627", "s_c5fe38e02cef", "s_5e9c6278bf39", "s_3fe5f3358ad9", "s_33815154a151", "s_9c28318d0492", "s_a842bd252c3a", "s_f73cef8b9f4c", "s_401139a20012"], "chars": 17059}
+{"question_id": "q_b9ab1c1c925d", "sessions": ["s_9e843f724e9b", "s_09ccfd20a146", "s_7ca951d9dcbf", "s_6e29b1434aaa", "s_4f736cbd9b60", "s_e4c56b29653f", "s_2948e3f1ed18", "s_b076c335602b"], "chars": 17518}
+{"question_id": "q_bb805c1e2fd5", "sessions": ["s_006c98cf9d4f", "s_47a5ab52595c", "s_2aaf6d1f7099", "s_e224258c4c9b", "s_237909396f15", "s_78f0b4e3d6a1", "s_34fcc2074ffd", "s_23661f1eabea", "s_9f79498f9824"], "chars": 16999}
+{"question_id": "q_bbae72b67538", "sessions": ["s_955ff75f0392", "s_1d35a9db5752", "s_10c54a01c51a", "s_90a340195346", "s_7679904534e2"], "chars": 17063}
+{"question_id": "q_bbe39bf5b8e5", "sessions": ["s_f86d2905589a", "s_169a4c4a913d", "s_fc0d26999671", "s_5c1b946949c5"], "chars": 16670}
+{"question_id": "q_bc23394afa6d", "sessions": ["s_b70e12ada71c", "s_238fc80d2987", "s_80834b5d9e8f", "s_32b57db88dd3", "s_5cec1145c94c", "s_e2e2164ba9c3", "s_53241d49f86a"], "chars": 17215}
+{"question_id": "q_bcaf38031991", "sessions": ["s_75abdafc4d2f", "s_4e858ea3b33a", "s_2767695128fc", "s_a350ae5546a1", "s_4aebf8042bb9", "s_bdde64a1cc62", "s_0fb6a179974f", "s_a49342e1a323"], "chars": 17090}
+{"question_id": "q_bd45f0786f44", "sessions": ["s_73153b3a5781", "s_6d9075f4847c", "s_65dabb0a23fb", "s_bff7552bd23d", "s_7b9878bdabbb"], "chars": 16825}
+{"question_id": "q_bd689a7e6b72", "sessions": ["s_1230ce1fe32d", "s_6d9a9ae02191", "s_d6f1dc43abf6"], "chars": 17038}
+{"question_id": "q_bddc52b43dfa", "sessions": ["s_5f38ce78b0ca", "s_a97a9ff277ae", "s_8b7f08a3cb17", "s_fd2351b9a81e", "s_47443e4bad2d", "s_f06755f58547", "s_84a412f76bcf", "s_74a96524c4f6", "s_44ef70311e86"], "chars": 17603}
+{"question_id": "q_be084e1a42d0", "sessions": ["s_9ebfa97cfa83", "s_abacb0ad6fbd", "s_7b260fbeec63", "s_fa0ab01a15cf", "s_ad5e499d2d80", "s_f42db168059d"], "chars": 17162}
+{"question_id": "q_be5e8a641d4b", "sessions": ["s_3a32ab47c904", "s_3fa2cfb75394", "s_9a53600961fb", "s_fc0d4316b744", "s_d3b8d0591f4a", "s_3dd266811c21"], "chars": 16801}
+{"question_id": "q_beb5f9ed7243", "sessions": ["s_c57c4f88991d", "s_c61f5c51a71c", "s_38410f7e4d75", "s_9fe90b17410f", "s_bdb6d860668c", "s_2c220a2bb9b0", "s_dbe15a1961ee"], "chars": 17081}
+{"question_id": "q_becb3323b1fd", "sessions": ["s_199df567f14c", "s_99cce1a2f76f", "s_d762a8b40aaf", "s_281cbbe08151", "s_1e3f56ac6361", "s_ed049edcc7bd", "s_889bea67e4e6", "s_1af82cc3159f", "s_a6f316888dc7", "s_fb7ffe77421b", "s_02a2f275e980", "s_7ed22e65ada9", "s_19feef178b0b"], "chars": 17831}
+{"question_id": "q_bf1c142ff37b", "sessions": ["s_aee7e1b68a13", "s_613628ffe336", "s_b80e05d6f8b0", "s_ce441d93f3f6", "s_f0157cefbf8a", "s_0e2518305e60", "s_a784e56c9230", "s_682691f86144"], "chars": 17518}
+{"question_id": "q_bf711d3ba63d", "sessions": ["s_29a3a8570f3f", "s_32dcb4d3f797", "s_96b63688db61", "s_da644fd3f7a1", "s_e6e149f47e8c"], "chars": 17431}
+{"question_id": "q_c08aee679d2a", "sessions": ["s_25addda90133", "s_c4847327332e", "s_26fde3451eb9", "s_3c6475ec825a", "s_dff03536bd7c", "s_f4dcffe6e7a8", "s_eb0acef10ab3"], "chars": 16873}
+{"question_id": "q_c0d32ad7a8a3", "sessions": ["s_b7fce6a7744c", "s_c0898ef97fe2", "s_0864db0f3c3c", "s_934e98ece972", "s_f070c6959f05", "s_58a6e7525678", "s_8fcfc59f3179"], "chars": 16640}
+{"question_id": "q_c122ea41c5c0", "sessions": ["s_dfabeaa6fe4d", "s_9ef73c8bdab6", "s_97777c337826", "s_2907be5560b0", "s_a6ef751067aa", "s_17d04cb16d6e", "s_4dc0d443c4a9", "s_798fc15af392", "s_c8208f3992b4"], "chars": 17443}
+{"question_id": "q_c1ba9502fce9", "sessions": ["s_6432d0d81620", "s_e8b475502c83", "s_2d03335679a5", "s_63573d5665f6", "s_d2e4241e12c5", "s_24717edcb73d", "s_183e432d5b8b", "s_bec97c2c7007", "s_ea7f624cb0a0", "s_94cedb736ece"], "chars": 17748}
+{"question_id": "q_c239a8b925d2", "sessions": ["s_91362e1f562a", "s_cc6876a6c40a", "s_05403c624596", "s_4ea7f7a2b028", "s_df49168430a5"], "chars": 17388}
+{"question_id": "q_c26ff8a8d532", "sessions": ["s_80b8e2cf36e3", "s_79372a68a675", "s_2dfe35997ebb", "s_c3ca07a2a055", "s_8213a265f545", "s_5ecf3ddf88a7", "s_a0bac5dcf43c", "s_6afd83852eea", "s_3c59c4921e80"], "chars": 17206}
+{"question_id": "q_c27cebe8bb17", "sessions": ["s_aea96d7673c2", "s_13d5c944b458", "s_d88559fee731", "s_634b890a8fb3", "s_fb177d98392d", "s_1718abc4d32e"], "chars": 17074}
+{"question_id": "q_c2a1f44c0394", "sessions": ["s_2b8f4e3689b7", "s_fd81362376e5", "s_98f00b21cb70", "s_673692f90e94", "s_5e81890b264e", "s_66c3099ac394", "s_faa90ea70c23", "s_8e93be746e5d", "s_8fd05ddd23f3", "s_d10f5d16789a"], "chars": 17695}
+{"question_id": "q_c39046a2dfd4", "sessions": ["s_7ba65a3ec69e", "s_c93e98c48a93", "s_9273e3703133", "s_0009483b9ef0", "s_32e513f1097f"], "chars": 16944}
+{"question_id": "q_c45fd10b4f05", "sessions": ["s_007d46bf7332", "s_f118d9c35150", "s_4e4f6c4db3e2", "s_d6a79a312b69", "s_5045ec2b223f", "s_20fd8134a8a9"], "chars": 17246}
+{"question_id": "q_c4842ae181c2", "sessions": ["s_d5277995a11d", "s_1e39af627895", "s_247d0a8cf736", "s_bf0647e39966", "s_53eb4252aec5", "s_14b1a5088f78", "s_9f10c6f42d6d", "s_199b0cb4faff", "s_8759d3b2df39", "s_28d367101e2e", "s_dcb9486030b4", "s_126b86b8aef5"], "chars": 17136}
+{"question_id": "q_c6e3595f4676", "sessions": ["s_9ec2f15a506b", "s_5d947660ab34", "s_c98c534115e2", "s_0982769a9d31", "s_0823a1b1890a", "s_8b48b667e768", "s_a0e2f18ec9ae", "s_8145dfc29ad1", "s_8deaad45ddce", "s_59b82a94e61b", "s_26a7c3ee1e4b", "s_eda015b876af"], "chars": 17106}
+{"question_id": "q_c75b38939cdb", "sessions": ["s_d0e734d40b71", "s_ec5b3e0ea957", "s_ff49f7e1f8ce", "s_d20f1ab79838", "s_5cdc340f9e8a", "s_57dee782f0a9", "s_16a858d185d7", "s_c89601ea62d4"], "chars": 17064}
+{"question_id": "q_c801e5da8f00", "sessions": ["s_068f17b9fe0a", "s_4ec81142c390", "s_03d3a5af5029", "s_8625a19481f2", "s_c889b945a496"], "chars": 17104}
+{"question_id": "q_c80e7e072cc3", "sessions": ["s_ac3f345acbbc", "s_c27b6cc84006", "s_4e31d096e898", "s_34aa3b3b7b30", "s_ff36dcb40628"], "chars": 16947}
+{"question_id": "q_c894d55105e3", "sessions": ["s_804727dc11eb", "s_0bca0d0cb067", "s_533a939c2496", "s_1c2aa0666bf8", "s_9e9c5670ad79", "s_826611e3167a", "s_26f2f07c80ca", "s_c1218b9d0dad"], "chars": 18617}
+{"question_id": "q_c89bfcbf83d3", "sessions": ["s_62beb13e92bf", "s_c6f9f8334c37", "s_0d75eae9df17", "s_86c1afcd1ab7", "s_96a383ddd6a2", "s_7c977a2f17ec"], "chars": 17187}
+{"question_id": "q_c8b7ee7a9361", "sessions": ["s_ff5c1e095190", "s_5ef319a08c44", "s_3314abec4d64", "s_d9221727a79d"], "chars": 17212}
+{"question_id": "q_c8ef96e9fbb5", "sessions": ["s_135cb7fdbc61", "s_92fe8458eb71", "s_29c503178d4d", "s_1342517e6424", "s_bf0a210fcc46", "s_4a58cf1a9dc4"], "chars": 17021}
+{"question_id": "q_c9486927dbed", "sessions": ["s_6c496cfba2ba", "s_aa6ad28aa6e1", "s_d817e84a7071", "s_7b21827597f2", "s_7d66cd537411", "s_96dfb0ee78f7", "s_5d8d104b28f0", "s_358d4fa68136", "s_d93fdce9d086", "s_ead27c033607", "s_9b10714d9bf5"], "chars": 17938}
+{"question_id": "q_c94fee369357", "sessions": ["s_d709f171aeaa", "s_f27482cca5d0", "s_c5ed44802356", "s_12f9a6de2f68", "s_182e08957851", "s_04068013da92", "s_3a0c80ea1349", "s_351f8d6ab8fa"], "chars": 17831}
+{"question_id": "q_c962fb1cd73c", "sessions": ["s_41bec6b93951", "s_0c16b53ecaf3", "s_09631471e755", "s_dd3df67cfece", "s_8fee66a15ee9", "s_e42517d46850", "s_2b193204fe2e"], "chars": 16887}
+{"question_id": "q_ca84a7f57f3a", "sessions": ["s_161e431d46f6", "s_78f2836e529f", "s_2df8366be22f", "s_251b485ce50f", "s_23c43c2cd7fa", "s_5afd8094e13a", "s_19618a64d93c"], "chars": 17604}
+{"question_id": "q_cb0ae2e1a7c5", "sessions": ["s_39a125055c5c", "s_3475e79f5d85", "s_4aef8ccd4285", "s_4d9f59439cf6"], "chars": 16868}
+{"question_id": "q_cb23bc6aa871", "sessions": ["s_09cce963bc34", "s_c061b7e6324f", "s_1bad50f129ae", "s_ab9a28cf9efc", "s_96f0d67585b7", "s_4235a37bed98"], "chars": 17323}
+{"question_id": "q_cb53c0c2a780", "sessions": ["s_e1116e8c9d71", "s_0ef58ad90082", "s_3f58f0fe1f83", "s_3e590f1169cb", "s_598a44d095e3", "s_79981aaaa2a3", "s_edf558324835"], "chars": 17283}
+{"question_id": "q_cba8bd05aeef", "sessions": ["s_3102c3b8f55d", "s_c991c94c0119", "s_227e9489ca76", "s_90fe87e53287"], "chars": 17095}
+{"question_id": "q_cbc0f0cd21dd", "sessions": ["s_865396569a90", "s_27c1131a3161", "s_ccb6dbbff093", "s_bef55e425f6b", "s_2473e2260ce8", "s_ccd29de8b48b", "s_5336dc435447", "s_269a5eeb585e", "s_980768013b43", "s_7ddb5b65fec6", "s_0aee0dafa318", "s_0082603ba23d", "s_48f9c217f2d5", "s_bbccb0c927ef", "s_5d4dd68d047f"], "chars": 17115}
+{"question_id": "q_ccf0b8195b46", "sessions": ["s_4d3bb4a7ffb8", "s_925f608b18f6", "s_8837c3968474", "s_4b8b5ddbbf8a", "s_6cbee7959c87", "s_15de08edf90a"], "chars": 16902}
+{"question_id": "q_cd4b4fc55e0a", "sessions": ["s_69e1bcb0fe2b", "s_2270a89cb975", "s_7669eff7da8c", "s_25957f53ea72", "s_312e3c91a96a", "s_a52458d33bf4", "s_d8cb9ae3f9e2", "s_425e20279f90", "s_5b1358a517c5", "s_459747a526e8", "s_11ba63f40bb3", "s_badfeaa7b3be"], "chars": 17748}
+{"question_id": "q_ce711da57c8d", "sessions": ["s_5143d8a27c04", "s_37dbb8108ca8", "s_11fc15ddf42d", "s_188d54451b91", "s_27e4a8c18e4a", "s_267ac8773975", "s_ace206299298", "s_c37a27212577", "s_a0720631606d"], "chars": 17658}
+{"question_id": "q_cebec6d62648", "sessions": ["s_0661959ef9e1", "s_b4d532e15d1f", "s_fe3992605884", "s_e2792cccc450", "s_90121bf76b3e", "s_31e6ff5932e4", "s_801fe4e52dc9", "s_3b5134ddbb4b"], "chars": 17526}
+{"question_id": "q_ced9afd4e859", "sessions": ["s_4d712d95fdb4", "s_83c47dd40340", "s_f6088922e22f", "s_765c1c0533d1", "s_2939655c458f", "s_7a40cb560ca1", "s_0dffc4334064", "s_65709b8bdd6b"], "chars": 17894}
+{"question_id": "q_cf45ef39e461", "sessions": ["s_c4fc5b3edaaf", "s_759cb12bf3e7", "s_a80c4ddbb442", "s_885a03e5ec98", "s_369a503ceb73", "s_0571062af4a5"], "chars": 17342}
+{"question_id": "q_d09211949668", "sessions": ["s_4199f79cd4d5", "s_99c8318c8f5b", "s_15f578027d3d", "s_670c4ba2ef41"], "chars": 16969}
+{"question_id": "q_d126d20729ec", "sessions": ["s_09705818f365", "s_26c401e936c0", "s_3f6af91305c2", "s_02b92d463abc", "s_31d875898265"], "chars": 17072}
+{"question_id": "q_d28abb3ce67c", "sessions": ["s_4c94c191749e", "s_66ed5ef2312e", "s_b58be390352a", "s_203443f66230", "s_b879e7e5307f", "s_3269999d054c"], "chars": 17302}
+{"question_id": "q_d28d8ff19109", "sessions": ["s_8648a0dabe18", "s_720636dfd464", "s_63f6d52feaf2", "s_154f736fc5da", "s_6cdbfd244293", "s_e526d1ffebc8", "s_49df2b42a59c", "s_1329488cbe96", "s_88b6a95d45be", "s_7f4cde903e32", "s_0c379515fabb", "s_8dd82f11e57c"], "chars": 17728}
+{"question_id": "q_d2e1578c108a", "sessions": ["s_e4745973cddd", "s_2dc0449cdc3b", "s_a681a8c30acc", "s_1ffead450185", "s_a9495d72f8d5"], "chars": 17345}
+{"question_id": "q_d328f843612c", "sessions": ["s_ecdf6c639a08", "s_172406095320", "s_8914d272737e", "s_cfa0a702e340", "s_08255600831c", "s_8a83c0e2044a", "s_8cccdfdb7ad8", "s_0ac85cf263b3"], "chars": 17020}
+{"question_id": "q_d42d53db41cd", "sessions": ["s_c07c11d699cb", "s_97dab1349a04", "s_f5f0bb55c0bf", "s_16e539f3bfec", "s_4035dfb9015f", "s_3c0f3a087dc6"], "chars": 17077}
+{"question_id": "q_d452bf9ce1f9", "sessions": ["s_ebec97dcf605", "s_e1e824bd5499", "s_3dccee7441eb", "s_ded72cef47a0", "s_e6acf68d3878"], "chars": 17534}
+{"question_id": "q_d45d4f14326a", "sessions": ["s_036334f7c6bb", "s_12fa1a2d0b37", "s_1055ff2af2e1", "s_600b371b2258", "s_08828404b8c8", "s_81361d2ced00", "s_3ab370a16c2b"], "chars": 17311}
+{"question_id": "q_d47001e1088b", "sessions": ["s_65fdbcc5d4b7", "s_eb8c87bcd140", "s_48a60fedbb81", "s_2f6796d14eb1", "s_75b272cf25fd"], "chars": 17012}
+{"question_id": "q_d4c25b416038", "sessions": ["s_16d9bdf28889", "s_d15fb716631f", "s_e1547ada56d3", "s_c7b8de7739c5", "s_e69a76a2c4bf", "s_4cd0bbec9f40", "s_02afcd40f4dc", "s_2e0d3445bdb5", "s_f31191dcde3a", "s_7ab01d69d77c"], "chars": 17179}
+{"question_id": "q_d4e58a9c0a82", "sessions": ["s_082059470df8", "s_12a5643e6c35", "s_50221acbeadf", "s_8545b9cae44a", "s_0e94647bb6e6", "s_fd98b3168d49", "s_8953c8e3b139"], "chars": 16803}
+{"question_id": "q_d55cc49fcb4f", "sessions": ["s_0597f376720f", "s_dd09118ed18d", "s_9d764e962fad"], "chars": 17241}
+{"question_id": "q_d5648003cc20", "sessions": ["s_73e3d7e323c1", "s_c3b8d41d5813", "s_d0b9824f3cc8", "s_227af293d9ae", "s_1bd3e0c7a3be", "s_d34926cf8074", "s_4c23b38abf16"], "chars": 17022}
+{"question_id": "q_d7151c2c5336", "sessions": ["s_ee2a2d850f6c", "s_00d5fdc2f135", "s_546e0c8a5d0e", "s_5a3c184a1056"], "chars": 16995}
+{"question_id": "q_d7178eee0e2c", "sessions": ["s_3739b6540d76", "s_4083b3e652c3", "s_3adf7f8f6119", "s_e841943cf3a7", "s_a10289027a71", "s_92f9cf1f3b3f", "s_e1a8d6121b28", "s_f052219902ba", "s_05441a17c38e", "s_1ac477d33afd", "s_cacfc2e72f86", "s_71e062d3b474", "s_0440185aa211", "s_42e750e25996"], "chars": 17163}
+{"question_id": "q_d71c1ff49c34", "sessions": ["s_991635e3f7f3", "s_74671ac8e45c", "s_dd5d08cd9522", "s_17c77b9f02b4", "s_09558cf97433", "s_16ea769489c9", "s_2805b3bfa069", "s_63600aacee8e", "s_19197aaeb121", "s_f2cac047e5ba", "s_dd27b0a900b3", "s_1d2710e6c1ee"], "chars": 17888}
+{"question_id": "q_d76ad8384ec5", "sessions": ["s_b31d37153877", "s_65ac25da053e", "s_bd7ada4ed96f", "s_e78dc713f532"], "chars": 16668}
+{"question_id": "q_d804d00c5751", "sessions": ["s_8c6cd80dcc85", "s_b249e0555f10", "s_63e3990cb6b4", "s_2a918fb52497", "s_5c340cfc2f53", "s_bfd1cfea86a4"], "chars": 16917}
+{"question_id": "q_d83f34cd7b6d", "sessions": ["s_3c478e21d1b2", "s_d55c63378437", "s_ab99bb2ac237", "s_1b6bd173c95c", "s_c0be463e680b"], "chars": 16909}
+{"question_id": "q_d85f9130a03f", "sessions": ["s_0597f376720f", "s_dd09118ed18d"], "chars": 17274}
+{"question_id": "q_d8f6e0ac4844", "sessions": ["s_c40520182f45", "s_678157ac77b2", "s_d6bcb0f1658f", "s_77737516108c", "s_d191ed0a8dfb", "s_5f32e7f4987f"], "chars": 17221}
+{"question_id": "q_d926421924a9", "sessions": ["s_ffbb1950e9a3", "s_046a459ba282", "s_cd56886c9391", "s_d790f446c216", "s_d53b7f6c1547", "s_84bb39f657eb"], "chars": 17022}
+{"question_id": "q_da40cde67c3e", "sessions": ["s_38d0d9881243", "s_8a0ea16adce5", "s_f458c6276273", "s_9a0de02ac0e0"], "chars": 16920}
+{"question_id": "q_da6370bd2e28", "sessions": ["s_44e9cbcfe2f0", "s_eb32736006ad", "s_cb2928880fd7", "s_9a9ec78e1c77", "s_f1646fee0245", "s_fe9d71f35b5b"], "chars": 17109}
+{"question_id": "q_daa6d226581b", "sessions": ["s_bc0772b2edd5", "s_7297f7838cde", "s_47448cbcae6c", "s_1945f68420f1", "s_1aa2923a27c9"], "chars": 17410}
+{"question_id": "q_db158fc16d5f", "sessions": ["s_51d05327b321", "s_214fc335318c", "s_d04fa2975828", "s_c4356f2f6cf1"], "chars": 17050}
+{"question_id": "q_dcff62902a48", "sessions": ["s_73c4fd7d0af8", "s_79541f22e8ae", "s_53190386d7ca", "s_2c5f0a7d831c", "s_b4db5f114490", "s_a432ad1cb309", "s_d8facf5fb2cc", "s_42dce7cb547d", "s_887950c867f7", "s_500592c0ecd0", "s_59f909a4fe9c"], "chars": 16945}
+{"question_id": "q_dd09c6f85a13", "sessions": ["s_771ceae0c128", "s_6bec298908c4", "s_6fca9f0e968a", "s_8bfd9c38884a"], "chars": 17195}
+{"question_id": "q_dd90747be239", "sessions": ["s_f7f211a7aacb", "s_3d0933ece46d", "s_cd36a5eab446", "s_51cf566495dc"], "chars": 17031}
+{"question_id": "q_ddb9782ce682", "sessions": ["s_bc8d46d8b3ea", "s_a45064ff4f89", "s_8fd44fc3e6d4", "s_0c6e8c5fdf80", "s_0164b7324dd3", "s_df0fd6c49acf", "s_05ff3f3cfba3", "s_b3e0c854b771"], "chars": 17157}
+{"question_id": "q_ddc978d71411", "sessions": ["s_0251a0394250", "s_54429ced7791", "s_fe04e182b40f", "s_1566a3633e38", "s_0d5355945f0c", "s_878041fed558", "s_31cd130dec9c"], "chars": 17142}
+{"question_id": "q_ddf32b6da08b", "sessions": ["s_5b42f3a21536", "s_d80bbf948e21", "s_153a8609cf67", "s_6e97b3335e2d", "s_1cf6ec840550", "s_f790f9e6e2cc", "s_a6f5017cc27d", "s_34505d2e8c38", "s_45d52b710279", "s_2de676fea6fc"], "chars": 17018}
+{"question_id": "q_dedd426ee7d3", "sessions": ["s_092e0801716c", "s_4fa662420242", "s_03532d2d1ebc", "s_9bd797373eac", "s_7bed09a65417", "s_7376b127e15f", "s_ab00d753ce58"], "chars": 16963}
+{"question_id": "q_df486e7a65c7", "sessions": ["s_97b8dcfdcfc7", "s_a3eefc392de6", "s_740eb8ea83df"], "chars": 17099}
+{"question_id": "q_df5c1435a178", "sessions": ["s_8a4eba89e0dc", "s_e87a68698cd9", "s_631900b07c6c", "s_e53e3c5d2d00", "s_fd5c062d8375"], "chars": 16986}
+{"question_id": "q_dfb02d3e4e44", "sessions": ["s_d505cfa6d7f1", "s_f692a9a515f3", "s_8dad24959dbb", "s_1ab7bf7d1210"], "chars": 16995}
+{"question_id": "q_e0183ef95582", "sessions": ["s_65540337eefc", "s_af86345b6296", "s_b320df273a74", "s_c745d4e8c4c2", "s_c805f742da08", "s_fcc9b988410f", "s_9699f308169a", "s_58da989561db"], "chars": 17935}
+{"question_id": "q_e0669c9aa81d", "sessions": ["s_56bd9586cf43", "s_b1fc24e4bad1", "s_fb08ff0349b7", "s_b2295f46acd6", "s_b9da6b722f7c", "s_b2d56132a071", "s_b9ad2e2773a6", "s_2ff7bc45689a"], "chars": 17227}
+{"question_id": "q_e1169151f5c3", "sessions": ["s_1aad5155e76a", "s_8ad9f7d0e34a", "s_9e1c7db1eddb", "s_e07cde217f57", "s_0ad89ff19edf"], "chars": 16973}
+{"question_id": "q_e120a6609085", "sessions": ["s_ba537c42056f", "s_0822f4442284", "s_e53ab3d6504a", "s_40930c19e86a", "s_c6875f72bcc7", "s_5df5cdd6971d"], "chars": 17693}
+{"question_id": "q_e1f7ba9953ae", "sessions": ["s_4c94c191749e", "s_66ed5ef2312e", "s_b58be390352a", "s_203443f66230", "s_b879e7e5307f", "s_75d9160a42c0", "s_f12e4b278a57"], "chars": 17066}
+{"question_id": "q_e209cad2379c", "sessions": ["s_ac4fa51f4e43", "s_a1d7a6599c93", "s_d3ea12108697", "s_a75bfa0f5a54", "s_6dcd9dcfbea4", "s_dccd3a4097c8", "s_ed1d78f62b75"], "chars": 17799}
+{"question_id": "q_e211cb1aeaaf", "sessions": ["s_3269999d054c", "s_92fe8458eb71", "s_29c503178d4d", "s_1342517e6424", "s_bf0a210fcc46", "s_4a58cf1a9dc4"], "chars": 17181}
+{"question_id": "q_e2ae6f37a2bf", "sessions": ["s_00d12150b627", "s_f1611400cd96", "s_c7abf10c6cb2", "s_64a24ca53ad3", "s_541c7d043ac0", "s_4519446f459e", "s_9e7fde41b3a1"], "chars": 17114}
+{"question_id": "q_e392577d59c6", "sessions": ["s_36781e8d3ea3", "s_c23cb0fb4537", "s_9d3d6db7b321", "s_4bd107f27dd8"], "chars": 17196}
+{"question_id": "q_e44acb5513a5", "sessions": ["s_4490eb8aa145", "s_1c28d037a20a", "s_2266bbe30e23", "s_a07c60dbeac0"], "chars": 17201}
+{"question_id": "q_e51454d099a4", "sessions": ["s_89ec78275801", "s_df024967fe3d", "s_30ca0f028a15", "s_bd92a8fe35cb", "s_7e4f0eb1523a", "s_577b18e21c3b", "s_52c5636027f7"], "chars": 17154}
+{"question_id": "q_e51c2743c1ee", "sessions": ["s_ded5d689b697", "s_c56731a7ec0a", "s_31f65c86015f", "s_b2c9bf7c45a4", "s_96efe3966afc", "s_d763f90c344c", "s_437d8efcc5eb", "s_2c5184bde7c2", "s_01e1b28546d3"], "chars": 17207}
+{"question_id": "q_e59b96d14248", "sessions": ["s_76dda35be9f0", "s_b6ca0049f6dc", "s_0eb63df22330", "s_8e3487acf5f1", "s_abce8ea92ced", "s_6c1f693764dd"], "chars": 17424}
+{"question_id": "q_e6fc288fc2b9", "sessions": ["s_b70e12ada71c", "s_80834b5d9e8f", "s_32b57db88dd3", "s_5cec1145c94c", "s_e2e2164ba9c3", "s_53241d49f86a"], "chars": 17258}
+{"question_id": "q_e748f136b660", "sessions": ["s_abd1892e9e61", "s_f2adb7b8688b", "s_1eb41bb36f9f", "s_e1547ada56d3", "s_e69a76a2c4bf", "s_7ab01d69d77c"], "chars": 17219}
+{"question_id": "q_e78b81b46b23", "sessions": ["s_680e2a217304", "s_93a6c8a4b159", "s_d3eb1ac11c5e", "s_d48beae571c5", "s_490cb6ca65cc", "s_b2a633e7c06f"], "chars": 17196}
+{"question_id": "q_e7aac73fd813", "sessions": ["s_c30db10462e1", "s_a8f79354c7cd", "s_14b92e19f070", "s_f137e0c8f1ba", "s_3c0f3a087dc6"], "chars": 16622}
+{"question_id": "q_e7bf0c976542", "sessions": ["s_344e3177cea4", "s_6869a6cada6a", "s_4d7f4e109f80", "s_377e2b945bbf", "s_3f868d367506", "s_9c216d61d214", "s_6d7a47c58fd5"], "chars": 17089}
+{"question_id": "q_e83c43fc8726", "sessions": ["s_07df96a4325d", "s_b0825a35ca44", "s_cb0eac46c34d", "s_60e364bc2a57", "s_57a9fbee32a9", "s_1a247251c97d", "s_bc3ba3766047", "s_2dba6fea04ec"], "chars": 17002}
+{"question_id": "q_e912e3b92c42", "sessions": ["s_f2dcd6fb0bcf", "s_a50e5642aea3", "s_45800d690192", "s_33d4cad20e77", "s_41695e322b02"], "chars": 17081}
+{"question_id": "q_e95d6088fd85", "sessions": ["s_f3b63ffad6a4", "s_c93059e1722d", "s_21db54be3362", "s_179a2070ee5a", "s_4e76fef598c7", "s_339112fd7c0f", "s_6a8a3a8d9a19", "s_0ea3f76b1cc5", "s_5b16514b0b64"], "chars": 16990}
+{"question_id": "q_ea1e5b7244ff", "sessions": ["s_5d72a1a70fff", "s_26bc56614018", "s_150a6df2637c", "s_f3e20f9b6584", "s_5269bac9038b"], "chars": 16889}
+{"question_id": "q_eadc8336cf1e", "sessions": ["s_e089d32cf839", "s_d4bf1c64bfed", "s_dc3585df5437", "s_4afff9b5fab6"], "chars": 17270}
+{"question_id": "q_eb5dec9d4d9b", "sessions": ["s_fc19fbc1f1d2", "s_da8b64bb30d7", "s_300c7521fc00", "s_09a38214715b", "s_36c613ada81a", "s_6e1f08697e94", "s_078c516e1e38", "s_ad24cbd542c3", "s_89f4ddf376b6", "s_c30207240326", "s_a44fa48bd06e", "s_07fe3789ae78", "s_03b7af0a74f1"], "chars": 17808}
+{"question_id": "q_eb64bcacbdf1", "sessions": ["s_66e9a03bd64b", "s_a41c06d287d1", "s_f06f38a7cbbe", "s_81779c85e77e", "s_3ba5fbfb6c07", "s_1809b86bbf3f"], "chars": 17085}
+{"question_id": "q_eba5b6938ec8", "sessions": ["s_f37a327dfc7d", "s_ee7d8ee4d240", "s_3dafb3f9889a", "s_eb7b7fe4d152", "s_c397e50c9c54", "s_57f178c3d818", "s_dcbb804da547", "s_9a492ea64a65"], "chars": 16948}
+{"question_id": "q_ebd46d80f049", "sessions": ["s_28df7975abc5", "s_e1984046b606", "s_6c620e94e5c9", "s_2f2bff607eb9", "s_6b6685d5fb94", "s_a4ba03096dc9"], "chars": 16985}
+{"question_id": "q_ebf7aac0f77f", "sessions": ["s_0f7259f744ca", "s_7438dcb1ceee", "s_dafff874c0c3", "s_09346b033f2f", "s_ec8aba751171", "s_de8fc0a3785d", "s_4b4194a49d4a", "s_389a713dbc46", "s_83cb1ec7933f"], "chars": 16833}
+{"question_id": "q_ec01cbccd493", "sessions": ["s_3d17623b3f0d", "s_39d3a8a52015", "s_261a04c2bf03", "s_27ba5acfce09", "s_e70369e58280", "s_1cd1013b95b8", "s_11a0c5bc4156"], "chars": 16945}
+{"question_id": "q_ed4e4be06bbc", "sessions": ["s_7e5f9437be99", "s_4faa5f45fc9d", "s_6026e3c5b6c9", "s_73862d7dd45e", "s_77c8bbcf286c"], "chars": 17072}
+{"question_id": "q_ed56b101f26b", "sessions": ["s_6638d5b536cf", "s_8ef1be3874b2", "s_3e330acb9d45", "s_96ab781aa8cf", "s_c5abb53e5f6c", "s_6e29824cc801", "s_096f73a77757", "s_3265958cf1cb"], "chars": 17767}
+{"question_id": "q_edc56d8b30ef", "sessions": ["s_a9c5a818ed7f", "s_e037e89dde05", "s_483710428dab", "s_87dbe5b14df0", "s_c8d273d1bc78", "s_a9d0103b3214"], "chars": 16963}
+{"question_id": "q_ef3e91b0ea75", "sessions": ["s_68c22b3339e9", "s_1cb43325e413", "s_7d03976c698b", "s_6a52a0bff5c3"], "chars": 16783}
+{"question_id": "q_ef52f4c7bbbe", "sessions": ["s_95de49f57afd", "s_b40f070e4346", "s_3bbe1ff4fd25", "s_e27e7457b7d4", "s_89bd0dba325d"], "chars": 17152}
+{"question_id": "q_ef751fb10045", "sessions": ["s_3a510dba21be", "s_31ec14bbb4fe", "s_e599011596a8", "s_94dec685f085"], "chars": 17208}
+{"question_id": "q_efa537d7e21a", "sessions": ["s_8a0ad36a80d3", "s_e03ab420e751", "s_66abf3aecd58", "s_0f150d97b646", "s_2426618885bd", "s_04670e08b873"], "chars": 16891}
+{"question_id": "q_efd88baab92c", "sessions": ["s_80bfeb6d2458", "s_3ad13b6407fb", "s_b99beea12742", "s_e729efec68a3", "s_7434e4b458c3", "s_4677869db9c6", "s_bcbd5fe9603a", "s_1d8df57d05c1", "s_9bf8de41dc5e"], "chars": 17077}
+{"question_id": "q_f0e71a55c7cb", "sessions": ["s_5e660d786506", "s_9df622e91419", "s_4b45f67bd740", "s_9962ec2cd859", "s_00fca9be3393", "s_50d877325cfe"], "chars": 16915}
+{"question_id": "q_f25f2c0af7e4", "sessions": ["s_78b50b1e2f95", "s_a590a69a7ab3", "s_0a981cdace8c", "s_d375636af975", "s_3d507252a696", "s_ad6ef5f8ef93", "s_c4bc69cc3709", "s_40ec91b7eef6", "s_15be09232254", "s_0dee708b16d5", "s_7e81d4192cd5"], "chars": 17694}
+{"question_id": "q_f2703508d41d", "sessions": ["s_a4ca0861b73d", "s_ba2f3aa9b79b", "s_009b7488b4f9", "s_cde9dcf581cb", "s_be28214750ee", "s_31437636464b", "s_fe84d99014de", "s_3017ab9b7270", "s_0bd0721ba93d", "s_9065eb1bb06c"], "chars": 16859}
+{"question_id": "q_f28b7bc85b49", "sessions": ["s_eefe20392213", "s_0d917c1f8d8a", "s_2f0caeea2a92", "s_3a339e429c2e"], "chars": 17026}
+{"question_id": "q_f312e0166c56", "sessions": ["s_e0599fc122c1", "s_b9554ba7568e", "s_9f47fe0e8f06", "s_fcd0a3d3a866", "s_4a5db5e06942", "s_e7f581204c74"], "chars": 17093}
+{"question_id": "q_f313bf438399", "sessions": ["s_72be36d738eb", "s_c73e627546f2", "s_90575d708081", "s_7dbda336f1a1", "s_fc783b1fcdcf", "s_d667d04f8fce", "s_6be3c3eead7d", "s_4c571d553470", "s_85ac12d36de0", "s_662c069c14e9", "s_06608dc04896", "s_f5858a644b7b", "s_17ad5796e0df", "s_eeedeff94289"], "chars": 17890}
+{"question_id": "q_f3a0189fd6f3", "sessions": ["s_34e979e21463", "s_ada2ce2f2b11", "s_b6fa5e7a6c43", "s_39c8b13aba15", "s_e9ca58adb5b4", "s_a77dbd7620c2"], "chars": 17037}
+{"question_id": "q_f3cb302cbed4", "sessions": ["s_e49d730b5860", "s_bee3d41ba690", "s_f22bf1aa494a", "s_cef959ef5df2", "s_d5d898cff406", "s_da9e5418d327"], "chars": 17213}
+{"question_id": "q_f40c03d9f26e", "sessions": ["s_52f01a021c4f", "s_eb99f9161bf3", "s_134626298a96", "s_0f470344d7ef", "s_f4c596ac920f"], "chars": 17210}
+{"question_id": "q_f434e4d3e85b", "sessions": ["s_afa94fdda6a5", "s_8e5174cfc669", "s_9ea2f1f82dd9", "s_05a61e3e4c83", "s_aa784719f22a", "s_e983d0ba00e7", "s_24a6fcdbdab6", "s_edc8b1baa7c0"], "chars": 16803}
+{"question_id": "q_f47df8df0de8", "sessions": ["s_6e7e37522ae1", "s_de18a754ca82", "s_bbdcdf7f0173", "s_9f6a8ca2177e", "s_3e0065ff4ec9", "s_e76b5830f6af", "s_76b2759f63c9", "s_3f34acb4b49d", "s_5c6713888859", "s_bd30e53f3493", "s_77fe402b11b4", "s_05e7ccbee97c", "s_56f4a96cd7fe"], "chars": 18149}
+{"question_id": "q_f4e8de740a80", "sessions": ["s_efad9f087e1b", "s_c2ca9adacea0", "s_e5a3d9dad774", "s_6d1dba1463bd"], "chars": 17075}
+{"question_id": "q_f6df1da8469a", "sessions": ["s_9e6681c9a2c2", "s_26820aa1fc7b", "s_dbe19fb37643", "s_740682b4d21e", "s_bedb439dfd87", "s_bbee9a1a2f48", "s_2c65fb4ef338"], "chars": 17292}
+{"question_id": "q_f6f9fd7a88ab", "sessions": ["s_f502c32a73dc", "s_e447f65027f6", "s_81cda33d5f10", "s_09a7dbf760a7", "s_586c917c1fc6"], "chars": 16845}
+{"question_id": "q_f71f0c213007", "sessions": ["s_d95550adaf47", "s_08630008cfca", "s_fd6813d942d8", "s_82d4f63b5778", "s_1421882ab403", "s_c4af6b9217ce", "s_bf3b1fdc3d6b"], "chars": 17019}
+{"question_id": "q_f77b7bc1f052", "sessions": ["s_82c043dbd6ec", "s_542cee57950e", "s_c5e1b1789ebf", "s_d494fa68f704", "s_4e54274da2f3", "s_4f7786476564"], "chars": 16941}
+{"question_id": "q_f7b688c9c733", "sessions": ["s_8754d1ffce2e", "s_ea0724c6b563", "s_2611c99970f2", "s_ed92db186ad4", "s_ea14f120827b", "s_f0f370189677"], "chars": 16980}
+{"question_id": "q_f7f1b6418ae8", "sessions": ["s_d25187d373a9", "s_5c5163d6f11b", "s_12765fc9e197", "s_fbd2c7921bc8", "s_f38e731495dc", "s_f46bad773613", "s_764e3bb281b6", "s_2debc0f048b2", "s_506deef59c28", "s_b10ea8989b6a", "s_5ce478704f80", "s_355fef6134ef"], "chars": 16929}
+{"question_id": "q_f7f298f5c52a", "sessions": ["s_44e9cbcfe2f0", "s_eb32736006ad", "s_cb2928880fd7", "s_ad99d1f96713", "s_9a9ec78e1c77", "s_edb5a3902021"], "chars": 17107}
+{"question_id": "q_f818a43635a2", "sessions": ["s_e8999bff7814", "s_880f1185f0a8", "s_b70bf3870091", "s_8c89f572f05b"], "chars": 17176}
+{"question_id": "q_fa2e296746a2", "sessions": ["s_eb676f752d77", "s_e86344a2baa9", "s_2a0bfea32d89", "s_9d9fc847997c", "s_510e40eb95b3"], "chars": 16984}
+{"question_id": "q_fa3faa1390cd", "sessions": ["s_0405b48865f4", "s_70ca6ef5fbf6", "s_dba3b240f121", "s_0fb8b3944801", "s_f2a55cc75a92", "s_1de8964708bc", "s_264459c38811"], "chars": 16909}
+{"question_id": "q_fa8a9b9e5b4b", "sessions": ["s_8f4720a90c4b", "s_ee1509684726", "s_2cca0e0148e6", "s_7524ece51eca", "s_f201c0a37bec", "s_99a4e6c8ac23", "s_aee0b140174d", "s_0c8b85de03dd", "s_066b8c0483e2", "s_9438f9f7eaa1"], "chars": 17682}
+{"question_id": "q_fb95c76cc6fa", "sessions": ["s_fd087c3150f8", "s_e8ef48b5b7ec", "s_7df0ff6dd391", "s_7a1a7572c25b", "s_9bdb75ae8723", "s_0ea11288d382", "s_6e49a450e635", "s_b791dee9df5c", "s_738096a0c3dc"], "chars": 17132}
+{"question_id": "q_fcee2a0191ac", "sessions": ["s_61b20b1c8c38", "s_d55ed9776e66", "s_141f7ad4c744", "s_f96867aed23b", "s_e71b11867492", "s_deca1f5f3a1c", "s_2fa334a524ce"], "chars": 17057}
+{"question_id": "q_fd6f2be1b055", "sessions": ["s_3a74e40be269", "s_0ecc87949fe4", "s_7f47cc9e79be", "s_c230b39da565", "s_d6c903efbc55", "s_52bbd72c106e", "s_16f125564660", "s_12d87c5c0ef5", "s_78a57916b723", "s_fc151521ec44"], "chars": 17595}
+{"question_id": "q_fd8754f72610", "sessions": ["s_d67b6719e538", "s_f82dba31407e", "s_48ed15a20131", "s_055789688114", "s_debd6a6963c9", "s_f9c5e38b2c16", "s_2d9db3beabe3"], "chars": 17012}
+{"question_id": "q_fdd4be2f67a7", "sessions": ["s_b0ad6d64bf6d", "s_c797739c4753", "s_a9dad2839beb", "s_9a43e28752cf", "s_4ac11069b487", "s_ba7b7c369ab2", "s_43e24a06b24a", "s_e5eae6ec02d0"], "chars": 17128}
+{"question_id": "q_fdd7fc475dc6", "sessions": ["s_1c11d39ffef6", "s_35a95bf13eaa", "s_1a18045b2690", "s_7734c854c91c", "s_24d8b8751c12", "s_d85038c2de15"], "chars": 17649}
+{"question_id": "q_fdffa56efacb", "sessions": ["s_abd1892e9e61", "s_f2adb7b8688b", "s_1eb41bb36f9f", "s_e1547ada56d3", "s_a988bcd23652", "s_f31191dcde3a"], "chars": 17047}
+{"question_id": "q_fec24f5f6e4d", "sessions": ["s_5bb1b500abb5", "s_a7ff15c71905", "s_ba4626e396d1"], "chars": 17282}
+{"question_id": "q_ff87609f7922", "sessions": ["s_2282f364f33a", "s_e4e624e67ed9", "s_4e4f6c4db3e2", "s_6aa704620551", "s_8a636656b72d", "s_8b48ca1b338f", "s_a3476709a0cb"], "chars": 17238}
+{"question_id": "q_ffb13cfd145e", "sessions": ["s_86930b893561", "s_16725c7c476e", "s_2726294a7a52"], "chars": 16944}
