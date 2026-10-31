@@ -86,5 +86,7 @@ almost always); use it to rank rockets on robustness, not to predict the test sc
 | `pack_budget.py` | R1's evidence budget vs all-gold-in-pack and whole-message size, from candidates.jsonl |
 | `pack_policies.py` | pack orders against near-miss crowding (sessdiv, query-driven pruning), from candidates.jsonl |
 | `r1_run.py` | R1 retrieval (root memsys.py) on a whole split -> candidates.jsonl, evidence.jsonl |
+| `make_traps.py` | test-like trap asides (another person / a plan, other value) written by the stand-in; local output |
+| `reader_probe.py` | a reader with vs without the trap aside on the same small R1-style pack |
 | `PITCH.md` | slide-ready summary for the final presentation |
 | `LOG.md` | what was tried, numbers |
