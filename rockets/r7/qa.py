@@ -14,14 +14,12 @@ _tk = _model = None
 # the signal separates answerable questions well for single-fact lookups (AUC 0.95-0.99 on single-session-user and
 # knowledge-update) and badly for computed answers: dates, counts, sums, orderings, comparisons (0.65 temporal).
 # "How long" and "how much" stay in: their answers are usually stated ("How long was I in Korea for?"). Positions
-# in a list ("the 27th of the 100") and the latest of several mentions ("the last book I mentioned", 3 of R7's 7
-# test abstentions) go out: no fewer right abstentions on dev or dev-hard, one false fewer on dev. Leaving out
-# "how long have I been" too cost 2 right abstentions on dev-hard for no fewer false ones.
+# in a list ("the 27th of the 100") go out. Leaving out "how long have I been" too cost 2 right abstentions on
+# dev-hard for no fewer false ones.
 COMPUTED = re.compile(r"how many (days|weeks|months|years)|when did|what date|\b(who|which|what)\b.*\b(first|earlier|"
                       r"later)\b|\bago\b|\border\b|before or after|\bhow many\b|\btotal\b|\bcombined\b|\bin all\b|"
                       r"\baltogether\b|\bdifference\b|\bpercentage\b|\baverage\b|\bbetween\b|\bthan\b|"
-                      r"\b\d+(st|nd|rd|th)\b|\b(second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth)\b|"
-                      r"\b(last|latest|most recent(ly)?)\b(?! name)", re.I)
+                      r"\b\d+(st|nd|rd|th)\b|\b(second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth)\b", re.I)
 
 
 def load(device="cpu"):

@@ -61,3 +61,32 @@ split by variant with POLIGON's manifest (analysis only, never fed to the rocket
   24/107 2/398 (DROPPED: it also holds swapped-entity questions the gate caught).
 - Result (runs/r7/20261031-0021-aac6aeb, runs/r7/20261031-0055-aac6aeb): dev 13/25 right, 2/398 false (was 12/25, 3/398); dev-hard 26/107,
   2/398 (was 23/107, 3/398). `pack` alone has no false abstention left on either.
+## 2026-10-31 karol-claude: reverted the "last / latest" exclusion (5546b48)
+
+The QA gate briefly skipped "the last X I mentioned" questions. The idea came from looking at the questions R7
+abstained on in the TEST split (no gold seen), which is fitting rules to the test; the reviewer of PR #5 flagged it.
+Dev alone gave thin support (one false abstention fewer, no change on dev-hard), so the rule is gone. From here on
+no rule is designed from test questions; the test split is only run, never read.
+## 2026-10-31 karol-claude: R7's gate on R1's real candidates
+
+R1 at 926005e with the reranker (runs/r1/20261030-2320-926005e-{dev,hard}, PR #9), read with run.py --cands; R7's
+pack is rebuilt from R1's turn ranking with memsys.build_evidence (all gold in the pack: dev 0.922, dev-hard 0.824;
+R1's own packs differ). Same QA threshold and shapes (dev-chosen).
+- dev: `pack` 8/25 right, 2/398 false (BM25: 6/25, 0/398); `pack` + QA 13/25, 2/398 (BM25: 13/25, 1/398).
+- dev-hard v1: `pack` 23/107, 4/398 (BM25: 16/107, 0/398); `pack` + QA 27/107, 4/398 (BM25: 26/107, 2/398).
+The gate does about the same on either retriever. On R1's candidates the entity gate catches more and also abstains
+falsely more often; why was not checked.
+## 2026-10-31 karol-claude: DEADEND, entity swap sensitivity (swap.py)
+
+Swap the question's most specific word (longest name, else the word rarest in the history) for a made-up one and
+score both questions with SQuAD 2.0 on the same 8 chunks; a small drop should mean the evidence is not about that
+entity. Dev minus holdout, 423 q: AUC of the drop 0.830 vs 0.868 for the plain QA score (single-fact shapes: 0.890
+vs 0.916). Added to the gate it buys recall only with mass false abstentions (drop < 0.5: 24/25 right, 134/398
+false). A made-up word lowers SQuAD's confidence almost always, near-miss or not. Not run on dev-hard.
+## 2026-10-31 karol-claude: DEADEND, answer-name co-location
+
+Abstain when SQuAD's best span comes from a session where a name of the question (or a noun-phrase head) does not
+occur. Added to the gate, single-fact shapes, names only: dev +1 right / +3 false (BM25), +0 / +4 (R1 candidates);
+dev-hard +1 / +3 (BM25), +6 / +2 (R1). With noun phrases: about +2 to +20 right for +28 to +30 false. Not
+consistent and near 1:1. With a reader that answers ~90% of answerable questions right and already abstains on most
+near-misses, an extra rule needs far better than 1:1 to pay.
