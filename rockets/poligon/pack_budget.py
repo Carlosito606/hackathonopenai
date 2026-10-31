@@ -35,10 +35,11 @@ def rebuild(h, ranked):
     """Candidate dicts in build_evidence's format from [session_id, turn, score] rows."""
     si = {s["session_id"]: i for i, s in enumerate(h["sessions"])}
     seen, cands = defaultdict(int), []
-    for sid, turn, score in ranked:
+    for row in ranked:  # [session_id, turn, score], or [session_id, turn, chunk_idx, score] (exact)
+        sid, turn, score = row[0], row[1], row[-1]
         s = h["sessions"][si[sid]]
         pieces = [p for t, _, p in session_chunks(s) if t == turn]
-        k = seen[sid, turn]
+        k = row[2] if len(row) == 4 else seen[sid, turn]
         seen[sid, turn] += 1
         cands.append({"si": si[sid], "session_id": sid, "turn": turn, "role": s["turns"][turn]["role"],
                       "text": pieces[min(k, len(pieces) - 1)], "score": score})
