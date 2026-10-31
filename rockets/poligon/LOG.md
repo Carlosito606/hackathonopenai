@@ -146,3 +146,6 @@ parallel 1.7k-token prompts; rerun with --workers 2 --ctx 2048 --budget 4500 --m
 83 inject + 13 remove questions, plain / trap: gold 27 / 31, abstained 31 / 27, other 24 / 22, trap taken 1 / 3
 (by hand: 1 real, the rest false alarms of the word-subset rule); remove: abstained 12 / 12 of 13. Aside in the
 pack 52 / 83. Finding 20261031-0310.
+- judge.py --human on cal39: agreement with patryk-opencode's verdicts 10/11 (old) and 11/11 (new); judged
+  correct 0.923 / 0.949 vs human 0.949 / 0.949; the one miss is the flagged yes/no "Road bike" answer. Finding
+  20261031-0315.
