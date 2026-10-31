@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .dates import annotate_dates
 from .timeline import classify, compute, events
+from . import count_extract
 
 ROOT = Path(__file__).resolve().parents[2]
 _emb = None
@@ -46,6 +47,10 @@ def enrich(q, h, cands):
             if previous['role'] == 'user':
                 extracted += events(previous['content'][:300], session['date'], c['session_id'], c['turn'] - 1, 'user')
         enriched.append({**c, 'notes': {**c.get('notes', {}), 'timeline': extracted, 'question_form': form}})
+    if enriched and form['form'] == 'count':
+        record = count_extract.load_record(q, h, cands)
+        if record:
+            enriched[0]['notes']['counting'] = record
     return enriched
 
 
@@ -92,7 +97,7 @@ def compatible_evidence(h, cands, dates=False):
     return sorted(by_id.values(), key=lambda item: sessions[item['id']][0])
 
 
-def grounded_computation(q, cands, evidence):
+def grounded_computation(q, cands, evidence, h=None):
     selected_ids = {item['id'] for item in evidence}
     # Compute only from text that is actually in the evidence pack, never from omitted candidates.
     pool = []
@@ -103,7 +108,12 @@ def grounded_computation(q, cands, evidence):
             normalized = annotate_dates(event['text'], event['session_date'])
             if any(item['id'] == event['session_id'] and normalized in item['text'] for item in evidence):
                 pool.append(event)
-    return compute(q['question'], q['question_date'], pool)
+    result = compute(q['question'], q['question_date'], pool)
+    if h is not None and result['form'] == 'count':
+        records = [c.get('notes', {}).get('counting') for c in cands if c.get('notes', {}).get('counting')]
+        if len(records) == 1:
+            result = count_extract.computation(q, h, records[0], evidence) or result
+    return result
 
 
 def assemble(q, h, cands):
@@ -117,7 +127,7 @@ def assemble(q, h, cands):
             bounded.append(item)
             used += cost
     evidence = bounded
-    computation = grounded_computation(q, cands, evidence)
+    computation = grounded_computation(q, cands, evidence, h)
     facts = computation['facts']
     if not facts:
         return baseline_assemble(q, h, cands)
@@ -145,7 +155,9 @@ def decide(q, h, cands, pack):
         return baseline
     text = baseline['question']
     if pack['facts']:
-        text += ('\nCalendar computations for the matched events in the supplied excerpts:\n' + pack['facts'] +
+        heading = ('Computed inventory from locally extracted source items:' if classify(q['question'])['form'] == 'count'
+                   else 'Calendar computations for the matched events in the supplied excerpts:')
+        text += ('\n' + heading + '\n' + pack['facts'] +
                  '\nUse these computations only for the events named above. Keep their evidence labels in the final answer line.')
     text += ('\nDate ranges and dates labelled inferred are not exact event dates. '
              'Do not replace an event date with its conversation date unless the text says it happened that day.')

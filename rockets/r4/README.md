@@ -15,8 +15,8 @@ Preparation: 94/102 answerable packs contain all gold sessions in both variants;
 The same 12 exact claims have supported source audits; reader accuracy is still unmeasured on this full split.
 Parts: all four contract stages in `rocket.py`; R1 retrieval, R4 enrichment/assembly/decision.
 Dates: `dates.py` forks the date block in R1 `memsys.py` at `de158d5` (there was no standalone dates.py).
-Counting kernel: source spans, cross-session identity deduplication and bounded time-window counts in `counting.py`.
-Limits: counting extraction/coverage is not validated or enabled in the pipeline; ambiguous events fall back to reading.
+Counting: opt-in local item extraction, grounded spans, identity deduplication and bounded period counts.
+Limits: counting semantics/coverage remain unmeasured; the default pipeline does not load counting caches.
 Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, then released early).
 
 ## What the first implementation does
@@ -46,8 +46,28 @@ the same asserted event clause. Exact-name normalization preserves near names, a
 Repeated entities retain their source mentions but count once. An uncertain period membership produces a
 lower/upper bound rather than silently excluding an item. The result explicitly does **not** certify item
 semantics or history coverage; it must not be used as the user's total without extraction/coverage validation.
-This component is not yet used to add reader facts or benchmark predictions. Run its synthetic invariants with
-`python -m unittest rockets.r4.test_counting`.
+Run the arithmetic and extraction invariants with `python -m unittest rockets.r4.test_counting rockets.r4.test_count_extract`.
+
+Experimental counting integration is opt-in. First prepare R1 candidates in a fresh cache for the source
+revision being measured, then extract items using the same candidates and the team's stand-in:
+
+```bash
+python -m rockets.r4.extract_counts --data /path/dev --candidate-cache /path/candidates \
+  --out rockets/r4/cache/counting --local http://127.0.0.1:8899 --reader TEAM-MODEL
+python -m rockets.r4.run --data /path/dev --types multi-session --candidate-cache /path/candidates \
+  --counting-cache rockets/r4/cache/counting --local http://127.0.0.1:8899 --reader TEAM-MODEL --scorer /path/score.py
+```
+
+Literal closed lists use rules. Mixed prose is processed one user fragment at a time; code assigns the source
+and copies the supporting sentence, while the model selects literal names and optional links to known entities.
+Exact repeats merge in code; other alias links remain explicit local-model hypotheses, not independently proven
+identities. The counter performs all arithmetic. Missing/invalid extractions, unresolved dates or an omitted
+supporting quote produce the unchanged R1 pack/prompt. Empty extraction does not establish a zero inventory.
+Weighted quantities, occurrence counts, changing inventories and complex/vague periods currently fall back.
+Extraction is a separate CLI; the four stages never call a model endpoint. Cache keys bind question/history/
+candidate text and extractor schema; the paired runner records cache hashes and rejects changes on resume.
+Source/quote validation does not certify semantic recall or ownership. Local-model completeness claims are
+identified as such in reader facts. Do not enable this by default before paired multi-session evaluation.
 
 From the repository root, using Python 3.11+ and the R1 dependencies in this folder's requirements.txt:
 
