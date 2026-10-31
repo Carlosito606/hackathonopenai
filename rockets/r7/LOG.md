@@ -61,3 +61,9 @@ split by variant with POLIGON's manifest (analysis only, never fed to the rocket
   24/107 2/398 (DROPPED: it also holds swapped-entity questions the gate caught).
 - Result (runs/r7/20261031-0021-aac6aeb, runs/r7/20261031-0055-aac6aeb): dev 13/25 right, 2/398 false (was 12/25, 3/398); dev-hard 26/107,
   2/398 (was 23/107, 3/398). `pack` alone has no false abstention left on either.
+## 2026-10-31 karol-claude: reverted the "last / latest" exclusion (5546b48)
+
+The QA gate briefly skipped "the last X I mentioned" questions. The idea came from looking at the questions R7
+abstained on in the TEST split (no gold seen), which is fitting rules to the test; the reviewer of PR #5 flagged it.
+Dev alone gave thin support (one false abstention fewer, no change on dev-hard), so the rule is gone. From here on
+no rule is designed from test questions; the test split is only run, never read.
