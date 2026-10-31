@@ -12,7 +12,8 @@ Both variants neutralize the inherited format example to `<answer> [E4]`; no nam
 Stand-in: Qwen2.5-7B-Instruct Q4_K_M downloaded; it starts after R1 preparation to fit 8 GiB RAM.
 Parts: all four contract stages in `rocket.py`; R1 retrieval, R4 enrichment/assembly/decision.
 Dates: `dates.py` forks the date block in R1 `memsys.py` at `de158d5` (there was no standalone dates.py).
-Limits: no local semantic event extractor or cross-session item counter yet; ambiguous events fall back to reading.
+Counting kernel: source spans, cross-session identity deduplication and bounded time-window counts in `counting.py`.
+Limits: counting extraction/coverage is not validated or enabled in the pipeline; ambiguous events fall back to reading.
 Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, then released early).
 
 ## What the first implementation does
@@ -35,6 +36,15 @@ Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, t
 - Accepts contract candidates without R1's private fields and session/fact units without a turn number.
 
 ## Reproduce
+
+`counting.count_distinct(history, items, window=None)` counts a supplied item ledger. Each extraction must point
+to a literal entity span in a user turn; optional date spans resolve against that history and must belong to
+the same asserted event clause. Exact-name normalization preserves near names, acronyms and articles.
+Repeated entities retain their source mentions but count once. An uncertain period membership produces a
+lower/upper bound rather than silently excluding an item. The result explicitly does **not** certify item
+semantics or history coverage; it must not be used as the user's total without extraction/coverage validation.
+This component is not yet used to add reader facts or benchmark predictions. Run its synthetic invariants with
+`python -m unittest rockets.r4.test_counting`.
 
 From the repository root, using Python 3.11+ and the R1 dependencies in this folder's requirements.txt:
 

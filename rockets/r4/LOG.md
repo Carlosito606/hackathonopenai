@@ -136,3 +136,17 @@
   preserving both published branch histories and the original in-progress benchmark worktree.
 - All 68 tests pass with the current split R1 modules. New runs record root R1 at their actual git snapshot
   as baseline_sha instead of inheriting the historical de158d5 label. Historical artifacts remain unchanged.
+
+## 2026-10-31 — antek-codex — auditable distinct-item arithmetic
+
+- Added a standalone counting kernel on a separate worktree while the full temporal reader run remains frozen
+  at 42ab798. It does not yet change any pipeline fact, question, prediction or reader call.
+- Item identities come from literal spans in user turns of this history. Typography/case/whitespace normalize;
+  near names, acronyms and different articles do not collapse. Duplicate mentions keep source links, not votes.
+- Period counts use event dates, not conversation dates. Unknown/inferred dates and boundary-crossing intervals
+  yield bounds. An independently dated in-period mention can establish membership despite undated repeats.
+- Date spans must belong to the item's own asserted event clause; recollections, plans, another person's action,
+  and a different coordinated action cannot lend the item their date. This applies the temporal scope finding.
+- Nine new synthetic invariants pass. Arithmetic provenance does not validate semantic extraction, ownership,
+  completeness, aliases or inventory updates; result flags explicitly retain these limits. No dev count-accuracy
+  claim. Next: a conservative item extractor, followed by paired multi-session scoring before enabling counts.
