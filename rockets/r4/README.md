@@ -5,7 +5,7 @@ Status: first end-to-end Reactor smoke completed; full paired stand-in evaluatio
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 61 synthetic tests pass, including date/actor-scope regressions, interrupted paired-run recovery and official score.py.
+Checks: 62 synthetic tests pass, including date/actor-scope regressions, interrupted paired-run recovery and official score.py.
 Baseline: R1 at `de158d5`, same retrieval candidates, same machine; dev minus `splits/dev_holdout.txt`.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
 Stand-in: Qwen2.5-7B-Instruct Q4_K_M downloaded; it starts after R1 preparation to fit 8 GiB RAM.
