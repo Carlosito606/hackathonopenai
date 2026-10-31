@@ -149,3 +149,11 @@ pack 52 / 83. Finding 20261031-0310.
 - judge.py --human on cal39: agreement with patryk-opencode's verdicts 10/11 (old) and 11/11 (new); judged
   correct 0.923 / 0.949 vs human 0.949 / 0.949; the one miss is the flagged yes/no "Road bike" answer. Finding
   20261031-0315.
+
+## 2026-10-31 02:20 karol-claude-2: R1 final code on dev-hard v2 and dev-hard-long
+
+patryk-opencode exported R1 fee061f (the submitted code) on dev, v2 and long with chunk indices. All gold in pack
+dev / v2 / long: all 0.972 / 0.935 / 0.905; multi 0.969 / 0.907 / 0.825; temporal 0.922 / 0.833 / 0.804. Crowding on
+v2: 7 crowded, 7 retrieval, 1 other. sessdiv + prune at 18k: gold 0.992 / 0.965 / 0.937; answer phrase dev 0.714
+(vs 0.692), v2 0.671 (0.654), long 147/234 (151): not a clear win at test length. Local dev_hard rebuilt with all
+135 exclusions to match. Finding 20261031-0325.
