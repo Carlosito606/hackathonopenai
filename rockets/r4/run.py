@@ -18,6 +18,7 @@ from pathlib import Path
 
 from . import rocket
 from .checkpoint import recover, validate_resume
+from .manifest import CandidateManifest
 
 ROOT = rocket.ROOT
 
@@ -75,6 +76,8 @@ def main():
     parser.add_argument('--prepare-only', action='store_true')
     parser.add_argument('--resume', action='store_true', help='resume this --run-id at the identical clean source commit and reader')
     parser.add_argument('--candidate-cache', type=Path, default=ROOT / 'rockets/r4/cache/candidates')
+    parser.add_argument('--candidate-manifest', type=Path,
+                        help='R1 export folder with explicit chunk indices, evidence.jsonl and meta.json')
     parser.add_argument('--run-id', default=datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S'))
     args = parser.parse_args()
     if not args.prepare_only and (not args.local or not args.reader or not args.scorer):
@@ -93,6 +96,13 @@ def main():
                  (args.types == 'all' or gold[q['question_id']]['question_type'] in types)]
     needed = {q['history_id'] for q in questions}
     histories = {h['history_id']: h for h in rows(args.data / 'histories.jsonl') if h['history_id'] in needed}
+    manifest = CandidateManifest(args.candidate_manifest) if args.candidate_manifest else None
+    manifest_cands = {}
+    if manifest:
+        manifest.verify_source(ROOT)
+        # Fail before any reader calls if even one question cannot be reproduced.
+        manifest_cands = {q['question_id']: manifest.rebuild(q, histories[q['history_id']]) for q in questions}
+        print(f'Verified {len(manifest_cands)} exported R1 evidence manifests.', flush=True)
     sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     out = ROOT / 'runs/r4' / (args.run_id + '-' + sha[:7])
     if out.exists() and not args.resume:
@@ -106,9 +116,11 @@ def main():
                                 'evidence.py', 'reactor/client.py'], cwd=ROOT)),
                             'stages': {'retrieve': 'r1', 'enrich': 'r4', 'assemble': 'r4', 'decide': 'r4'},
                             'baseline_sha': sha, 'split': 'dev minus splits/dev_holdout.txt',
+                            'candidate_manifest': manifest.provenance if manifest else None,
                             'question_types': sorted(types), 'questions': len(questions),
                             'reader': args.reader, 'flags': vars(args) | {'data': str(args.data), 'scorer': str(args.scorer),
-                                                                      'candidate_cache': str(args.candidate_cache)},
+                                                                      'candidate_cache': str(args.candidate_cache),
+                                                                      'candidate_manifest': str(args.candidate_manifest) if manifest else None},
                             'retrieval_device': os.environ.get('R4_DEVICE', 'cpu'),
                             'cpu_threads': os.environ.get('OMP_NUM_THREADS'),
                             'complete': False}
@@ -121,6 +133,7 @@ def main():
         write(baseline / 'meta.json', {'rocket': 'r1', 'run_id': out.name + '/baseline-r1', 'git_sha': sha, 'baseline_sha': sha,
                                   'stages': dict.fromkeys(['retrieve', 'enrich', 'assemble', 'decide'], 'r1'),
                                   'split': 'dev minus splits/dev_holdout.txt', 'reader': args.reader,
+                                  'candidate_manifest': manifest.provenance if manifest else None,
                                   'question_types': sorted(types), 'questions': len(questions),
                                   'complete': False})
     args.candidate_cache.mkdir(parents=True, exist_ok=True)
@@ -139,7 +152,9 @@ def main():
     for index, q in enumerate(questions[start:], start + 1):
         h = histories[q['history_id']]
         cache = args.candidate_cache / (candidate_key(q, h) + '.json')
-        if cache.exists():
+        if manifest:
+            cands = manifest_cands[q['question_id']]
+        elif cache.exists():
             cands = json.loads(cache.read_text())
         else:
             cands = rocket.retrieve(q, h)

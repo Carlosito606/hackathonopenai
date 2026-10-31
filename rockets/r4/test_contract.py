@@ -33,6 +33,8 @@ class ContractTest(unittest.TestCase):
                 patch.dict(os.environ, {'R4_DEVICE': 'cpu'}):
             result = rocket.retrieve(q, h)
         module.reranker.assert_called_once_with(device='cpu')
+        module.retrieve.assert_called_once_with(h, q['question'], module.Embedder.return_value,
+                                               question_date=q['question_date'])
         self.assertEqual(result[0]['text'], cands[0]['text'])
 
     def test_missing_final_answer_remains_a_reader_failure(self):
