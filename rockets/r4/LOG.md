@@ -59,3 +59,18 @@
 - Complete month/year differences now use clamped calendar anniversaries, including January 31 and February 29.
 - All 40 synthetic tests pass; these changes still need the full paired reader evaluation. The published Reactor
   smoke remains tied to its actual source sha 616bb63 and contains no ordering questions.
+
+## 2026-10-31 — antek-codex — resumable local evaluation
+
+- Resumed CPU retrieval from the preserved candidate cache; 23/107 temporal dev questions prepared at the
+  checkpoint. Both variants contain all gold sessions in 19/23 packs; this is a partial retrieval audit only.
+- The partial run supplies 10 computations; 7 match the automatic scorer and 3 remain unjudged. This is not
+  independently verified computation accuracy or a completed reader comparison.
+- Added `--resume`: retain the common complete question prefix across paired artifacts; retry an interrupted
+  pair, recover a truncated last append, and reject changed source/model/data configuration. Reader failure
+  counters survive recovery. A localhost integration test interrupts R1/R4 and then finishes through score.py.
+- Use R1's public cached reranker factory so the split memsys facade is supported without `_reranker`.
+- All 46 tests pass. The parser-only all-history diagnostic at 5c697f6 produced 16 computations, 11 automatic
+  matches and 5 unjudged; this does not use R1 retrieval and is not an answer benchmark.
+- Latest team R1 export lacks chunk ids for multi-chunk turns. Requested exact identifiers; no reconstruction
+  is passed off as identical retrieval. The local sequential CPU/Qwen supervisor continues independently.
