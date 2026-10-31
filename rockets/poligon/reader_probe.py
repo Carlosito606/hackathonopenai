@@ -1,13 +1,15 @@
-"""Does a reader take test-like traps? R1's prompt on small R1-style packs, two dev-hard builds compared.
+"""Does a reader take test-like traps? R1's prompt on small R1-style packs, with and without the trap aside.
 
-    python rockets/poligon/reader_probe.py ../data/dev_hard ../data/dev_hard_trap --local http://127.0.0.1:8897 \\
-        --out ../data/poligon_runs/reader-probe.jsonl
+    python rockets/poligon/reader_probe.py ../data/dev_hard ../data/poligon_runs/traps.jsonl \\
+        --local http://127.0.0.1:8897 --out ../data/poligon_runs/reader-probe.jsonl
 
-For every question of the trap build whose manifest marks a trap (and its twin in the plain build, matched by
-source question and variant): BM25 over all turns (bm25_run.py), R1's build_evidence at --budget chars (small
-enough for a 4k-token stand-in), R1's GUIDE (prepare.py) and the kit's build_message, then the reader's final
+For every dev-hard question (inject and remove variants) whose source question has a trap (make_traps.py), the
+history is read twice: as built, and with the trap aside appended to the same injected session and user turn that
+make_dev_hard.py --traps picks (same seeded choice), so no trap build is needed and only the needed histories
+are loaded (low memory). Each history: BM25 over all turns (bm25_run.py), R1's build_evidence at --budget chars
+(small enough for a 4k-token stand-in), R1's GUIDE (prepare.py) and the kit's build_message; the reader's final
 answer line as the kit parses it. Reports per variant (inject: answerable, gold unchanged; remove: gold abstain):
-the reader abstains, answers with gold, or answers with a phrase taken from the trap sentence ("trap taken").
+gold, abstained, "trap taken" (the answer's words all come from the trap sentence), other answer.
 The stand-in is a weak reader; compare plain vs trap, never read it as Reactor's score.
 """
 import argparse
@@ -25,13 +27,30 @@ sys.path.insert(0, str(ROOT / "reactor"))
 import client as kit  # noqa: E402
 from bm25_run import rank  # noqa: E402
 from judge import Judge, rj  # noqa: E402
-from make_dev_hard import AnswerMatcher, words  # noqa: E402
-from memsys import TEMPORAL, build_evidence, day_no, load_split, parse_date, session_chunks  # noqa: E402
+from make_dev_hard import AnswerMatcher, rng_for, words  # noqa: E402
+from memsys import TEMPORAL, build_evidence, day_no, parse_date, session_chunks  # noqa: E402
 from prepare import COUNT, COUNTING, DATES, GUIDE  # noqa: E402
 
+REF = "0000beef"
+HID = re.compile(r'"history_id":\s*"([^"]+)"')
 
-def pack(q, h, budget):
-    """R1-style evidence from BM25-ranked turns (first chunk of each ranked turn)."""
+
+def with_trap(h, m, sentence, seed):
+    """The history with the trap appended where make_dev_hard.py --traps puts it; returns (history, session id)."""
+    trng = rng_for(seed, m["source_qid"], "trapsite")
+    site_id = trng.choice(m["injected"])["session_id"]
+    sessions = []
+    for s in h["sessions"]:
+        if s["session_id"] == site_id:
+            users = [j for j, t in enumerate(s["turns"]) if t["role"] == "user"]
+            j = trng.choice(users)
+            s = dict(s, turns=[dict(t, content=t["content"].rstrip() + " " + sentence) if k == j else t
+                               for k, t in enumerate(s["turns"])])
+        sessions.append(s)
+    return dict(h, sessions=sessions), site_id
+
+
+def ask_message(q, h, budget):
     si = {s["session_id"]: i for i, s in enumerate(h["sessions"])}
     cands = []
     for sid, turn, score in rank(q["question"], h, 60):
@@ -40,68 +59,56 @@ def pack(q, h, budget):
         cands.append({"si": si[sid], "session_id": sid, "turn": turn, "role": s["turns"][turn]["role"],
                       "text": piece, "score": score})
     temporal = bool(TEMPORAL.search(q["question"]))
-    return build_evidence(h, cands, budget=budget, dates=temporal), temporal
-
-
-def message(q, evidence, temporal):
+    ev = build_evidence(h, cands, budget=budget, dates=temporal)
     extra = DATES.format(today=day_no(parse_date(q["question_date"]))) if temporal else ""
     if COUNTING.search(q["question"]):
         extra += COUNT
     question = q["question"].strip() + "\n" + GUIDE.format(extra=extra)
-    passages = kit.load_evidence(json.dumps(evidence))
-    return kit.build_message(question, passages, "0000beef", kit.parse_question_date(q["question_date"]))
-
-
-def final_answer(reply):
-    finals = kit.final_answers(reply or "")
-    return finals.get("0000beef")
+    msg = kit.build_message(question, kit.load_evidence(json.dumps(ev)), REF,
+                            kit.parse_question_date(q["question_date"]))
+    return msg, {e["id"] for e in ev}
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("plain", help="dev-hard build without traps (e.g. ../data/dev_hard)")
-    ap.add_argument("trap", help="the same build with --traps")
+    ap.add_argument("hard", help="dev-hard build without traps (e.g. ../data/dev_hard)")
+    ap.add_argument("traps", help="make_traps.py output")
     ap.add_argument("--local", required=True)
     ap.add_argument("--model", default="")
+    ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--budget", type=int, default=9000)
     ap.add_argument("--max-tokens", type=int, default=400)
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--cache", default=str(Path.home() / ".cache" / "poligon-reader.jsonl"))
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
-    splits = {}
-    for name in ("plain", "trap"):
-        hist, qs, gold = load_split(getattr(args, name))
-        man = {m["question_id"]: m for m in rj(Path(getattr(args, name)) / "manifest.jsonl")}
-        splits[name] = (hist, {q["question_id"]: q for q in qs}, gold, man)
-    _, tqs, tgold, tman = splits["trap"]
-    trap_text = {}
-    for m in tman.values():
-        h = splits["trap"][0][tqs[m["question_id"]]["history_id"]]
-        for i in m["injected"]:
-            if "trap" in i:
-                s = next(s for s in h["sessions"] if s["session_id"] == i["session_id"])
-                trap_text[m["source_qid"], m["variant"]] = (i["trap"], s)
-    pkey = {(m["source_qid"], m["variant"]): qid for qid, m in splits["plain"][3].items()}
+    hard = Path(args.hard)
+    traps = {r["source_qid"]: r for r in rj(args.traps)}
+    man = {m["question_id"]: m for m in rj(hard / "manifest.jsonl") if m["source_qid"] in traps}
+    qs = {q["question_id"]: q for q in rj(hard / "questions.jsonl") if q["question_id"] in man}
+    gold = {g["question_id"]: g for g in rj(hard / "gold.jsonl") if g["question_id"] in man}
+    need = {q["history_id"] for q in qs.values()}
+    hist = {}
+    with open(hard / "histories.jsonl", encoding="utf-8") as f:  # stream: keep only the needed histories
+        for line in f:
+            m = HID.search(line[:80])
+            if m and m.group(1) in need:
+                hist[m.group(1)] = json.loads(line)
     jobs = []
-    for qid, m in sorted(tman.items()):
-        key = (m["source_qid"], m["variant"])
-        if key not in trap_text or key not in pkey:
-            continue
-        for name, sqid in (("plain", pkey[key]), ("trap", qid)):
-            hist, qs, gold, _ = splits[name]
-            q = qs[sqid]
-            ev, temporal = pack(q, hist[q["history_id"]], args.budget)
-            jobs.append((name, key, sqid, gold[sqid], ev, message(q, ev, temporal)))
-    print(f"{len(jobs)} reader calls ({len(jobs) // 2} trapped questions x plain/trap)", flush=True)
+    for qid in sorted(man):
+        m, q, g = man[qid], qs[qid], gold[qid]
+        h = hist[q["history_id"]]
+        trapped, site = with_trap(h, m, traps[m["source_qid"]]["sentence"], args.seed)
+        for name, hh in (("plain", h), ("trap", trapped)):
+            msg, ids = ask_message(q, hh, args.budget)
+            jobs.append((name, m, g, site, site in ids, msg))
+    print(f"{len(jobs)} reader calls ({len(jobs) // 2} questions x plain/trap)", flush=True)
     judge = Judge(args.local, args.model, args.cache)
     replies = judge.many([j[5] for j in jobs], args.workers, max_tokens=args.max_tokens)
     res, rows = defaultdict(Counter), []
-    for (name, key, sqid, g, ev, _), reply in zip(jobs, replies):
-        kind, trap_session = trap_text[key]
-        ans = final_answer(reply)
-        trap_sent = trap_session["turns"]
-        in_pack = trap_session["session_id"] in {e["id"] for e in ev}
+    for (name, m, g, site, in_pack, _), reply in zip(jobs, replies):
+        trap = traps[m["source_qid"]]
+        ans = kit.final_answers(reply or "").get(REF)
         if ans is None:
             out = "no final line"
         elif kit._INSUFFICIENT.match(ans):
@@ -109,19 +116,19 @@ def main():
         elif not g["abstain"] and AnswerMatcher(g)(ans):
             out = "gold"
         else:
-            trap_words = set(words(" ".join(t["content"] for t in trap_sent if t["role"] == "user")[-400:]))
             aw = set(words(ans)) - set(words(g["answer"] if not g["abstain"] else ""))
-            out = "trap taken" if aw and aw <= trap_words and name == "trap" else "other answer"
-        res[name, key[1]][out] += 1
-        res[name, key[1]]["trap in pack"] += in_pack and name == "trap"
-        rows.append({"question_id": sqid, "split": name, "variant": key[1], "kind": kind, "answer": ans,
-                     "outcome": out, "trap_in_pack": in_pack})
+            out = "trap taken" if aw and aw <= set(words(trap["sentence"])) else "other answer"
+        key = (name, m["variant"])
+        res[key][out] += 1
+        res[key]["n"] += 1
+        res[key]["trap session in pack"] += in_pack
+        rows.append({"question_id": m["question_id"], "split": name, "variant": m["variant"], "kind": trap["kind"],
+                     "answer": ans, "outcome": out, "trap_session_in_pack": in_pack})
     with open(args.out, "w", encoding="utf-8", newline="\n") as f:
         f.writelines(json.dumps(r, ensure_ascii=False) + "\n" for r in rows)
     for (name, variant), c in sorted(res.items()):
-        n = sum(v for k, v in c.items() if k != "trap in pack")
-        print(f"{name:5s} {variant:6s} n={n:3d} " + "  ".join(f"{k}={c[k]}" for k in
-              ("gold", "abstained", "trap taken", "other answer", "no final line", "trap in pack")))
+        print(f"{name:5s} {variant:6s} " + "  ".join(f"{k}={c[k]}" for k in
+              ("n", "gold", "abstained", "trap taken", "other answer", "no final line", "trap session in pack")))
 
 
 if __name__ == "__main__":

@@ -63,6 +63,9 @@ seed are byte-identical (sha1 of all four files). About 40 injected sessions wer
    repeat until a round adds nothing. The audit's calibration: it answers from a real evidence session 92/107
    times and says NONE on a random session 107/107 times. Round 1 flagged 93 of 1,682 injected sessions (5.5%,
    63 questions), e.g. "How many days a week do I attend fitness classes?" (gold 4) with another user saying 5.
+   Later rounds audit only the replacements: 20, 8, 4, 4, 3, 2, 1 new pairs; 135 pairs in all. The loop was
+   stopped in round 8 when the machine ran out of memory, so the last replacements (a handful of questions with
+   a dense topical neighbourhood) are not audited.
 
 **Known limits.** The audit reads an excerpt, not the whole session, and a 7B model misses some: a few
 conflicting sessions may remain. The remove variants assume nothing else in the history answers the question
