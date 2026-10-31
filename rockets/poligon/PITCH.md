@@ -33,3 +33,22 @@ dev-hard, historie długości testu; razem i multi-session). W markdownie: `![R1
 
 **Notatka:** Nie ufaliśmy wynikom na łatwym dev. Poligon pokazał, gdzie potok pęka (pytania z wielu rozmów, gdy
 pułapki zajmują miejsce w paczce), i to zmieniło kod finałowy, zanim cokolwiek poszło do Reactora.
+
+---
+
+## Tekst do powiedzenia (ok. 1 minuty)
+
+„Zbiór dev, na którym wszyscy testowali, jest łatwiejszy niż test. Test celowo dokłada rozmowy, które wyglądają na
+właściwe, ale nie zawierają odpowiedzi, i ma cztery razy dłuższe historie. Dlatego zbudowaliśmy poligon: do każdego
+pytania z dev dokładamy trzy do pięciu podobnych rozmów innych osób. Lokalny model sprawdza każdą taką rozmowę i
+wyrzuca te, które przypadkiem odpowiadają na pytanie, żeby poligon był uczciwy.
+
+Na poligonie pierwsza wersja naszego potoku gubiła dowody w pytaniach z wielu rozmów: pułapki zajmowały miejsce w
+paczce, którą wysyłamy do Reactora. Gdy to zobaczyliśmy, potok zaczął brać fragmenty z większej liczby różnych
+rozmów. Straty z tego powodu spadły z 23 do 7, a zgłoszony potok traci na poligonie tylko 3,8 punktu.
+
+Pokazało to też, co dalej: przy historiach długości testu brakujące dowody to głównie parafrazy, czyli rozmowy
+opisujące to samo innymi słowami. Tam jest następny zysk.”
+
+Liczby do pytań z sali: dev 0,972 → poligon 0,935 → historie długości testu 0,905 (wszystkie dowody w paczce,
+398 pytań); sędzia lokalny zgodny z człowiekiem w 21 z 22 odpowiedzi Reactora.
