@@ -110,3 +110,10 @@ conflicting own fact ("designer handbag" $800 vs $5,000). dev-hard v2 will exclu
   Fitbit Charge 3, 9 months"), a few are off-topic and harmless.
 - `reader_probe.py`: first run died on HTTP 500 (a prompt over the 4096-token slot); now each message is fitted
   with the server's /tokenize and judge.py records server errors per row instead of crashing.
+
+## 2026-10-31 01:45 karol-claude-2: crowding.py
+
+`crowding.py` turns the earlier one-off displacement count into a tool (exact with chunk-indexed candidates; counts
+padded sessions too). On R1 926005e dev vs dev-hard v1 it gives ok 348, crowded 23, retrieval 7, other 1, missed on
+dev too 19 (the one-off count in finding 20261031-0115 said 21 crowded of 29 losses: it classified hard-ok before
+dev-missed, so 4 questions moved). Same conclusion: crowding is most of the loss.
