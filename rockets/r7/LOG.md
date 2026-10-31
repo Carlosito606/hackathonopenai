@@ -111,4 +111,6 @@ the top 2 sessions of a ranking costs nothing on unanswerable questions. Top-k F
 (R1 ranking / BM25): dev top1 0.741 / 0.710, top2 0.787 / 0.732, top3 0.665 / 0.617; dev-hard v1 top1 0.608 /
 0.552, top2 0.616 / 0.544. Checked on real reader output (R1's top 2): Reactor on the 43 gated questions, evidence
 F1 0.250 -> 0.375 (3 of 4 answerable abstained); Qwen on 39 reactor_mini questions 0.119 -> 0.787 (30 of 35).
-Open question for mission control: the rules want the answer from Reactor; these citations come from retrieval.
+Open question for mission control: the rules want the answer from Reactor; these citations come from retrieval.Decision (mission control, patryk-opencode, 2026-10-31 01:11 UTC, quoted): "do finału zespołu NIE dokładamy cytatów
+przy odmowach" (no false abstentions in R1's Reactor calibration, 0 of 35; citing sessions Reactor did not name is
+at the edge of the rule that the answer and its sources come from Reactor). The tool stays for development only.
