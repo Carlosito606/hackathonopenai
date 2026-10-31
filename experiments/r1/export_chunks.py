@@ -2,7 +2,7 @@
 
     python experiments/r1/export_chunks.py ../data/dev OUT_DIR --cache ../cache/dev.pkl --type temporal-reasoning
 
-Writes OUT_DIR/candidates.jsonl: {"question_id", "ranked": [[session_id, turn, chunk_idx, score], ...]} (top 100),
+Writes OUT_DIR/candidates.jsonl: {"question_id", "ranked": [[session_id, turn, chunk_idx, score], ...]} (top --top, default 100; 0 = every candidate),
 where chunk_idx indexes retrieval.split_text(turn content); and OUT_DIR/evidence.jsonl as rockets/poligon/r1_run.py.
 Dev questions without the holdout, answerable or not, of the given type ("all" for every type).
 """
@@ -22,6 +22,7 @@ ap.add_argument("split")
 ap.add_argument("out", type=Path)
 ap.add_argument("--cache", required=True)
 ap.add_argument("--type", default="temporal-reasoning")
+ap.add_argument("--top", type=int, default=100, help="candidates kept per question; 0 = all")
 args = ap.parse_args()
 hist, qs, gold = load_split(args.split)
 hold = set((ROOT / "splits" / "dev_holdout.txt").read_text().split())
@@ -34,7 +35,7 @@ with open(args.out / "candidates.jsonl", "w", encoding="utf-8") as fc, \
         h = hist[q["history_id"]]
         cands = retrieve(h, q["question"], emb, question_date=q["question_date"])
         ranked = []
-        for c in cands[:100]:
+        for c in (cands if args.top == 0 else cands[:args.top]):
             pieces = split_text(h["sessions"][c["si"]]["turns"][c["turn"]]["content"])
             assert c["text"] in pieces, (q["question_id"], c["session_id"], c["turn"])
             ranked.append([c["session_id"], c["turn"], pieces.index(c["text"]), round(c["score"], 4)])
