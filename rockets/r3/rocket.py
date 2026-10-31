@@ -163,16 +163,17 @@ def render_ledger(kept, label):
         users = [c for c in items if c["role"] == "user"] or items
         latest = users[-1]
         head = items[0]["notes"]["fact"]
-        line = f"- {head['subject']} / {head['attribute']}: Latest: {say(latest)}"
         earlier = [c for c in items if c is not latest]
-        if earlier:
-            line += "; earlier: " + "; ".join(say(c) for c in reversed(earlier))
-        lines.append(line)
+        if not earlier:  # one value seen: the extractor may have missed a newer one, so claim nothing about recency
+            lines.append(f"- {head['subject']} / {head['attribute']}: {say(latest)}")
+            continue
+        lines.append(f"- {head['subject']} / {head['attribute']}: Latest: {say(latest)}; earlier: "
+                     + "; ".join(say(c) for c in reversed(earlier)))
     return "\n".join(lines)
 
 
 NOTE = """
-(Facts extracted from my chats, newest statement first in each line; when a value changed, the latest statement by me wins. Check them against the excerpts, which are the source; cite the excerpts.)
+(Facts extracted automatically from my chats; they can be incomplete. Where a line has "Latest", the value changed and my latest statement wins. The excerpts are the source: check every fact against them, prefer a newer excerpt that the facts miss, and cite the excerpts.)
 {facts}"""
 
 
