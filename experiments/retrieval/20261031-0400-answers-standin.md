@@ -21,4 +21,4 @@ and thermostat (abstained), gains United and backpack.
 Reading: the stand-in abstains on ~2/3 of these questions either way, so 5 vs 4 of 60 is noise; this does not show
 that more sessions in the evidence help or hurt the reader. Evidence F1 drops 0.162 -> 0.148 (more sessions
 shown, the stand-in cites more of them). Needs a Reactor mini run on the same 60 ids to decide.
-Side note for VERIFIER: 4 answers are literally "Sombra" (the GUIDE's example answer) or "E1"/"E3" (a label alone).
+Side note for VERIFIER: 4 answers are literally the GUIDE's example answer (a leaked name, now a placeholder on patryk/rakieta) or "E1"/"E3" (a label alone).
