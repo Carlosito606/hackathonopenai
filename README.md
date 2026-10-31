@@ -1,50 +1,69 @@
-# Memory Retrieval Challenge: retrieval + Reactor
+# Memory Retrieval Challenge: R1 HYBRID (team Vibers)
 
-Finds the few turns of a long chat history that answer a question, and asks Reactor with them.
+Finds the few turns of a long chat history that answer a question, packs them with dates computed in code, and
+asks Reactor, which writes the answer, cites the sessions, or abstains. Submission: `ship/predictions.jsonl`.
 
-1. **Retrieval** (`memsys.py`): every turn is a chunk (long turns are split into ~900-character windows). Each chunk
-   is scored by BM25 and by dense embeddings (`BAAI/bge-base-en-v1.5`), fused by reciprocal rank, and the top 80 are
-   reranked by a cross-encoder (`BAAI/bge-reranker-v2-m3`). Two-event questions ("how many days between A and B")
-   are also searched for A and B separately.
-2. **Evidence** (`build_evidence`): the best chunks up to ~18,000 characters, one excerpt per session, oldest
-   first, in the client's format (`id` = session id, `date` = session date). An assistant chunk brings the start of
-   the user turn before it.
-3. **Date arithmetic in code**: for temporal questions every explicit date ("2023-06-10", "June 3rd", "7 May
-   2023") and relative date ("yesterday", "last Friday", "3 days ago", resolved against the session date) is tagged
-   `[YYYY-MM-DD, day N]`, so Reactor only subtracts two day numbers.
-4. **Answering notes** (`prepare.py`): appended to the question: near misses, latest mention wins, one short answer
-   with its `[E#]` labels, `INSUFFICIENT_EVIDENCE` only when nothing states the answer; counting questions list
-   items first.
+## Pipeline
+
+1. **Retrieval** (`retrieval.py`): every turn is a chunk (long turns are split into ~900-character windows). Each
+   chunk is scored by BM25 and by dense embeddings (`BAAI/bge-base-en-v1.5`), fused by reciprocal rank; the top 80
+   are reranked by a cross-encoder (`BAAI/bge-reranker-v2-m3`). Two-event questions ("how many days between A and
+   B") are also searched for A and B separately. Questions that name a period ("since March", "in August", "two
+   weeks ago", resolved against the question date) add the best chunks from sessions inside that period, and
+   counting questions spread the pack over more sessions instead of more chunks of the top session.
+2. **Evidence** (`evidence.py`): the best chunks up to 18,000 characters, one excerpt per session, oldest first,
+   in the client's format (`id` = session id, `date` = session date). An assistant chunk brings the start of the
+   user turn before it; every chunk brings the start of the next user turn, where the user answers or corrects.
+   The whole message is kept under 29,000 characters (Reactor's server limit is 32,000).
+3. **Dates in code** (`dates.py`): for temporal questions every explicit date ("2023-06-10", "June 3rd", "7 May
+   2023", "May 3-5") and relative date ("yesterday", "last Friday", "last weekend", "3 days ago", "last month",
+   resolved against the session date, across the new year) is tagged `[YYYY-MM-DD, day N]`, so Reactor only
+   subtracts two day numbers. Tests: `python tests/test_dates.py`.
+4. **Answering notes** (`prepare.py`): appended to the question: near misses (other people's things, plans,
+   undone changes) do not count, the most recent conversation wins, one short answer with its `[E#]` labels on the
+   last line, `INSUFFICIENT_EVIDENCE` only when nothing states it about the user; counting questions list the items
+   first.
 5. **Reactor** (`ask.py`): one Reactor history per dataset history, questions one at a time through the kit's
-   `client.py` (`--max-chars 30000`, server limit 32,000), one retry after a timeout; resumable.
-6. **Submission**: the kit's `predictions.py` with `--abstain-on agent`.
+   `client.py` (`--max-chars 30000`), one retry after a timeout; resumable (a rerun asks only unanswered questions).
+   When Reactor cites only in its reasoning and not on the final line, the citations are taken from its whole reply.
+6. **Submission**: the kit's `predictions.py` with `--abstain-on agent,no-answer`.
 
 ## Run
 
 ```sh
 python -m venv .venv && .venv/bin/pip install -r requirements.txt
 # data from https://github.com/RxAI-dev/memory-challenge/releases into ../data/{dev,test}
+# models run on Apple Silicon (mps) by default; elsewhere: export MEMSYS_DEVICE=cpu (or cuda)
 
-python eval_retrieval.py ../data/dev ../cache/dev.pkl 150                       # session recall on dev
 python prepare.py ../data/test plan-test.jsonl --cache ../cache/test.pkl         # retrieval -> plan
 
 printf 'Access key: '; read -rs REACTOR_ACCESS_KEY; echo; export REACTOR_ACCESS_KEY
 python ask.py plan-test.jsonl results-test.jsonl --base-url https://tNN.api.reactor-hackathon.rxai.dev --agent-id agt_...
-python reactor/predictions.py results-test.jsonl --histories ../data/test/histories.jsonl \
-    --out predictions.jsonl --abstain-on agent
+
+# the kit's predictions.py reads --histories with str.splitlines(), which also cuts at U+2028 inside the chats;
+# give it a file with the session ids only
+python -c "import json,sys;o=open(sys.argv[2],'w',encoding='utf-8');[o.write(json.dumps({'session_id':s['session_id']})+'\n') for l in open(sys.argv[1],encoding='utf-8') for s in json.loads(l)['sessions']]" ../data/test/histories.jsonl ../data/test/session_ids.jsonl
+python reactor/predictions.py results-test.jsonl --histories ../data/test/session_ids.jsonl \
+    --out predictions.jsonl --abstain-on agent,no-answer
 ```
 
-Dev without a Reactor key: `ask.py plan-dev.jsonl results-dev.jsonl --local http://127.0.0.1:8899` asks a local
-OpenAI-compatible model (e.g. `mlx_lm.server --model mlx-community/Qwen2.5-7B-Instruct-4bit --port 8899`) with the
-client's own message format, then `score.py` from the challenge repo scores it.
+Development without Reactor: `ask.py plan-dev.jsonl results-dev.jsonl --local http://127.0.0.1:8899` asks a local
+OpenAI-compatible model with the client's own message format (we used `mlx_lm.server --model
+mlx-community/Qwen2.5-7B-Instruct-4bit`); `score.py` from the challenge repo scores it. Retrieval only:
+`eval_retrieval.py`, `experiments/r1/compare_evidence.py`, `experiments/r1/compare_budget.py`.
 
-Models run on Apple Silicon (`mps`); set `device="cpu"` in `memsys.py` elsewhere.
+`reactor/` is the organisers' participant kit, unchanged.
 
-`reactor/` is the organizers' participant kit, unchanged.
+## Numbers (details and commands in `experiments/`)
 
-## Dev retrieval (150 answerable dev questions, 50 sessions per history)
+| what | result | file |
+|---|---|---|
+| Reactor, 39 dev questions (no holdout) | answers ~92-95% right after reading score.py's unjudged ones; 0 false abstentions; abstention 3/4; evidence F1 0.910 | `experiments/r1/20261031-0010-reactor-calibration.md` |
+| all gold sessions in the pack, dev (398 answerable) | 0.952 | `experiments/r1/20261030-2320-dev-hard.md` |
+| same on dev-hard (dev + injected near-miss sessions) | 0.889; multi-session 0.753 | same |
+| counting questions on dev-hard after date windows and session diversity | multi-session 0.714 -> 0.914 | `experiments/r1/20261031-0030-budget.md` |
+| date expressions tagged in test user turns | 37% -> 67% | `experiments/temporal/20261030-2308-date-coverage.md` |
+| independent audit of the test evidence (two GPT agents) | generic failure patterns, acted on in code | `experiments/r1/20261030-2300-gpt-audit-test-evidence.md` |
+| final test run on Reactor | <filled in after the run> | `ship/` |
 
-| | R@1 | R@3 | R@5 | gold sessions in evidence |
-|---|---|---|---|---|
-| BM25 + dense | 0.643 | 0.954 | 0.965 | 0.980 |
-| + reranker | 0.673 | 0.956 | 0.982 | 0.988 |
+Team process and other rockets: `rockets/README.md`, `AGENTS.md`, `coord/`.

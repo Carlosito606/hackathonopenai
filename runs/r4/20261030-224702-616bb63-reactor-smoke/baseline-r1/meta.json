@@ -1,0 +1,40 @@
+{
+  "rocket": "r1",
+  "run_id": "20261030-224702-616bb63-reactor-smoke",
+  "git_sha": "616bb63aeb9b72693ba803c6b859351b5d531a60",
+  "baseline_sha": "de158d5",
+  "stages": {
+    "retrieve": "r1-cached",
+    "enrich": "r1",
+    "assemble": "r1",
+    "decide": "r1"
+  },
+  "split": "canonical reactor_mini temporal subset, holdout excluded",
+  "reader": "reactor",
+  "question_types": [
+    "temporal-reasoning"
+  ],
+  "questions": 2,
+  "question_ids": [
+    "q_584d0cd7ca07",
+    "q_2403af78a507"
+  ],
+  "flags": {
+    "selection": "first two available canonical-mini temporal questions in dataset order",
+    "reservation_start": "2026-10-30T22:50:00+00:00",
+    "reservation_end": "2026-10-30T23:20:00+00:00",
+    "prompt_example": "neutral format placeholder in both variants",
+    "timeout_seconds": 180
+  },
+  "complete": true,
+  "caution": "two-question smoke, not a statistical R1/R4 benchmark",
+  "client_statuses": [
+    "answered",
+    "answered"
+  ],
+  "latencies_s": [
+    94.29,
+    41.39
+  ],
+  "released_at_utc": "2026-10-30T22:56:01Z"
+}

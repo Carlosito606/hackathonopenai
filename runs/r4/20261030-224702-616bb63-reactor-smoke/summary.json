@@ -1,0 +1,21 @@
+{
+  "reader": "reactor",
+  "sample": "2 available canonical-mini temporal questions; holdout excluded",
+  "source_sha": "616bb63",
+  "r1": {
+    "correct": 2,
+    "n": 2,
+    "evidence_f1": 0.75
+  },
+  "r4": {
+    "correct": 2,
+    "n": 2,
+    "evidence_f1": 0.75
+  },
+  "r4_computed": 1,
+  "computed_verified": 0,
+  "caution": "integration smoke only, not evidence of a quality gain",
+  "reservation_released": true,
+  "computed_unsupported": 1,
+  "post_run_source_audit": "2026-10-31: The sole supplied fact dates a recollection of a tour, not the tour itself. Earlier verification withdrawn. Reader predictions and official scores are unchanged."
+}
