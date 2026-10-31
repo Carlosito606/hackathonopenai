@@ -215,6 +215,47 @@ class ComputationTest(unittest.TestCase):
             pool = self.event(f'I {expression} visit the botanical garden today.', '2024-03-04')
             self.assertFalse(compute('How many days ago did I visit the botanical garden?', '2024-03-11', pool)['computed'])
 
+    def test_count_in_period_is_not_distance_between_boundaries(self):
+        for question in ['How many books did I finish between January and March?',
+                         'How many books did I read in the last three weeks?',
+                         'What is the total number of books I finished between January and March?']:
+            with self.subTest(question=question):
+                self.assertEqual(classify(question)['form'], 'count')
+        self.assertEqual(classify('How many complete calendar months passed between the workshop and the garden?')['form'],
+                         'between')
+
+    def test_elapsed_since_without_the_word_ago(self):
+        pool = self.event('I visited the botanical garden yesterday.', '2024-03-05')
+        for question in ['How many days since I visited the botanical garden?',
+                         'How long has it been since I visited the botanical garden?']:
+            self.assertEqual(compute(question, '2024-03-11', pool).get('answer'), '7 days')
+
+    def test_after_question_has_forward_endpoints(self):
+        pool = self.event('I attended the pottery workshop today.', '2024-03-04')
+        pool += self.event('I visited the botanical garden today.', '2024-03-11', 's_b')
+        result = compute('How many days after attending the pottery workshop did I visit the botanical garden?',
+                         '2024-03-20', pool)
+        self.assertEqual(result.get('answer'), '7 days')
+
+    def test_after_question_rejects_reversed_premise(self):
+        pool = self.event('I attended the pottery workshop today.', '2024-03-11')
+        pool += self.event('I visited the botanical garden today.', '2024-03-04', 's_b')
+        result = compute('How many days after attending the pottery workshop did I visit the botanical garden?',
+                         '2024-03-20', pool)
+        self.assertFalse(result['computed'])
+
+    def test_companion_named_in_question_does_not_establish_a_joint_visit(self):
+        pool = self.event('My wife had just visited the botanical garden yesterday.', '2024-03-05')
+        result = compute('How many days ago did I visit the botanical garden with my wife?', '2024-03-11', pool)
+        self.assertFalse(result['computed'])
+
+    def test_separate_self_and_family_events_can_be_compared(self):
+        pool = self.event('I visited the botanical garden today.', '2024-03-04')
+        pool += self.event('My wife visited the pottery workshop today.', '2024-03-11', 's_b')
+        result = compute('How many days passed between the day I visited the botanical garden and the day my wife visited the pottery workshop?',
+                         '2024-03-20', pool)
+        self.assertEqual(result.get('answer'), '7 days')
+
 
 if __name__ == '__main__':
     unittest.main()

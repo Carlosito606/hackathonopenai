@@ -57,6 +57,7 @@ def main():
                 details.append({'question_id': q['question_id'], **result, 'score': detail})
     report = {'scope': 'all user turns; NOT R1 retrieval, NOT a reader benchmark',
               'git_sha': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+              'source_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain', '--', 'rockets/r4'], cwd=ROOT)),
               'counts': dict(counts), 'details': details,
               'caution': 'Automatic partial matches and unjudged answers do not establish fact correctness.'}
     args.out.parent.mkdir(parents=True, exist_ok=True)
