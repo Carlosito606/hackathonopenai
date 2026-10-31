@@ -66,4 +66,22 @@ mlx-community/Qwen2.5-7B-Instruct-4bit`); `score.py` from the challenge repo sco
 | independent audit of the test evidence (two GPT agents) | generic failure patterns, acted on in code | `experiments/r1/20261030-2300-gpt-audit-test-evidence.md` |
 | final test run on Reactor | <filled in after the run> | `ship/` |
 
+## Reproducing the submission
+
+`ship/predictions.jsonl` comes from the code at git tag `final-run-code` (fee061f; the plan was built at bcdc526,
+whose `.py` files outside `experiments/` are identical): `git checkout final-run-code`, then the steps under "Run".
+`main` moves on after the run (e.g. a wider reranker pool for counting questions); the submission does not use
+those changes. `experiments/r1/check_predictions.py` checks the file before submitting.
+
+## Known limitations
+
+- "The most recent conversation wins" can mislead questions about a previous value ("previous", "originally",
+  "before") (R3 dead end, `coord/findings/20261031-0105-patryk2-claude-fact-ledger-extraction.md`).
+- A conversation that recalls an older event is not that event's date; the answering notes fall back to the
+  conversation date when no date is stated (R4 finding).
+- Questions whose premise was never mentioned can still get an answer from a near miss (1 of 4 abstention
+  questions in the Reactor calibration).
+- Facts said in passing inside off-topic sessions can still fall outside the 18,000-character pack (independent
+  audit of the test evidence, `experiments/r1/20261030-2300-gpt-audit-test-evidence.md`).
+
 Team process and other rockets: `rockets/README.md`, `AGENTS.md`, `coord/`.
