@@ -13,15 +13,18 @@ from collections import Counter
 from pathlib import Path
 
 from . import rocket
-from .count_extract import SOURCE_INSTRUCTIONS, cache_key, closed_list_response, requested_window, source_response, supports_distinct, validate_response, visible_sources
+from .count_extract import DECODER_PROFILE, cache_key, closed_list_response, extract_one_source, literal_response_format, requested_window, supports_distinct, validate_response, visible_sources
 from .run import candidate_key, rows, verify_reader, write
+from .manifest import CandidateManifest
 from .timeline import classify
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data', required=True, type=Path)
-    parser.add_argument('--candidate-cache', required=True, type=Path)
+    candidates = parser.add_mutually_exclusive_group(required=True)
+    candidates.add_argument('--candidate-cache', type=Path)
+    candidates.add_argument('--candidate-manifest', type=Path, help='exact R1 chunk export; all selected packs are verified')
     parser.add_argument('--out', type=Path, default=rocket.ROOT / 'rockets/r4/cache/counting')
     parser.add_argument('--local', required=True)
     parser.add_argument('--reader', required=True)
@@ -43,16 +46,23 @@ def main():
                  (selected is None or q['question_id'] in selected) and classify(q['question'])['form'] == 'count']
     needed = {q['history_id'] for q in questions}
     histories = {h['history_id']: h for h in rows(args.data / 'histories.jsonl') if h['history_id'] in needed}
+    manifest = CandidateManifest(args.candidate_manifest) if args.candidate_manifest else None
+    manifest_cands = {}
+    if manifest:
+        manifest.verify_source(rocket.ROOT)
+        manifest_cands = {q['question_id']: manifest.rebuild(q, histories[q['history_id']]) for q in questions}
+        print(f'Verified {len(manifest_cands)} selected R1 evidence manifests.', flush=True)
     args.out.mkdir(parents=True, exist_ok=True)
     write(args.out / 'extraction-meta.json', {
         'source_sha': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=rocket.ROOT, text=True).strip(),
         'source_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain', '--', 'rockets/r4'], cwd=rocket.ROOT)),
         'source_sha256': {name: hashlib.sha256((rocket.ROOT / 'rockets/r4' / name).read_bytes()).hexdigest()
                           for name in ['count_extract.py', 'extract_counts.py', 'counting.py']},
-        'reader': args.reader, 'reader_revision': args.reader_revision,
+        'reader': args.reader, 'reader_revision': args.reader_revision, 'decoder_profile': DECODER_PROFILE,
         'split': 'dev minus holdout, optional --ids subset',
-        'candidate_cache': str(args.candidate_cache), 'types': args.types,
-        'candidate_provenance': 'preexisting cache; this extraction CLI does not assert its retrieval source revision',
+        'candidate_cache': str(args.candidate_cache) if args.candidate_cache else None, 'types': args.types,
+        'candidate_provenance': manifest.provenance if manifest else
+            'preexisting cache; this extraction CLI does not assert its retrieval source revision',
         'ids': str(args.ids) if args.ids else None})
     stats = Counter(selected_count_questions=len(questions))
     for q in questions:
@@ -60,12 +70,17 @@ def main():
         if not supports_distinct(q['question']):
             stats['unsupported_quantity_kind'] += 1
             continue
-        path = args.candidate_cache / (candidate_key(q, h) + '.json')
-        if not path.exists():
-            stats['missing_candidates'] += 1
-            continue
-        cands = json.loads(path.read_text())
-        key = cache_key(q, h, cands)
+        if manifest:
+            cands = manifest_cands[q['question_id']]
+        else:
+            path = args.candidate_cache / (candidate_key(q, h) + '.json')
+            if not path.exists():
+                stats['missing_candidates'] += 1
+                continue
+            cands = json.loads(path.read_text())
+        evidence = rocket.compatible_evidence(h, cands, dates=False)
+        sources = visible_sources(h, cands, evidence)
+        key = cache_key(q, h, cands, sources)
         target = args.out / (key + '.json')
         if target.exists():
             cached = json.loads(target.read_text())
@@ -77,8 +92,6 @@ def main():
         if not requested_window(q['question'], q['question_date'])[0]:
             stats['unsupported_time_scope'] += 1
             continue
-        evidence = rocket.compatible_evidence(h, cands, dates=False)
-        sources = visible_sources(h, cands, evidence)
         ruled = closed_list_response(q, sources)
         if ruled:
             try:
@@ -96,34 +109,34 @@ def main():
         all_items, known = [], []
         valid = True
         for index, source in enumerate(sources):
-            text = json.dumps({'question': q['question'], 'question_date': q['question_date'],
-                               'session_date': source['date'], 'window': requested_window(q['question'], q['question_date'])[1],
-                               'excerpt': source['text'], 'known_entities': known}, ensure_ascii=False)
-            if len(text) > args.max_chars:
-                stats['oversize_source'] += 1
+            response_format = literal_response_format(source, known)
+            schema_hash = hashlib.sha256(json.dumps(response_format, sort_keys=True).encode()).hexdigest()
+
+            def call(prompt):
+                request = urllib.request.Request(args.local.rstrip('/') + '/v1/chat/completions',
+                    json.dumps({'model': args.reader, 'messages': [{'role': 'user', 'content': prompt}],
+                                'temperature': 0, 'max_tokens': 400, 'response_format': response_format}).encode(),
+                    {'Content-Type': 'application/json'})
+                stats['local_calls'] += 1
+                with urllib.request.urlopen(request, timeout=600) as response:
+                    return json.load(response)['choices'][0]['message']['content']
+
+            def audit(attempt, prompt, reply):
+                write(args.out / (key + f'-source-{index}-attempt-{attempt}-response.json'), {
+                    'question_id': q['question_id'], 'reader': args.reader, 'source': index, 'attempt': attempt,
+                    'input_sha256': hashlib.sha256(prompt.encode()).hexdigest(),
+                    'response_format_sha256': schema_hash, 'decoder_profile': DECODER_PROFILE, 'reply': reply})
+
+            extracted, updated, outcome = extract_one_source(q, source, index, known, call, audit, args.max_chars)
+            write(args.out / (key + f'-source-{index}-outcome.json'), outcome)
+            stats['repair_requests'] += max(0, outcome['attempts'] - 1)
+            if outcome['status'] != 'accepted':
+                stats[outcome['status'] + '_source'] += 1
                 valid = False
                 break
-            request = urllib.request.Request(args.local.rstrip('/') + '/v1/chat/completions',
-                json.dumps({'model': args.reader, 'messages': [{'role': 'user', 'content': SOURCE_INSTRUCTIONS + '\n' + text}],
-                            'temperature': 0, 'max_tokens': 400}).encode(), {'Content-Type': 'application/json'})
-            with urllib.request.urlopen(request, timeout=600) as response:
-                reply = json.load(response)['choices'][0]['message']['content']
-            stats['local_calls'] += 1
-            write(args.out / (key + f'-source-{index}-response.json'), {
-                'question_id': q['question_id'], 'reader': args.reader, 'source': index,
-                'input_sha256': hashlib.sha256(text.encode()).hexdigest(), 'reply': reply})
-            try:
-                value = json.loads(reply.strip().removeprefix('```json').removeprefix('```').removesuffix('```').strip())
-                extracted, known = source_response(q, source, index, value, known)
-                if extracted is None:
-                    stats['unresolved_source'] += 1
-                    valid = False
-                    break
-                all_items += extracted
-            except (ValueError, TypeError, KeyError, AttributeError):
-                stats['invalid_source_response'] += 1
-                valid = False
-                break
+            known = updated
+            all_items += extracted
+            stats['repaired_sources'] += outcome['attempts'] > 1
             print(q['question_id'], f'source {index+1}/{len(sources)}', flush=True)
         if not valid:
             continue

@@ -5,10 +5,10 @@ import os
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from . import rocket
-from .count_extract import cache_fingerprint, cache_key, closed_list_response, computation, requested_window, source_response, validate_response, visible_sources
+from .count_extract import cache_fingerprint, cache_key, closed_list_response, computation, extract_one_source, literal_names, literal_response_format, load_record, requested_window, source_response, validate_response, visible_sources
 from . import test_counting
 
 
@@ -72,6 +72,8 @@ class ExtractionTest(unittest.TestCase):
                       {**self.response, 'mode': 'unsupported'}]:
             self.assertIsNone(validate_response(self.q, self.h, self.cands, self.sources, value))
         self.assertIsNone(computation(self.q, self.h, {**self.record(), 'items': []}, self.evidence))
+        april = {**self.q, 'question': self.q['question'].replace('March', 'April'), 'question_date': '2024/04/30'}
+        self.assertIsNone(validate_response(april, self.h, self.cands, self.sources, self.response))
 
     def test_unknown_period_membership_falls_back(self):
         self.response['items'][0]['date'] = None
@@ -144,6 +146,94 @@ class ExtractionTest(unittest.TestCase):
             with patch.object(prepare, 'message_chars', return_value=prepare.MAX_MESSAGE + 1):
                 pack = rocket.assemble(self.q, self.h, enriched)
             self.assertEqual(pack, rocket.baseline_assemble(self.q, self.h, self.cands))
+
+    def test_cache_reuse_tracks_assembly_scope_even_with_identical_history_and_candidates(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {'R4_COUNT_CACHE': tmp}):
+            key = cache_key(self.q, self.h, self.cands)
+            Path(tmp, key + '.json').write_text(json.dumps(self.record()))
+            self.assertIsNotNone(load_record(self.q, self.h, self.cands))
+            with patch.object(rocket, 'compatible_evidence', return_value=self.evidence[:1]):
+                self.assertNotEqual(key, cache_key(self.q, self.h, self.cands))
+                self.assertIsNone(load_record(self.q, self.h, self.cands))
+
+    def test_corrupt_visible_scope_fingerprint_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {'R4_COUNT_CACHE': tmp}):
+            record = {**self.record(), 'visible_sources_sha256': 'wrong'}
+            Path(tmp, cache_key(self.q, self.h, self.cands) + '.json').write_text(json.dumps(record))
+            with self.assertRaisesRegex(ValueError, 'visible user sources'):
+                load_record(self.q, self.h, self.cands)
+
+    def test_one_literal_repair_preserves_known_inventory_and_copies_actual_source(self):
+        invalid = {'complete': True, 'items': [
+            {'entity': 'Amber Museum', 'same_as': None}, {'entity': 'Amber Museum extra', 'same_as': None}]}
+        valid = {'complete': True, 'items': [{'entity': 'Amber Museum', 'same_as': None, 'date': 'yesterday'}]}
+        call = Mock(side_effect=[json.dumps(invalid), json.dumps(valid)])
+        audit = Mock()
+        known = []
+        items, updated, outcome = extract_one_source(self.q, self.sources[0], 0, known, call, audit)
+        self.assertEqual(known, [])
+        self.assertEqual(updated, [{'id': 0, 'labels': ['Amber Museum']}])
+        self.assertEqual(items[0]['quote'], 'I visited Amber Museum yesterday.')
+        self.assertEqual(outcome, {'status': 'accepted', 'attempts': 2})
+        self.assertEqual(call.call_count, 2)
+        self.assertIn('validation_error', call.call_args_list[1].args[0])
+        self.assertEqual([c.args[0] for c in audit.call_args_list], [0, 1])
+
+    def test_invalid_repair_is_bounded_and_semantic_uncertainty_is_not_retried(self):
+        bad = json.dumps({'complete': True, 'items': [{'entity': 'Invisible Gallery'}]})
+        call = Mock(return_value=bad)
+        items, known, outcome = extract_one_source(self.q, self.sources[0], 0, [], call)
+        self.assertIsNone(items)
+        self.assertEqual(known, [])
+        self.assertEqual((outcome['status'], call.call_count), ('invalid', 2))
+        call = Mock(return_value='{"complete":false,"items":[]}')
+        items, _, outcome = extract_one_source(self.q, self.sources[0], 0, [], call)
+        self.assertIsNone(items)
+        self.assertEqual((outcome['status'], call.call_count), ('unresolved', 1))
+
+    def test_transport_errors_and_oversize_requests_do_not_start_repair_loops(self):
+        call = Mock(side_effect=ConnectionError('stand-in disconnected'))
+        with self.assertRaises(ConnectionError):
+            extract_one_source(self.q, self.sources[0], 0, [], call)
+        self.assertEqual(call.call_count, 1)
+        call.reset_mock()
+        _, _, outcome = extract_one_source(self.q, self.sources[0], 0, [], call, max_chars=1)
+        self.assertEqual(outcome, {'status': 'oversize', 'attempts': 0})
+        call.assert_not_called()
+
+    def test_literal_decoder_excludes_invented_suffixes_and_duplicate_mentions(self):
+        text = "I bought the Amber Museum book, then a Cedar Museum map. The book was blue."
+        names = literal_names(text)
+        self.assertIn('Amber Museum book', names)
+        self.assertIn('Cedar Museum map', names)
+        self.assertNotIn('Cedar Museum map book', names)
+        self.assertNotIn('book', names)
+        self.assertNotIn('Musu', names)
+        self.assertEqual(names, sorted(set(names)))
+
+    def test_literal_decoder_handles_punctuation_unicode_and_bounded_names(self):
+        names = literal_names("I built a 1/48 B-17 and a '70 coupe. Musée d’Orsay was nearby.")
+        self.assertIn('1/48 B-17', names)
+        self.assertIn('70 coupe', names)
+        self.assertIn('Musée d’Orsay', names)
+        text = ' '.join('word' + str(i) for i in range(25))
+        self.assertNotIn(text, literal_names(text))
+        self.assertEqual(literal_names('x' * 201), [])
+
+    def test_decoder_aliases_are_only_existing_ids_and_do_not_mutate_inventory(self):
+        known = [{'id': 0, 'labels': ['Amber Museum']}]
+        before = copy.deepcopy(known)
+        fmt = literal_response_format(self.sources[0], known)
+        props = fmt['schema']['properties']['items']['items']['properties']
+        self.assertEqual(props['same_as']['enum'], [None, 0])
+        self.assertIn('Amber Museum', props['entity']['enum'])
+        self.assertEqual(known, before)
+
+    def test_decoder_profile_changes_invalidate_cached_extraction(self):
+        from . import count_extract
+        before = cache_key(self.q, self.h, self.cands)
+        with patch.dict(count_extract.DECODER_PROFILE, max_name_words=12):
+            self.assertNotEqual(before, cache_key(self.q, self.h, self.cands))
 
 
 if __name__ == '__main__':

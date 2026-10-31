@@ -5,7 +5,8 @@ Status: initial implementation merged in PR #11; exact R1 chunk-manifest replay 
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 99 synthetic tests pass on this branch: temporal/item scope, paired recovery, official score.py and exact chunk selection.
+Checks: synthetic tests pass on each merged branch (99 on the chronology-direction branch, 106 on the literal-decoder
+branch; not yet re-counted together): temporal/item scope, paired recovery, official score.py and exact chunk selection.
 Order: descending requests reverse the computed list; title words do not determine its direction or output form.
 Baseline: root R1 at each run's recorded `baseline_sha`, same candidates/machine; dev minus holdout.
 Historical smoke and the original in-progress CPU run use R1 at `de158d5`; their artifacts keep that provenance.
@@ -67,12 +68,35 @@ Exact repeats merge in code; other alias links remain explicit local-model hypot
 identities. The counter performs all arithmetic. Missing/invalid extractions, unresolved dates or an omitted
 supporting quote produce the unchanged R1 pack/prompt. Empty extraction does not establish a zero inventory.
 Weighted quantities, occurrence counts, changing inventories and complex/vague periods currently fall back.
-Extraction is a separate CLI; the four stages never call a model endpoint. Cache keys bind question/history/
-candidate text and extractor schema; the paired runner records cache hashes and rejects changes on resume.
+Extraction is a separate CLI; the four stages never call a model endpoint. Invalid JSON or literal names get
+at most one repair request with validation feedback; uncertainty and transport errors are not retried. The
+known inventory changes only after an accepted response. Both attempts and their input hashes are cached.
+V3 repeated a nonliteral name after validation feedback on the same preselected dev question; neither attempt
+was accepted. V4 constrains name decoding to unique, whole-word source spans (up to 24 words/200 characters).
+This requires llama.cpp's [schema-capable response_format](https://github.com/ggml-org/llama.cpp/blob/5047748f1/tools/server/README.md#post-v1chatcompletions-openai-compatible-chat-completions-api); the source-dependent grammar and decoder profile
+are hashed in the audit. It prevents invented name suffixes by construction, but does not prove item semantics
+or completeness. Names outside the span bounds require fallback, not truncation or approximate matching.
+V4's first real source passed literal validation, but the next source reported uncertainty: zero accepted
+question caches on that single probe. The fixed protocol is being validated on the remaining dev questions;
+23/57 multi-session count questions have supported distinct/time scopes. No counting accuracy result yet.
+Cache keys bind question/history/candidate text, extractor prompts/schema and the exact visible user-source
+footprint. Assembly changes that expose different fragments invalidate reuse. The paired runner records cache
+hashes and rejects changes on resume.
 Source/quote validation does not certify semantic recall or ownership. Local-model completeness claims are
 identified as such in reader facts. Do not enable this by default before paired multi-session evaluation.
+`extract_counts` also accepts `--candidate-manifest` instead of `--candidate-cache`. It validates every selected
+exported pack before extraction. The manifest's named retrieval revision is recorded as `baseline_reference_sha`;
+reconstruction permits changes inside the unused R1 `retrieve` body while checking the rest of that module's
+AST and exact bytes of date/evidence/facade/prompt modules. Chunking changes still fail. The baseline therefore
+uses exported retrieval at its named revision, with matching assembly and prompt code.
 If the full inventory would exceed the client message budget, R4 uses the unchanged R1 pack rather than
 discarding items. Computation artifacts count only facts actually included in the final reader pack.
+
+For the local llama.cpp b12017 server on this 8 GiB machine, the recovery launcher sets `--cache-ram 0
+--ctx-checkpoints 0 --no-cache-idle-slots`. Its default host prompt cache can otherwise grow to 8192 MiB.
+Runtime sidecars record cache-policy changes and the preserved pair boundary; model weights, KV precision,
+8192-token context and decoding parameters are unchanged. All 214 cached temporal plans were tokenized offline:
+maximum raw message 7024 tokens, plus 64 reserved wrapper tokens and 600 generation tokens, fits that context.
 
 From the repository root, using Python 3.11+ and the R1 dependencies in this folder's requirements.txt:
 
