@@ -33,7 +33,7 @@ def test_ranges():
     check("from May 3-5", "from May 3-5 [2023-05-03, day 123 to 2023-05-05, day 125]")
     check("from the 20th to the 27th of April",
           "from the 20th to the 27th of April [2023-04-20, day 110 to 2023-04-27, day 117]")
-    check("June 15th to 17th", "June 15th to 17th [2023-06-15, day 166 to 2023-06-17, day 168]")
+    check("Aug 8th to 10th", "Aug 8th to 10th [2023-08-08, day 220 to 2023-08-10, day 222]")
 
 
 def test_year_across_new_year():
@@ -41,8 +41,8 @@ def test_year_across_new_year():
     check("I went skiing on December 28th.", "I went skiing on December 28th [2022-12-28, day -3].", jan)
     check("The vote closed on Feb. 22.", "The vote closed on Feb. 22 [2023-02-22, day 53].", datetime(2023, 10, 15))
     check("My trip is on January 10.", "My trip is on January 10 [2024-01-10, day 375].", datetime(2023, 12, 20))
-    check("The conference is from June 15th to 17th.",
-          "The conference is from June 15th to 17th [2023-06-15, day 166 to 2023-06-17, day 168].",
+    check("The fair is from June 2nd to 4th.",
+          "The fair is from June 2nd to 4th [2023-06-02, day 153 to 2023-06-04, day 155].",
           datetime(2023, 7, 17))
 
 
@@ -50,7 +50,7 @@ def test_numeric_and_ordinals():
     check("an issue on 3/22, fixed", "an issue on 3/22 [2023-03-22, day 81], fixed")
     check("a 1/25 scale model", "a 1/25 scale model")
     check("the 50/30/20 rule", "the 50/30/20 rule")
-    check("the gala on the 5th of last month", "the gala on the 5th of last month [2023-02-05, day 36]")
+    check("the race on the 9th of last month", "the race on the 9th of last month [2023-02-09, day 40]")
     check("In March, I flew on the 10th and returned on the 12th.",
           "In March, I flew on the 10th [2023-03-10, day 69] and returned on the 12th [2023-03-12, day 71].")
     check("in the 36th minute", "in the 36th minute")
@@ -87,15 +87,15 @@ def test_weekdays():
     check("last Friday", "last Friday [2023-03-17, day 76]")
     check("this past Saturday", "this past Saturday [2023-03-18, day 77]")
     check("I bought sneakers on Monday.", "I bought sneakers on Monday [2023-03-20, day 79].")
-    check("I'm planning to inspect the hive on Saturday.",
-          "I'm planning to inspect the hive on Saturday [2023-03-25, day 84].")
-    check("My son's team has a tournament on Saturday, and I promised a cookout.",
-          "My son's team has a tournament on Saturday [2023-03-25, day 84], and I promised a cookout.")
+    check("I'm planning to paint the fence on Saturday.",
+          "I'm planning to paint the fence on Saturday [2023-03-25, day 84].")
+    check("The club has a match on Saturday, and I offered to drive.",
+          "The club has a match on Saturday [2023-03-25, day 84], and I offered to drive.")
     check("I need to finish a proposal - I spent three hours on it on Thursday.",
           "I need to finish a proposal - I spent three hours on it on Thursday [2023-03-16, day 75].")
     check("I've got a client deadline on Friday.", "I've got a client deadline on Friday [2023-03-24, day 83].")
-    check("I'm enjoying the PS5, a gift on 10th January.",
-          "I'm enjoying the PS5, a gift on 10th January [2023-01-10, day 10].", datetime(2023, 5, 19))
+    check("I'm enjoying the lamp, a present on 12th January.",
+          "I'm enjoying the lamp, a present on 12th January [2023-01-12, day 12].", datetime(2023, 5, 19))
     check("next Friday", "next Friday [2023-03-24, day 83]")
     check("a draft due Wednesday", "a draft due Wednesday [2023-03-22, day 81]")
     check("on Wednesday last week", "on Wednesday last week [2023-03-15, day 74]")
@@ -106,8 +106,8 @@ def test_weekdays():
 
 
 def test_temporal_questions():
-    assert TEMPORAL.search("How many days apart were my son's school play and my daughter's appointment?")
-    assert TEMPORAL.search("How many days after I bought my ticket was the closing night?")
+    assert TEMPORAL.search("How many days apart were the picnic and the dentist visit?")
+    assert TEMPORAL.search("How many days after the job interview did I get the offer?")
 
 
 if __name__ == "__main__":
