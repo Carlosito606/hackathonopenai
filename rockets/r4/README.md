@@ -5,7 +5,8 @@ Status: initial implementation merged in PR #11; exact R1 chunk-manifest replay 
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 109 synthetic tests run and pass after merging PRs #24 and #25 (1 skipped; counted by mission control): temporal/item scope, paired recovery, official score.py and exact chunk selection.
+Checks: 112 tests pass with the official scorer enabled: temporal/item scope, paired recovery, exact chunk selection and operator deadlines.
+Reactor: [an offline packet and human operator helper](OPERATOR.md) cover all 12 audited computations; no new Reactor requests yet.
 Order: descending requests reverse the computed list; title words do not determine its direction or output form.
 Baseline: root R1 at each run's recorded `baseline_sha`, same candidates/machine; dev minus holdout.
 Historical smoke and the original in-progress CPU run use R1 at `de158d5`; their artifacts keep that provenance.

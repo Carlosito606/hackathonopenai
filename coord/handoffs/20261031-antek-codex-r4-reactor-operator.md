@@ -4,6 +4,8 @@ Prepared packet: /home/antekpusz/hackathon/.tools/r4-reactor-computed-42ab798-v2
 Local convenience command: bash /home/antekpusz/hackathon/.tools/r4-reactor-operator.sh START_UTC END_UTC
 The human must first confirm/announce a free exclusive window and enter the key in the hidden local prompt.
 No agent credential access or Reactor request was used in preparation. Human terminal availability is pending.
+After rebase onto main with PR #24/#25 combined, all 112 R4 tests pass with the official scorer enabled;
+both touched Python files compile. The tests use local fixture processes, not Reactor.
 
 All 12 computed-in-pack questions from dev temporal minus holdout; 24 plans, all 214 source plans matched,
 all 12 exact fact audits supported, named R1 reference fee061f065f52e3045ec63acf10b0655210fef98.
