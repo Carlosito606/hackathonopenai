@@ -13,8 +13,9 @@ repozytorium podanych w nawiasach.
 - Ostateczne odpowiedzi musi dać nasz agent Reactor, a dane wejściowe przygotowuje kod z tego repozytorium
   (`AGENTS.md`, sekcja 1; `README.md`).
 - Przebieg testu na Reactorze (31.10, 01:37-05:57 UTC): 146/146 odpowiedzi Reactora, 12 odmów (8,2%), każda
-  odpowiedź z cytatem (średnio 1,57 sesji), mediana 75 s na pytanie (`README.md`, wiersz „final test run on
-  Reactor”).
+  odpowiedź z cytatem (średnio 1,57 sesji), mediana 75 s na pytanie; na koniec każda z 12 odmów dostała jeden
+  cytat (`rockets/poligon/cite_expand.py --abstentions-only`), bez zmiany odpowiedzi i odmów (`README.md`, wiersz
+  „final test run on Reactor”; `experiments/r1/20261031-0600-final-run.md`).
 - Test nie ma odpowiedzi wzorcowych, więc trafności na teście jeszcze nie znamy. Czego się spodziewać: na 39
   pytaniach dev Reactor miał ok. 92-95% poprawnych i 0 fałszywych odmów
   (`experiments/r1/20261031-0010-reactor-calibration.md`), a na danych podobnych do testu dowodom brakuje sesji
@@ -96,6 +97,10 @@ Reactora.
   gold w ok. 18% i 20% pytań (`experiments/r1/20261031-0210-final-dev-hard-v2-long.md`).
 - Dla porównania sam BM25 traci na dev-hard 13,1 pkt (`rockets/poligon/README.md`).
 
+![Pierwszy R1 i zgłoszony R1: wszystkie sesje gold w paczce dowodów na dev, dev-hard i historiach długości testu](../rockets/poligon/r1-robustness.svg)
+
+(wykres: `rockets/poligon/r1-robustness.svg`; liczby: `experiments/r1/20261031-0210-final-dev-hard-v2-long.md`)
+
 **Notatka:** Na czystym dev wyszukiwanie jest prawie pełne; słabe miejsca to pytania z wielu sesji i o czas, gdy
 pojawiają się pułapki.
 
@@ -116,8 +121,11 @@ pojawiają się pułapki.
   (`coord/findings/20261031-0115-karol-claude-2-r1-near-miss-displacement.md`). Lekarstwo: różnorodność sesji w
   paczce; w kodzie finałowym R1 pytania liczące multi-session na dev-hard (70) 0,714 → 0,914 przy tym samym budżecie
   (`experiments/r1/20261031-0030-budget.md`, `coord/findings/20261031-0125-karol-claude-2-sessdiv-pack.md`).
+  Strat z tłoku: 23 w pierwszym R1 (dev-hard v1), 7 w zgłoszonym R1 (dev-hard v2)
+  (`coord/findings/20261031-0325-karol-claude-2-final-r1-robustness.md`).
 - Lokalny sędzia dla odpowiedzi, których `score.py` nie rozstrzyga: 95% zgodności na 490 przypadkach o znanym
-  wyniku (`rockets/poligon/LOG.md`).
+  wyniku (`rockets/poligon/LOG.md`) i zgoda z człowiekiem w 21 z 22 prawdziwych odpowiedzi Reactora
+  (`coord/findings/20261031-0315-karol-claude-2-judge-vs-human.md`).
 
 **Notatka:** Nie ufaliśmy wynikom na łatwym dev. Poligon pokazał, gdzie potok pęka (pytania z wielu rozmów, gdy
 pułapki zajmują miejsce w paczce), i to zmieniło kod finałowy, zanim cokolwiek poszło do Reactora.
@@ -177,14 +185,19 @@ odpowiada zamiast odmówić.
   sprawdzenie, czy zdanie z odpowiedzią dotyczy tego użytkownika (`rockets/r7/LOG.md`).
 - Liczenie w kodzie liczby dni między dwoma zdarzeniami, gdy oba mają znacznik daty
   (`coord/handoffs/2026-10-30-temporal-date-coverage.md`).
-- Odporność multi-session na pułapki (dev-hard −16,5 pkt) i pomiar R1 na całym dev-large
-  (`experiments/r1/20261030-2320-dev-hard.md`, `experiments/retrieval/20261031-0130-recall-audit.md`).
+- Lepsze wyszukiwanie semantyczne: przy historiach długości testu 25 z 38 braków to sesje gold spoza kandydatów R1,
+  a 28 z 35 takich sesji ma z pytaniem najwyżej jedno wspólne słowo
+  (`coord/findings/20261031-0335-karol-claude-2-test-length-misses-are-paraphrase.md`).
+- Ślepa uliczka: rozszerzanie pytania przez LLM pomaga samemu BM25, ale połączone z R1 gubi sesje gold
+  (dev-hard-long, top 8: 0,882 → 0,864) (`coord/findings/20261031-0340-karol-claude-2-llm-query-expansion.md`).
 - Przebieg testu na Reactorze (31.10, 01:37-05:57 UTC): 146/146 odpowiedzi Reactora, 12 odmów (8,2%), każda
-  odpowiedź z cytatem (średnio 1,57 sesji), mediana 75 s na pytanie (`README.md`, wiersz „final test run on
-  Reactor”).
+  odpowiedź z cytatem (średnio 1,57 sesji), mediana 75 s na pytanie; na koniec każda z 12 odmów dostała jeden
+  cytat (`rockets/poligon/cite_expand.py --abstentions-only`), bez zmiany odpowiedzi i odmów (`README.md`, wiersz
+  „final test run on Reactor”; `experiments/r1/20261031-0600-final-run.md`).
 - Test nie ma odpowiedzi wzorcowych, więc trafności na teście jeszcze nie znamy. Czego się spodziewać: na 39
   pytaniach dev Reactor miał ok. 92-95% poprawnych i 0 fałszywych odmów
   (`experiments/r1/20261031-0010-reactor-calibration.md`), a na danych podobnych do testu dowodom brakuje sesji
   gold w ok. 18% pytań multi-session i 20% temporal (`experiments/r1/20261031-0210-final-dev-hard-v2-long.md`).
 
-**Notatka:** Kolejny zysk jest w odporności na pułapki i w liczeniu dat w kodzie, nie w samym wyszukiwaniu.
+**Notatka:** Kolejny zysk wymaga lepszego wyszukiwania po znaczeniu, nie dokładania więcej tekstu do paczki
+dowodów; do tego liczenie dat w kodzie.
