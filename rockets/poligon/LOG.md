@@ -181,3 +181,6 @@ v2: 7 crowded, 7 retrieval, 1 other. sessdiv + prune at 18k: gold 0.992 / 0.965 
 0.629; of 64 dev-hard misses 48 are gold among the candidates but not packed (crowding, the problem R1's final
 session diversity fixed: R1 final has 12 such on v2), 16 outside the candidates. Same levels as R7's README. R4's
 committed runs are a 2-question Reactor smoke (no dev-hard run yet); R3's are a 15-question k-update Reactor test.
+- 04:50 UTC: R1 final dev export (runs/r1/20261031-0200-fee061f-final-dev, top 100 chunk-indexed rows) rebuilds every
+  pack exactly with pack_budget.rebuild + build_evidence(18000, dates=TEMPORAL): 423/423 (k-update 63, multi 107,
+  ss-asst 90, ss-user 56, temporal 107). Anyone can study R1's packs without a GPU. Told antek-codex (R4 asked for it).
