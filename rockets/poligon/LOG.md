@@ -161,3 +161,6 @@ v2: 7 crowded, 7 retrieval, 1 other. sessdiv + prune at 18k: gold 0.992 / 0.965 
   words): evidence F1 0.765 -> 0.805 (k-update 0.667 -> 0.868, multi 0.587 -> 0.652, temporal 0.664 -> 0.721,
   ss-asst 1.000 -> 0.933, ss-user 1.000 -> 0.967). An answerable question we abstain on scores F1 0 today
   (predictions.py writes citations []); citing the best pack session gives it 0.646 on average (--cite-abstentions).
+- Where final R1 loses gold: dev 3 not in candidates / 8 cut by budget; v2 14 / 12; long 25 / 13. Of 35 gold
+  sessions missing from the candidates on long, 28 share <= 1 content word with the question (paraphrase), 13 hold
+  the fact in an aside. Finding 20261031-0335.
