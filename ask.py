@@ -2,8 +2,7 @@
 
     python ask.py plan-test.jsonl results-test.jsonl --base-url https://tNN... --agent-id agt_...   # REACTOR_ACCESS_KEY set
     python ask.py plan-dev.jsonl results-dev.jsonl --local http://127.0.0.1:8899                  # stand-in model
-    python reactor/predictions.py results-test.jsonl --histories ../data/test/histories.jsonl \\
-        --out predictions.jsonl --abstain-on agent
+    python reactor/predictions.py results-test.jsonl --out predictions.jsonl --abstain-on agent
 """
 import argparse
 import json
@@ -90,6 +89,11 @@ def main():
                         if result.get("status") not in ("timeout", "closed"):
                             break
                 result.setdefault("question_id", p["question_id"])
+                if result.get("status") == "answered" and not result.get("abstained") and not result.get("citations") \
+                        and p["evidence"]:
+                    # Reactor sometimes cites only in its reasoning, not on the final line: take the labels from there
+                    cited, _ = kit.citations(result.get("reply", ""), kit.load_evidence(json.dumps(p["evidence"])))
+                    result["citations"], result["citations_from"] = cited, "reply"
                 out.write(json.dumps(result) + "\n")
                 out.flush()
                 print(f"{p['question_id']}: {result.get('status')} {result.get('answer', '')!s:.70}", file=sys.stderr)
