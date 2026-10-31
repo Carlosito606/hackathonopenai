@@ -187,3 +187,5 @@ committed runs are a 2-question Reactor smoke (no dev-hard run yet); R3's are a 
 - Memory: antek-codex found llama.cpp's host prompt cache defaults to cache-ram 8192 MiB (b12017); that likely explains
   the stand-in's 13 GB private memory here (b12004 not checked). Start the stand-in with `--cache-ram 0` (and -np sized
   to the context) on 24 GB machines that also run other rockets.
+- 06:14 UTC: mission control put `cite_expand.py --abstentions-only` into the final submission (tag `submission`):
+  the 12 abstentions each cite the best pack session; the expansion on answered questions stays out (dev-hard).
