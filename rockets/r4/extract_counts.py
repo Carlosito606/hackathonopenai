@@ -13,7 +13,7 @@ from collections import Counter
 from pathlib import Path
 
 from . import rocket
-from .count_extract import SOURCE_INSTRUCTIONS, cache_key, closed_list_response, requested_window, source_response, supports_distinct, validate_response, visible_sources
+from .count_extract import cache_key, closed_list_response, extract_one_source, requested_window, supports_distinct, validate_response, visible_sources
 from .run import candidate_key, rows, verify_reader, write
 from .timeline import classify
 
@@ -65,7 +65,9 @@ def main():
             stats['missing_candidates'] += 1
             continue
         cands = json.loads(path.read_text())
-        key = cache_key(q, h, cands)
+        evidence = rocket.compatible_evidence(h, cands, dates=False)
+        sources = visible_sources(h, cands, evidence)
+        key = cache_key(q, h, cands, sources)
         target = args.out / (key + '.json')
         if target.exists():
             cached = json.loads(target.read_text())
@@ -77,8 +79,6 @@ def main():
         if not requested_window(q['question'], q['question_date'])[0]:
             stats['unsupported_time_scope'] += 1
             continue
-        evidence = rocket.compatible_evidence(h, cands, dates=False)
-        sources = visible_sources(h, cands, evidence)
         ruled = closed_list_response(q, sources)
         if ruled:
             try:
@@ -96,34 +96,29 @@ def main():
         all_items, known = [], []
         valid = True
         for index, source in enumerate(sources):
-            text = json.dumps({'question': q['question'], 'question_date': q['question_date'],
-                               'session_date': source['date'], 'window': requested_window(q['question'], q['question_date'])[1],
-                               'excerpt': source['text'], 'known_entities': known}, ensure_ascii=False)
-            if len(text) > args.max_chars:
-                stats['oversize_source'] += 1
+            def call(prompt):
+                request = urllib.request.Request(args.local.rstrip('/') + '/v1/chat/completions',
+                    json.dumps({'model': args.reader, 'messages': [{'role': 'user', 'content': prompt}],
+                                'temperature': 0, 'max_tokens': 400}).encode(), {'Content-Type': 'application/json'})
+                stats['local_calls'] += 1
+                with urllib.request.urlopen(request, timeout=600) as response:
+                    return json.load(response)['choices'][0]['message']['content']
+
+            def audit(attempt, prompt, reply):
+                write(args.out / (key + f'-source-{index}-attempt-{attempt}-response.json'), {
+                    'question_id': q['question_id'], 'reader': args.reader, 'source': index, 'attempt': attempt,
+                    'input_sha256': hashlib.sha256(prompt.encode()).hexdigest(), 'reply': reply})
+
+            extracted, updated, outcome = extract_one_source(q, source, index, known, call, audit, args.max_chars)
+            write(args.out / (key + f'-source-{index}-outcome.json'), outcome)
+            stats['repair_requests'] += max(0, outcome['attempts'] - 1)
+            if outcome['status'] != 'accepted':
+                stats[outcome['status'] + '_source'] += 1
                 valid = False
                 break
-            request = urllib.request.Request(args.local.rstrip('/') + '/v1/chat/completions',
-                json.dumps({'model': args.reader, 'messages': [{'role': 'user', 'content': SOURCE_INSTRUCTIONS + '\n' + text}],
-                            'temperature': 0, 'max_tokens': 400}).encode(), {'Content-Type': 'application/json'})
-            with urllib.request.urlopen(request, timeout=600) as response:
-                reply = json.load(response)['choices'][0]['message']['content']
-            stats['local_calls'] += 1
-            write(args.out / (key + f'-source-{index}-response.json'), {
-                'question_id': q['question_id'], 'reader': args.reader, 'source': index,
-                'input_sha256': hashlib.sha256(text.encode()).hexdigest(), 'reply': reply})
-            try:
-                value = json.loads(reply.strip().removeprefix('```json').removeprefix('```').removesuffix('```').strip())
-                extracted, known = source_response(q, source, index, value, known)
-                if extracted is None:
-                    stats['unresolved_source'] += 1
-                    valid = False
-                    break
-                all_items += extracted
-            except (ValueError, TypeError, KeyError, AttributeError):
-                stats['invalid_source_response'] += 1
-                valid = False
-                break
+            known = updated
+            all_items += extracted
+            stats['repaired_sources'] += outcome['attempts'] > 1
             print(q['question_id'], f'source {index+1}/{len(sources)}', flush=True)
         if not valid:
             continue

@@ -186,3 +186,17 @@
 - Full message budgeting now includes item facts and aliases; oversize inventories fall back without dropping
   items. Computation artifacts distinguish a possible calculation from a fact actually supplied to the reader.
   The identical-plan integration fixture checks this distinction; 96 tests pass.
+
+## 2026-10-31 — antek-codex — bounded literal repair and exact extraction scope
+
+- Extraction v3 permits one validation-feedback request for invalid JSON/literal spans. A second invalid reply
+  rejects the source; semantic uncertainty and transport errors do not trigger retries. Failed attempts cannot
+  mutate the known inventory. The whole request, including repair feedback, must fit the character budget.
+- Cache identity now includes actual visible user fragments and both prompt templates. A changed R1 assembly
+  scope cannot reuse an old complete inventory when the question/history/candidates happen to stay identical.
+  Loading also checks the stored source fingerprint explicitly; old v2 caches are not silently migrated.
+- Five regression tests cover source-scope changes, corrupt fingerprints, valid/invalid repairs, immutable known
+  identities and the request/transport bounds. 101 tests are expected including the full existing suite; actual
+  local-model validation of the repair is still pending. Counts remain opt-in and PR #21 remains draft.
+- Requested exact full R1 multi-session chunk exports for the 107 non-holdout questions. Only 6/57 count
+  questions have legacy local candidates; those partial caches cannot establish a full paired improvement.

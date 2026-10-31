@@ -5,7 +5,7 @@ Status: initial implementation merged in PR #11; exact R1 chunk-manifest replay 
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 96 synthetic tests pass: temporal/item scope, paired recovery, official score.py and exact chunk selection.
+Checks: 101 synthetic tests cover temporal/item scope, paired recovery, official score.py and exact chunk selection.
 Baseline: root R1 at each run's recorded `baseline_sha`, same candidates/machine; dev minus holdout.
 Historical smoke and the original in-progress CPU run use R1 at `de158d5`; their artifacts keep that provenance.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
@@ -64,8 +64,12 @@ Exact repeats merge in code; other alias links remain explicit local-model hypot
 identities. The counter performs all arithmetic. Missing/invalid extractions, unresolved dates or an omitted
 supporting quote produce the unchanged R1 pack/prompt. Empty extraction does not establish a zero inventory.
 Weighted quantities, occurrence counts, changing inventories and complex/vague periods currently fall back.
-Extraction is a separate CLI; the four stages never call a model endpoint. Cache keys bind question/history/
-candidate text and extractor schema; the paired runner records cache hashes and rejects changes on resume.
+Extraction is a separate CLI; the four stages never call a model endpoint. Invalid JSON or literal names get
+at most one repair request with validation feedback; uncertainty and transport errors are not retried. The
+known inventory changes only after an accepted response. Both attempts and their input hashes are cached.
+Cache keys bind question/history/candidate text, extractor prompts/schema and the exact visible user-source
+footprint. Assembly changes that expose different fragments invalidate reuse. The paired runner records cache
+hashes and rejects changes on resume.
 Source/quote validation does not certify semantic recall or ownership. Local-model completeness claims are
 identified as such in reader facts. Do not enable this by default before paired multi-session evaluation.
 If the full inventory would exceed the client message budget, R4 uses the unchanged R1 pack rather than
