@@ -169,3 +169,7 @@ v2: 7 crowded, 7 retrieval, 1 other. sessdiv + prune at 18k: gold 0.992 / 0.965 
   Same direction on dev (top 5 all 0.844 -> 0.889) and dev-hard v2 (0.714 -> 0.764); expansion alone > RRF.
 - DEADEND: RRF of final R1's session ranking with expanded BM25 loses gold (top 8: dev 0.967 -> 0.962, v2 0.920 ->
   0.892, long 0.882 -> 0.864). The BM25-only gain does not transfer to R1's dense + reranker pipeline.
+- CORRECTION cite_expand.py: measured on dev only; on dev-hard v2 / long it costs ~7 points of evidence F1 (0.764
+  -> 0.695 / 0.696) because near-misses share the most question words. patryk-opencode caught it and kept it out
+  of the submission. Lesson for me: run every proposal on dev-hard before posting it. --cite-abstentions alone:
+  0 -> 0.646 / 0.437 / 0.438 (dev / v2 / long).
