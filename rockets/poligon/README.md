@@ -15,21 +15,23 @@ its original session ids, so embedding caches keyed by session id still hit); id
 dev_hard/ has the dev format (questions, histories, gold) plus manifest.jsonl (source question, variant, injected
 sessions). Never feed manifest.jsonl to a pipeline. Score with the challenge's score.py on dev_hard/gold.jsonl.
 
-**The number to shrink: dev to dev-hard drop, per type.** Plain BM25 (all turns), all gold sessions in the top 5
-sessions, same 398 answerable questions (v1 and v2 give the same numbers): k-update 0.966 -> 0.845 (-12.1),
-multi 0.670 -> 0.423 (-24.7), ss-asst 1.000 -> 0.989 (-1.1), ss-user 1.000 -> 1.000 (0), temporal 0.725 -> 0.529
-(-19.6), all 0.844 -> 0.714 (-13.1). R1 (926005e, rerank, measured by patryk-opencode on v1), all gold in the
-pack: multi 0.918 -> 0.753, temporal 0.892 -> 0.804, all 0.952 -> 0.889; near-misses reach 99% of packs.
-Fix found here: "sessdiv" pack order at a 26k budget brings dev-hard multi to 0.959 and temporal to 0.902
-(`pack_policies.py`, coord/findings/20261031-0125-*).
+**The number to shrink: dev to dev-hard drop, per type.** R1 as submitted (fee061f), all gold sessions in the
+evidence pack, 398 paired answerable questions, dev / dev-hard v2 / dev-hard-long: all 0.972 / 0.935 / 0.905,
+multi 0.969 / 0.907 / 0.825, temporal 0.922 / 0.833 / 0.804, k-update 1.000 / 1.000 / 0.983, single-session 1.000.
+The first R1 (926005e) lost 6.3 points on v1 (0.952 -> 0.889), 23 of them to near-miss crowding; the final code's
+session diversity cut crowding losses to 7. At test length the misses are retrieval and paraphrase (25 of 38 gold
+sessions outside the candidates, most sharing at most one word with the question). Plain BM25 for scale: all gold in
+the top 5 sessions 0.844 / 0.714 / 0.681. Chart: `r1-robustness.svg`. Findings: coord/findings/20261031-0325 and -0335.
 
 Measure your rocket in one command (runs on dev, dev-hard v2 and dev-hard-long, contract artifacts):
-`python rockets/poligon/report.py ../data RUN_DEV RUN_HARD RUN_LONG`. Or, pairwise:
+`python rockets/poligon/report.py ../data RUN_DEV RUN_HARD RUN_LONG` (seconds, no models). Or, pairwise:
 `python rockets/poligon/compare_dev_hard.py ../data/dev ../data/dev_hard DEV/candidates.jsonl HARD/candidates.jsonl`
-(or the two evidence.jsonl files for "all gold in the pack").
+(or the two evidence.jsonl files for "all gold in the pack"). Always report all three splits: a change that helps on
+dev can hurt on dev-hard (cite_expand.py did: +4 points on dev, -7 on dev-hard).
 
-Local judge (`judge.py`, 0.951 on its selftest with Qwen2.5-7B Q4_K_M) for score.py's "unjudged"; failure
-analysis (`failures.py`); pack studies on any rocket's candidates (`pack_budget.py`, `pack_policies.py`).
+Local judge (`judge.py`, Qwen2.5-7B Q4_K_M) for score.py's "unjudged": 0.951 on its 490-case selftest and 21 of 22
+agreeing with a person on real Reactor answers. Failure analysis (`failures.py`, `crowding.py`); pack studies on any
+rocket's candidates (`pack_budget.py`, `pack_policies.py`); test-like trap asides (`make_traps.py`, `reader_probe.py`).
 
 ## How dev-hard is built
 

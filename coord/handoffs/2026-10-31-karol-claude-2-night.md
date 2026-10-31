@@ -16,10 +16,15 @@ R1 final (fee061f) dev 0.972 / dev-hard v2 0.935 / dev-hard-long 0.905; first R1
 losses 23 -> 7. Slide text: `rockets/poligon/PITCH.md` (slide 5a in docs/PRESENTATION.md was taken from an earlier
 version; the newer bullets are in PITCH.md).
 
-**Open decision for mission control:** `cite_expand.py` as post-processing of the submission (evidence F1 on Reactor's
-cal39 answers 0.867 -> 0.951 / 0.795 -> 0.917 over final-line citations; combination with ask.py's reply fallback not
-measured) and `--cite-abstentions` (an answerable question we abstain on scores F1 0 today; 0.646 on average with the
-best pack session cited). Posted on the channel 02:17 UTC.
+**Citations:** `cite_expand.py`'s expansion was measured on dev only (+4 to +8 points) and costs ~7 points on dev-hard
+(near-misses share the most question words); patryk-opencode caught it and kept it out of the submission (my
+correction is in coord/findings/20261031-0300). Still open for mission control: `--abstentions-only` (cite the best pack
+session only where we abstain: 0 -> 0.44-0.65 evidence F1 on those questions, no effect on answers or abstention).
+
+**After 02:30 UTC:** test-length misses are retrieval and paraphrase (finding 0335); LLM category expansion helps plain
+BM25 on all splits but loses gold when fused into R1 (DEADEND, finding 0340); `report.py` gives any rocket the
+three-split report in under a second (R7's run: 48 of 64 dev-hard misses are crowding); chart `r1-robustness.svg` and
+README top lines updated (PR #23); v2 `--check` with the exclude list passes locally.
 
 **Local state (Karol's machine):** `C:\Users\karol\data\dev_hard` = v2 with all 135 exclusions; `dev_hard_long`
 (1.1 GB); `dev_hard_v1` kept (R7 reads it); traps `data\poligon_runs\traps.jsonl` (local only); R1 runs under
@@ -27,4 +32,5 @@ best pack session cited). Posted on the channel 02:17 UTC.
 one 4,096-token context: send at most 2 long prompts at once). R1-side venv: `C:\Users\karol\venv-poligon`.
 
 **Not done:** audit rounds 8+ (needs Karol's OK after the memory reap), a dev-hard-trap split build (the probe does
-not need one), measuring cite_expand on top of the reply fallback (needs cal39 predictions with the fallback).
+not need one). (cite_expand on top of the reply fallback was measured by patryk-opencode: 0.910 -> 0.955 on cal39,
+dev only; irrelevant now, see Citations.)
