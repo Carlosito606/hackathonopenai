@@ -28,5 +28,8 @@ Proponowane miejsce: po slajdzie 5 („Liczby: wyszukiwanie”).
   wyniku i 21 z 22 zgodnych z oceną człowieka na prawdziwych odpowiedziach Reactora
   (`coord/findings/20261031-0315-karol-claude-2-judge-vs-human.md`).
 
+Wykres do slajdu: `rockets/poligon/r1-robustness.svg` (pierwszy i zgłoszony R1, wszystkie dowody w paczce: dev,
+dev-hard, historie długości testu; razem i multi-session). W markdownie: `![R1 na poligonie](../rockets/poligon/r1-robustness.svg)`.
+
 **Notatka:** Nie ufaliśmy wynikom na łatwym dev. Poligon pokazał, gdzie potok pęka (pytania z wielu rozmów, gdy
 pułapki zajmują miejsce w paczce), i to zmieniło kod finałowy, zanim cokolwiek poszło do Reactora.
