@@ -176,6 +176,45 @@ class ComputationTest(unittest.TestCase):
         self.assertEqual(calendar_difference('2024-03-04', '2024-03-05', 'day'), '1 day')
         self.assertEqual(calendar_difference('2024-03-04', '2024-03-11', 'week'), '1 week (7 days)')
 
+    def test_recollection_date_does_not_date_the_recalled_visit(self):
+        pool = self.event('I was thinking about my botanical garden tour today, and I remembered that I went with a friend.',
+                          '2024-03-04')
+        result = compute('How many days ago did I visit the botanical garden with a friend?', '2024-03-11', pool)
+        self.assertFalse(result['computed'])
+
+    def test_date_scopes_only_to_its_coordinated_predicate(self):
+        pool = self.event('I recently discovered a jazz quartet and started enjoying their music today.', '2024-03-04')
+        self.assertFalse(compute('How many days ago did I discover a jazz quartet?', '2024-03-11', pool)['computed'])
+        self.assertEqual(pool[0]['text'], 'started enjoying their music today.')
+
+    def test_dated_visit_before_separate_recollection_remains_valid(self):
+        pool = self.event('I visited the botanical garden today and remembered my old music teacher.', '2024-03-04')
+        result = compute('How many days ago did I visit the botanical garden?', '2024-03-11', pool)
+        self.assertEqual(result.get('answer'), '7 days')
+
+    def test_recollection_itself_can_be_a_dated_event(self):
+        pool = self.event('I remembered my botanical garden trip today.', '2024-03-04')
+        result = compute('How many days ago did I remember my botanical garden trip?', '2024-03-11', pool)
+        self.assertEqual(result.get('answer'), '7 days')
+
+    def test_discussion_today_does_not_date_a_trip(self):
+        pool = self.event('I discussed my botanical garden trip today.', '2024-03-04')
+        self.assertFalse(compute('How many days ago did I visit the botanical garden?', '2024-03-11', pool)['computed'])
+
+    def test_deciding_to_buy_does_not_establish_a_purchase(self):
+        pool = self.event('I decided to buy a telescope today.', '2024-03-04')
+        self.assertFalse(compute('How many days ago did I buy a telescope?', '2024-03-11', pool)['computed'])
+
+    def test_decision_itself_remains_a_supported_event(self):
+        pool = self.event('I decided to buy a telescope today.', '2024-03-04')
+        result = compute('How many days ago did I decide to buy a telescope?', '2024-03-11', pool)
+        self.assertEqual(result.get('answer'), '7 days')
+
+    def test_past_intention_is_not_a_completed_event(self):
+        for expression in ['hoped to', 'wanted to', 'planned to', 'intended to']:
+            pool = self.event(f'I {expression} visit the botanical garden today.', '2024-03-04')
+            self.assertFalse(compute('How many days ago did I visit the botanical garden?', '2024-03-11', pool)['computed'])
+
 
 if __name__ == '__main__':
     unittest.main()
