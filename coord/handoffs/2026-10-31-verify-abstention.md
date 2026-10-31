@@ -17,3 +17,8 @@ update 03:30: GUIDE now demands the [E#] labels on the final line (Reactor may d
 blocked: main switched to the "rockets" AGENTS.md; prepare.py there belongs to R1 HYBRID and verification to R7
   GUARDIAN. Rebase onto main conflicts in prepare.py; not resolved. The human decides: port as a rocket part, or hand
   the GUIDE/budget/verify.py change to R1.
+update 06:00: ported onto patryk/rakieta as branch verify/abstention-rakieta (R1 owns prepare.py on our machine):
+  R1 acc 0.24 -> 0.31, false abstention 0.65 -> 0.45, abstention recall 0.80 -> 0.72, evidence F1 0.16 -> 0.41
+  (experiments/verify/20261031-0600-port-rakieta.md). Cherry-picked 78819d5 on verify/abstention. Finding:
+  coord/findings/20261031-0600-pw-claude-quote-first-abstention.md. Not done: merge into patryk/rakieta (owner's
+  call), Reactor check, recall recovery.

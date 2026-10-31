@@ -61,6 +61,12 @@ QUOTE2 = """
 - If it changed over time, the most recent conversation wins.
 - The final line holds only the short answer (a name, number, date or short phrase) and the labels of the excerpts you quoted, e.g. "Sombra [E4]". One answer, no hedging, no alternatives.
 - Write INSUFFICIENT_EVIDENCE only if you could quote nothing that answers it, or the check failed.{extra})"""
+QUOTE_L = """
+(How to answer: the evidence is excerpts from my own past chats with you, oldest first, each with its date; "user" is me, "assistant" is you.
+- First write "Quotes:" and copy, word for word, the sentence(s) from the excerpts that answer the question, each with its label, e.g. [E3] "I just started reading The Nightingale". The answer is often a side remark in a chat about something else, and may use other words than the question.
+- If it changed over time, the most recent conversation wins.
+- Then the final line holds only the short answer (a name, number, date or short phrase) followed by the labels of the excerpts you quoted, e.g. "<answer> [E4]". Labels count only on that line, so always repeat them there. One answer, no hedging, no alternatives. It is the last line of your reply: nothing after it.
+- Write INSUFFICIENT_EVIDENCE only if you could quote nothing that answers it, or what you quoted is about a different person, thing or event than the question asks about.{extra})"""
 # Runs up to quote8k+v put the "+v" note at the end of the GUIDE; "final" is prepare.py as committed.
 VARIANTS = {
     "base": {"GUIDE": BASE, "build_evidence": budget(18000)},
@@ -70,6 +76,7 @@ VARIANTS = {
     "quote8k": {"GUIDE": QUOTE, "build_evidence": budget(8000)},
     "final": {},
     "final2": {},  # final after "labels count only on that line" was added to the GUIDE
+    "rk_q": {"GUIDE": QUOTE_L},  # rk without R1's "plans/undone" and "other people" bullets
     "rk": {},  # prepare.py as committed on verify/abstention-rakieta (R1 of patryk/rakieta + this change)
 }
 
