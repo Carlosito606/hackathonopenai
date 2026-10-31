@@ -6,9 +6,18 @@ from .dates import parse_date, resolve_dates, shift_months
 STOP = set('a an the and or to of on at for from in with my me i did do does was were is are have has had been be '
            'day days week weeks month months year years how many much long ago since before after between '
            'when which what event events first last earliest latest order happened participate participated '
-           'attend attended started start decided mentioned bought buy got get take took going went visit visited'.split())
+           'attend attended started start decide decided mentioned bought buy got get take took going went visit visited'.split())
 NAME = r"\b(?:[A-Z][A-Za-z0-9]*(?:['’][a-z]+)?|\d+[A-Za-z]*)(?:(?:\s+(?:of|the|and|for|in|at|to))?\s+[A-Z][A-Za-z0-9]*(?:['’][a-z]+)?)*\b"
 NAME_STOP = set('a an the of and for in at to my i'.split())
+COORDINATE = re.compile(
+    r'(?:,\s*|\s+)(?:and|but|while|whereas|then)\s+(?='
+    r'(?:I|we|he|she|they|my|our|started|began|bought|finished|read|watched|visited|attended|'
+    r'discovered|joined|noticed|planned|decided|returned|completed|built|moved|shared|found|took|'
+    r'recovered|celebrated|went|got|remembered|recalled|thought)\b)', re.I)
+RECOLLECTION = re.compile(
+    r'\b(?:I|we)\s+(?:(?:was|am|were|have|had|been|just|also)\s+){0,3}'
+    r'(?:thinking|thought|remember(?:ed|ing)?|recall(?:ed|ing)?|reminisc(?:ed|ing)|'
+    r'reflect(?:ed|ing)|talk(?:ed|ing)|spoke|discuss(?:ed|ing)|mention(?:ed|ing))\b', re.I)
 
 
 def phrase_tokens(text):
@@ -120,9 +129,18 @@ def events(text, session_date, session_id, turn, role):
         boundaries = [0] + [m.end() for m in re.finditer(r'[.!?]\s+|\n', text)] + [len(text)]
         start = max(b for b in boundaries if b <= left)
         end = min(b for b in boundaries if b >= right)
+        # A date in one coordinated predicate cannot date the preceding predicate:
+        # "I discovered a band recently and started listening today" dates listening.
+        for separator in COORDINATE.finditer(text, start, end):
+            if separator.end() <= left:
+                start = separator.end()
+            elif separator.start() >= right:
+                end = separator.start()
+                break
         clause = text[start:end].strip()
         # Planned and hypothetical events must not become statements that an event happened.
-        planned = bool(re.search(r"\b(will|going to|planning to|plan to|hope to|hoping to|would|might|if)\b", clause, re.I))
+        planned = bool(re.search(r"\b(will|going to|planning to|planned to|plan to|hope to|hoped to|hoping to|"
+                                 r"want to|wanted to|intend to|intended to|would|might|if)\b", clause, re.I))
         negated = bool(re.search(r"\b(didn't|did not|never|haven't|have not)\b", clause, re.I))
         question_only = bool(re.match(r'\s*(?:By the way,\s*)?(?:can|could|would|do|did|how|what|when|where|which|who|is|are|have)\b', clause, re.I))
         cancelled = bool(re.search(r'\bcancell?ed\b', clause, re.I))
@@ -137,6 +155,8 @@ def events(text, session_date, session_id, turn, role):
         out.append({**item, 'session_id': session_id, 'turn': turn, 'role': role, 'text': clause,
                     'asserted': not planned and not negated and not question_only and not future and role == 'user',
                     'ambiguous_clause': ambiguous,
+                    'recollection': bool(RECOLLECTION.search(clause)),
+                    'decision': bool(re.search(r'\b(?:decided|chose|resolved|agreed)\s+to\b', clause, re.I)),
                     'cancelled': cancelled, 'third_party_subjects': subjects})
     return out
 
@@ -152,6 +172,10 @@ def match_event(anchor, pool, allow_ranges=False):
         precision_ok = event['precision'] == 'day' or (allow_ranges and event['precision'] == 'range')
         if not event['asserted'] or not precision_ok or event['ambiguous_clause']:
             continue
+        if event.get('recollection') and not RECOLLECTION.search('I ' + anchor):
+            continue  # a dated recollection/discussion does not date its subject
+        if event.get('decision') and not re.search(r'\b(?:decid(?:e|ed)|choose|chose|resolv(?:e|ed)|agree(?:d)?)\b', anchor, re.I):
+            continue  # deciding to act does not establish that the action happened
         if event.get('cancelled') and not re.search(r'\bcancel', anchor, re.I):
             continue
         if any(not words(subject) or not (words(subject) <= tokens) for subject in event.get('third_party_subjects', [])):

@@ -5,12 +5,17 @@ done:
 - Forked date parser, event matching and code calculations for grounded exact durations and ordering.
 - Range/inference handling for weekends, bare ordinals, calendar months; rejects plans and ambiguous matches.
 - Paired R1/R4 artifact runner, partial-run auditor, model-identity check; no Reactor execution path.
-- 46 synthetic tests pass, including interrupted paired-run recovery, a local HTTP fixture and the official scorer.
+- 54 synthetic tests pass, including date-scope checks, interrupted paired-run recovery and the official scorer.
 - Ordering supports disjoint explicit date ranges; complete calendar months/years clamp month-end anniversaries.
-- All-user-turn parser diagnostic: 16 computations / 107 temporal questions (not R1 retrieval, not a reader score).
+- All-user-turn parser diagnostic after scope fix: 14 computations / 107 temporal questions (not R1 retrieval,
+  not a reader score); 9 automatic matches, 5 unjudged.
 - Verified one temporal gold/source inconsistency, recorded separately in coord/findings/.
 - Reserved Reactor smoke @616bb63 completed: 2 canonical temporal questions, R1 and R4 both 2/2 correct,
-  evidence F1 0.75 each; one computed fact verified and used correctly. Reservation RELEASE sent at 22:56 UTC.
+  evidence F1 0.75 each. Later audit withdrew the one fact's verification: its date grounds recollection of a
+  tour, not the tour. Predictions and scores are unchanged. Reservation RELEASE sent at 22:56 UTC.
+- Corrected scope: a date stays with its own coordinated predicate; a dated recollection does not date its subject.
+- Manual source audit of ten computations at the 23-question checkpoint: eight supported, two unsupported in the
+  earlier code. Both scope errors are covered by regressions; the full answer evaluation is still pending.
 - Official dev/scorer and dependencies downloaded outside the repository; holdout excluded throughout.
 
 not done:
