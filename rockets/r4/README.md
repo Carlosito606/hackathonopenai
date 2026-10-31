@@ -5,7 +5,7 @@ Status: initial implementation merged in PR #11; exact R1 chunk-manifest replay 
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 109 synthetic tests run and pass after merging PRs #24 and #25 (1 skipped; counted by mission control): temporal/item scope, paired recovery, official score.py and exact chunk selection.
+Checks: 116 tests pass with the official scorer enabled, including joint source binding and code-side identity grouping.
 Order: descending requests reverse the computed list; title words do not determine its direction or output form.
 Baseline: root R1 at each run's recorded `baseline_sha`, same candidates/machine; dev minus holdout.
 Historical smoke and the original in-progress CPU run use R1 at `de158d5`; their artifacts keep that provenance.
@@ -18,6 +18,8 @@ Parts: all four contract stages in `rocket.py`; R1 retrieval, R4 enrichment/asse
 Dates: `dates.py` forks the date block in R1 `memsys.py` at `de158d5` (there was no standalone dates.py).
 Counting: opt-in local item extraction, grounded spans, identity deduplication and bounded period counts.
 Limits: counting semantics/coverage remain unmeasured; the default pipeline does not load counting caches.
+Joint extraction: `global_count_extract.py` tests a source-specific JSON grammar across all visible user excerpts.
+It is diagnostic only; its versioned records are incompatible with the existing per-source pipeline cache.
 Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, then released early).
 
 ## What the first implementation does
