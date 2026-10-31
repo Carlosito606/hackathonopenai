@@ -9,6 +9,7 @@ dev-hard: the cache is keyed by session id, and dev-hard keeps original ids and 
 Resumable: questions already in OUT/candidates.jsonl are skipped.
 """
 import argparse
+import inspect
 import json
 import sys
 import time
@@ -17,6 +18,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import memsys  # noqa: E402
 from memsys import TEMPORAL, Embedder, build_evidence, load_split, retrieve  # noqa: E402
+
+BUDGET = getattr(__import__("prepare"), "BUDGET", 18000)  # R1's evidence budget, as prepare.py sets it
+DATED = "question_date" in inspect.signature(retrieve).parameters  # R1's final code: date windows
 
 
 def main():
@@ -50,8 +54,9 @@ def main():
     with open(cpath, "a", encoding="utf-8", newline="\n") as fc, open(epath, "a", encoding="utf-8", newline="\n") as fe:
         for i, q in enumerate(qs, 1):
             h = hist[q["history_id"]]
-            cands = retrieve(h, q["question"], emb, rerank=args.rerank)
-            ev = build_evidence(h, cands, dates=bool(TEMPORAL.search(q["question"])))
+            kw = {"question_date": q["question_date"]} if DATED else {}
+            cands = retrieve(h, q["question"], emb, rerank=args.rerank, **kw)
+            ev = build_evidence(h, cands, budget=BUDGET, dates=bool(TEMPORAL.search(q["question"])))
             fc.write(json.dumps({"question_id": q["question_id"], "ranked": [
                 [c["session_id"], c["turn"], round(c["score"], 4)] for c in cands[:100]]}) + "\n")
             fe.write(json.dumps({"question_id": q["question_id"], "sessions": [e["id"] for e in ev],

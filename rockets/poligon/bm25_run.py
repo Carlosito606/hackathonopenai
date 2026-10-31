@@ -39,12 +39,20 @@ def rank(q, h, k=100):
 def main():
     split, out = Path(sys.argv[1]), Path(sys.argv[2])
     rj = lambda p: [json.loads(line) for line in open(p, encoding="utf-8") if line.strip()]
-    hist = {h["history_id"]: h for h in rj(split / "histories.jsonl")}
+    by_hist = {}
+    for q in rj(split / "questions.jsonl"):
+        by_hist.setdefault(q["history_id"], []).append(q)
+    rows = {}
+    with open(split / "histories.jsonl", encoding="utf-8") as f:  # one history in memory at a time
+        for line in f:
+            if line.strip():
+                h = json.loads(line)
+                for q in by_hist.get(h["history_id"], []):
+                    rows[q["question_id"]] = rank(q["question"], h)
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", encoding="utf-8", newline="\n") as f:
-        for q in rj(split / "questions.jsonl"):
-            f.write(json.dumps({"question_id": q["question_id"], "ranked": rank(q["question"], hist[q["history_id"]])})
-                    + "\n")
+        for qid in sorted(rows):
+            f.write(json.dumps({"question_id": qid, "ranked": rows[qid]}) + "\n")
     print(f"wrote {out}")
 
 
