@@ -93,6 +93,29 @@ pojawiają się pułapki.
 
 ---
 
+## Slajd 5a. Poligon: uczciwy sprawdzian zamiast łatwego dev
+
+- Dev jest łatwiejszy niż test: test celowo dokłada rozmowy-pułapki i ma 200 rozmów na historię
+  (`experiments/retrieval/20261031-0130-recall-audit.md`). Zbudowaliśmy dev-hard: każde pytanie dev dostaje 3-5 podobnych rozmów innych osób,
+  które nie zawierają odpowiedzi, plus wersje bez odpowiedzi (usunięte dowody); 505 pytań, odtwarzalne co do bajtu
+  na innym komputerze (`rockets/poligon/README.md`, `rockets/poligon/LOG.md`).
+- Poligon sam się sprawdza: lokalny model (Qwen2.5-7B) próbuje odpowiedzieć z każdej wstrzykniętej rozmowy; 5,5%
+  odpowiadało albo przeczyło wzorcowi (np. „chodzę na fitness 5 dni w tygodniu” przy wzorcu 4), więc v2 je wyrzuca
+  (`rockets/poligon/README.md`, filtr 5).
+- Pułapki trafiają do paczki dowodów w 99% pytań; pierwsza wersja R1 traciła na tym 6,3 pkt „wszystkich dowodów w
+  paczce” (multi-session 0,918 → 0,753, temporal 0,892 → 0,804) (`experiments/r1/20261030-2320-dev-hard.md`).
+- Przyczyna to tłok, nie ranking: 21 z 29 zgubionych dowodów wraca po usunięciu pułapek z tej samej listy
+  (`coord/findings/20261031-0115-karol-claude-2-r1-near-miss-displacement.md`). Lekarstwo: różnorodność sesji w
+  paczce; w kodzie finałowym R1 pytania liczące multi-session na dev-hard (70) 0,714 → 0,914 przy tym samym budżecie
+  (`experiments/r1/20261031-0030-budget.md`, `coord/findings/20261031-0125-karol-claude-2-sessdiv-pack.md`).
+- Lokalny sędzia dla odpowiedzi, których `score.py` nie rozstrzyga: 95% zgodności na 490 przypadkach o znanym
+  wyniku (`rockets/poligon/LOG.md`).
+
+**Notatka:** Nie ufaliśmy wynikom na łatwym dev. Poligon pokazał, gdzie potok pęka (pytania z wielu rozmów, gdy
+pułapki zajmują miejsce w paczce), i to zmieniło kod finałowy, zanim cokolwiek poszło do Reactora.
+
+---
+
 ## Slajd 6. Liczby: odpowiedzi na Reactorze
 
 - Kalibracja na 39 pytaniach dev bez holdoutu (warstwowo po typach): 0 fałszywych odmów
@@ -127,7 +150,8 @@ odpowiada zamiast odmówić.
   dołączanie następnej tury użytkownika i okna dat (`experiments/r1/20261030-2300-gpt-audit-test-evidence.md`).
 - Najlepsze łączenie wyszukiwania zależy od typu pytania (`coord/findings/20261030-2330-karol-claude-fusion-depends-on-type.md`).
 - Tania bramka przed odpowiedzią (R7: nazwy z pytania w dowodach + SQuAD 2.0) bez modelu łapie 13 z 25 pytań bez
-  odpowiedzi na dev i 26 ze 107 na dev-hard przy 2 fałszywych odmowach na 398; ale na 43 pytaniach, w których
+  odpowiedzi na dev i 26 ze 107 na dev-hard przy 2 fałszywych odmowach na 398 (kandydaci BM25); z kandydatami R1:
+  dev 13 z 25 przy 2/398, dev-hard 27 ze 107 przy 4/398; ale na 43 pytaniach, w których
   kazałaby odmówić, Reactor z naszymi notatkami sam odmówił w 41 (zysk 1, strata 1), więc nie weszła do
   zgłoszenia (`rockets/r7/README.md`, `rockets/r7/LOG.md`).
 
