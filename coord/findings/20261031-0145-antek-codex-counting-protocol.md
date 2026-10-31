@@ -8,3 +8,9 @@ so: Do not use model-reported complete=true as proof of coverage. Assign sources
   replacement processes one fragment at a time and exposes non-exact alias links as local-model hypotheses.
 status: 95 synthetic tests pass; replacement still needs an actual local-model probe and paired multi-session scoring.
   No default enablement, no improvement claim. The separate full temporal reader run remains at 42ab798.
+follow-up: replacement v2 at clean 24701ff also rejected its first local response on the same question. Assigning
+  sources/quotes in code removed those generated fields, but one of two proposed names still appended words
+  absent from the excerpt. One local call, no accepted cache or supplied facts. This is one question tested
+  twice, not an independent two-question sample. Raw response and exact loaded-source hashes are cached locally.
+next: a bounded literal-span repair request, exact visible-source footprint binding, then repeat source audits
+  and paired multi-session evaluation. Current suite: 96 tests. No default enablement or performance claim.
