@@ -82,10 +82,12 @@ Reactora.
   temporal 0,899 → 0,913 (`experiments/retrieval/20261031-0130-recall-audit.md`).
 - Skala: dev-large (ok. 470 sesji), 30 pytań: 0,833 → 0,867; tylko orientacyjnie, jedno pytanie to 3-10 punktów
   (`experiments/retrieval/20261031-0130-recall-audit.md`).
-- R1 na dev i dev-hard, 398 pytań w parach, wszystkie sesje gold w dowodach: 0,952 → 0,889 (−6,3 pkt);
-  multi-session 0,918 → 0,753, temporal 0,892 → 0,804, pozostałe typy bez zmian (`experiments/r1/20261030-2320-dev-hard.md`).
-- Sesje-pułapki trafiają do dowodów w 99% pytań (średnio 3,1 na pytanie), więc reguły o prawie trafieniach w
-  notatkach są kluczowe (`experiments/r1/20261030-2320-dev-hard.md`).
+- Końcowy R1, 398 pytań w parach, wszystkie sesje gold w dowodach: dev 0,972, dev-hard v2 0,935, dev-hard-long
+  (200 sesji na historię, jak w teście) 0,905; multi-session 0,969 / 0,907 / 0,825, temporal 0,922 / 0,833 / 0,804;
+  pierwsza wersja R1 miała dev 0,952, dev-hard 0,889 (`experiments/r1/20261031-0210-final-dev-hard-v2-long.md`,
+  `experiments/r1/20261030-2320-dev-hard.md`).
+- Główne pozostałe ryzyko: pytania multi-session i temporal w historiach z 200 sesjami; dowodom brakuje tam sesji
+  gold w ok. 18% i 20% pytań (`experiments/r1/20261031-0210-final-dev-hard-v2-long.md`).
 - Dla porównania sam BM25 traci na dev-hard 13,1 pkt (`rockets/poligon/README.md`).
 
 **Notatka:** Na czystym dev wyszukiwanie jest prawie pełne; słabe miejsca to pytania z wielu sesji i o czas, gdy
