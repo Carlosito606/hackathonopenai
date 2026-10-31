@@ -55,10 +55,12 @@ def main():
     ap.add_argument("--k", type=int, nargs="+", default=[5, 10])
     args = ap.parse_args()
     split = Path(args.split)
-    man = {m["question_id"]: m for m in rj(split / "manifest.jsonl")}
+    man = {m["question_id"]: m for m in rj(split / "manifest.jsonl")} if (split / "manifest.jsonl").exists() else {}
     gold = {g["question_id"]: g for g in rj(split / "gold.jsonl")}
+    hold = set((HERE.parents[1] / "splits" / "dev_holdout.txt").read_text().split())
     qs = {q["question_id"]: q for q in rj(split / "questions.jsonl")
-          if man[q["question_id"]]["variant"] == "inject" and not gold[q["question_id"]]["abstain"]}
+          if not gold[q["question_id"]]["abstain"] and q["question_id"] not in hold
+          and man.get(q["question_id"], {"variant": "inject"})["variant"] == "inject"}
     order = sorted(qs)
     judge = Judge(args.local, args.model, args.cache)
     replies = judge.many([PROMPT.format(question=qs[q]["question"]) for q in order], args.workers, max_tokens=60)

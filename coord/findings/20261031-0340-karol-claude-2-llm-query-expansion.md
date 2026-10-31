@@ -6,6 +6,9 @@ over question + expansion vs the question alone, dev-hard-long, 398 answerable i
 in the top 10 sessions: all 0.809 -> 0.857, multi 0.588 -> 0.701, temporal 0.716 -> 0.755, k-update 0.897 -> 0.948,
 single-session unchanged (1.000 / 0.989 -> 1.000). Top 5: all 0.681 -> 0.704, temporal 0.471 -> 0.598, but multi
 0.392 -> 0.351 and ss-user 0.961 -> 0.922. RRF of the two rankings sits in between (top 10 all 0.842).
+Same on the other splits (all, top 5 / top 10): dev 0.844 / 0.907 -> 0.889 / 0.947 (multi top 5 0.670 -> 0.794,
+temporal 0.725 -> 0.784); dev-hard v2 0.714 / 0.852 -> 0.764 / 0.905 (k-update top 5 0.845 -> 0.948, temporal
+0.529 -> 0.627). The expansion alone beats RRF everywhere.
 evidence: rockets/poligon/expand_probe.py (one short stand-in call per question, cached; BM25 from bm25_run.py).
 gbrain's LongMemEval-S report found LLM expansion harmful for its hybrid retriever (93% -> 55%); here it helps
 plain BM25 at depth 10. Not measured: R1's dense + reranker pipeline, which already catches part of the paraphrase.
