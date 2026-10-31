@@ -75,10 +75,11 @@ mlx-community/Qwen2.5-7B-Instruct-4bit`); `score.py` from the challenge repo sco
 
 ## Reproducing the submission
 
-`ship/predictions.jsonl` comes from the code at git tag `final-run-code` (fee061f; the plan was built at bcdc526,
+`ship/predictions.jsonl` (tag `submission`) comes from the code at git tag `final-run-code` (fee061f; the plan was built at bcdc526,
 whose `.py` files outside `experiments/` are identical): `git checkout final-run-code`, then the steps under "Run".
 `main` moves on after the run (e.g. a wider reranker pool for counting questions); the submission does not use
-those changes. `experiments/r1/check_predictions.py` checks the file before submitting.
+those changes. The last step, citing abstentions, uses `rockets/poligon/cite_expand.py` at tag `submission`.
+`experiments/r1/check_predictions.py` checks the file before submitting.
 
 ## Known limitations
 
