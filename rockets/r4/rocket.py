@@ -24,8 +24,9 @@ def retrieve(q, h):
     device = os.environ.get('R4_DEVICE', 'cpu')
     if _emb is None:
         _emb = module.Embedder(os.environ.get('R4_EMBED_CACHE', str(ROOT / 'rockets/r4/cache/embeddings.pkl')), device=device)
-    if module._reranker is None:
-        module.reranker(device=device)
+    # Both the original monolith and the split R1 cache this public factory.
+    # The split memsys facade intentionally does not export `_reranker`.
+    module.reranker(device=device)
     return [{**c, 'kind': 'turn', 'notes': {}} for c in module.retrieve(h, q['question'], _emb)][:200]
 
 

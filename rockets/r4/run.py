@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from . import rocket
+from .checkpoint import recover, validate_resume
 
 ROOT = rocket.ROOT
 
@@ -72,6 +73,7 @@ def main():
     parser.add_argument('--scorer', type=Path, help='official memory-challenge/score.py')
     parser.add_argument('--types', default='temporal-reasoning', help='comma-separated dev types, or all')
     parser.add_argument('--prepare-only', action='store_true')
+    parser.add_argument('--resume', action='store_true', help='resume this --run-id at the identical clean source commit and reader')
     parser.add_argument('--candidate-cache', type=Path, default=ROOT / 'rockets/r4/cache/candidates')
     parser.add_argument('--run-id', default=datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S'))
     args = parser.parse_args()
@@ -93,10 +95,12 @@ def main():
     histories = {h['history_id']: h for h in rows(args.data / 'histories.jsonl') if h['history_id'] in needed}
     sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     out = ROOT / 'runs/r4' / (args.run_id + '-' + sha[:7])
-    if out.exists():
+    if out.exists() and not args.resume:
         parser.error(f'run folder exists: {out}; use a new --run-id')
-    out.mkdir(parents=True)
-    write(out / 'meta.json', {'rocket': 'r4', 'run_id': out.name, 'git_sha': sha,
+    if args.resume and not out.exists():
+        parser.error(f'no checkpoint at {out}')
+    out.mkdir(parents=True, exist_ok=args.resume)
+    metadata = {'rocket': 'r4', 'run_id': out.name, 'git_sha': sha,
                             'source_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain', '--',
                                 'rockets/r4', 'memsys.py', 'prepare.py', 'ask.py', 'retrieval.py', 'dates.py',
                                 'evidence.py', 'reactor/client.py'], cwd=ROOT)),
@@ -107,10 +111,14 @@ def main():
                                                                       'candidate_cache': str(args.candidate_cache)},
                             'retrieval_device': os.environ.get('R4_DEVICE', 'cpu'),
                             'cpu_threads': os.environ.get('OMP_NUM_THREADS'),
-                            'complete': False})
+                            'complete': False}
     baseline = out / 'baseline-r1'
-    baseline.mkdir()
-    write(baseline / 'meta.json', {'rocket': 'r1', 'run_id': out.name + '/baseline-r1', 'git_sha': sha,
+    baseline.mkdir(exist_ok=args.resume)
+    if args.resume:
+        validate_resume(json.loads((out / 'meta.json').read_text()), metadata)
+    else:
+        write(out / 'meta.json', metadata)
+        write(baseline / 'meta.json', {'rocket': 'r1', 'run_id': out.name + '/baseline-r1', 'git_sha': sha,
                                   'stages': dict.fromkeys(['retrieve', 'enrich', 'assemble', 'decide'], 'r1'),
                                   'split': 'dev minus splits/dev_holdout.txt', 'reader': args.reader,
                                   'question_types': sorted(types), 'questions': len(questions),
@@ -118,7 +126,16 @@ def main():
     args.candidate_cache.mkdir(parents=True, exist_ok=True)
     ask = None if args.prepare_only else __import__('ask')
     stats = Counter()
-    for index, q in enumerate(questions, 1):
+    start = 0
+    if args.resume:
+        start, computations, statuses = recover(out, [q['question_id'] for q in questions], ask is not None)
+        stats['questions'] = start
+        stats['computed'] = sum(item['computed'] for item in computations)
+        for item in statuses:
+            for name in ['r1', 'r4']:
+                stats['reader_no_final_' + name] += item[name] != 'answered'
+        print(f'Resuming after {start} complete paired questions.', flush=True)
+    for index, q in enumerate(questions[start:], start + 1):
         h = histories[q['history_id']]
         cache = args.candidate_cache / (candidate_key(q, h) + '.json')
         if cache.exists():
@@ -128,6 +145,7 @@ def main():
             write(cache, cands)
         enriched = rocket.enrich(q, h, cands)
         packs = {'r1': rocket.baseline_assemble(q, h, cands), 'r4': rocket.assemble(q, h, enriched)}
+        reader_status = {'question_id': q['question_id']}
         for name, folder, stages in [('r1', baseline, cands), ('r4', out, enriched)]:
             pack = packs[name]
             decision = (rocket.baseline_decide if name == 'r1' else rocket.decide)(q, h, stages, pack)
@@ -144,12 +162,15 @@ def main():
                 write(args.candidate_cache / f'{q["question_id"]}-{name}-result.json', result)
                 if result.get('status') != 'answered':
                     stats['reader_no_final_' + name] += 1
+                reader_status[name] = result.get('status', 'unknown')
                 append(folder / 'predictions.jsonl', prediction(result))
         computed = bool(packs['r4']['facts'])
         computation = rocket.grounded_computation(q, enriched, packs['r4']['evidence'])
         stats['questions'] += 1
         stats['computed'] += computed
         append(out / 'computations.jsonl', {'question_id': q['question_id'], **computation})
+        if ask is not None:
+            append(out / 'reader_status.jsonl', reader_status)
         print(f'{index}/{len(questions)} computed={stats["computed"]}', flush=True)
     if ask is not None:
         with tempfile.TemporaryDirectory() as tmp:
