@@ -113,3 +113,19 @@
 - JSONL checkpoint recovery uses actual file newlines, preserving Unicode line separators inside JSON strings;
   the regression covers U+2028 and U+0085 in an answer. All 62 tests pass. This applies the data-format lesson
   shared by Karol to R4's own recovery reader; the organisers' kit is unchanged.
+
+## 2026-10-31 — antek-codex — related-event dates and hash-bound source review
+
+- Inspected six additional computations from the all-user-turn diagnostic. Four were supported; two used a
+  related event's date: a reading-group meeting rather than finishing a book, and returning from a workshop
+  rather than attending. The book ordering answer happened to be correct despite an unsupported exact date.
+- A relative clause containing the expression now retains its own scope. Returning from an event may date the
+  return itself but does not prove the attendance date. Four regression tests cover the positive and negative cases.
+- Current all-user-turn diagnostic: 12/107 computations, 8 automatic matches, 4 unjudged. All twelve surviving
+  claims were inspected against their source user turns. This is development/source review, not reader accuracy.
+- Added optional manual source-audit joining in report.py, bound to the exact facts, answer and source ids plus
+  question id. Changed claims remain unreviewed; conflicting judgments fail. The ignored local audit has 16
+  iterative reviews: 12 supported, 4 unsupported. It never enters retrieval, computation or reader input.
+- All 68 tests pass. Full temporal CPU preparation reached 32/107; the old preparation's computed facts are
+  from 5c697f6 and are not final R4 results. Final reading recomputes with the corrected code. The supervisor
+  creates both score artifacts, the source-aware audit, and a completion.json after all 107 questions finish.

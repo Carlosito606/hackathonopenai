@@ -9,3 +9,8 @@ fix: preserve only the coordinated predicate containing the date; reject recolle
   its subject. A question about remembering/discussing itself may still compute. 54 synthetic tests pass,
   including decision-vs-action checks. Replaying the ten cached cases removes precisely the two unsupported facts.
 so: inspect date scope and event identity separately from calendar arithmetic and automatic scorer matches.
+follow-up: six additional all-user-turn diagnostic claims were inspected: four supported, two dated a related
+  event instead (club meeting / return). Scope guards reject these. One ordering answer was correct even though
+  its claimed exact book-completion date was unsupported. Automatic answer matches cannot certify event dates.
+  The current diagnostic emits 12/107 computations (8 automatic matches, 4 unjudged), not reader accuracy.
+  A local manual audit binds each judgment to the exact claim hash; it is never an inference input. 68 tests pass.
