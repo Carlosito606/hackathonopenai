@@ -12,3 +12,8 @@ learned: the stand-in blurts INSUFFICIENT_EVIDENCE without reasoning when the ev
 next: Reactor eval of this branch on the same 100 ids (is Reactor's recall better than Qwen's?); then a recall fix
   that does not re-add warnings, e.g. compare quoted noun vs question noun in code and add a targeted note, or a
   per-type budget (12k for temporal/counting).
+update 03:30: GUIDE now demands the [E#] labels on the final line (Reactor may drop them there): answered replies
+  without labels 3/72 -> 0/69, evidence_f1 0.567 -> 0.607 (experiments/verify/20261031-0330-final-line-labels.md).
+blocked: main switched to the "rockets" AGENTS.md; prepare.py there belongs to R1 HYBRID and verification to R7
+  GUARDIAN. Rebase onto main conflicts in prepare.py; not resolved. The human decides: port as a rocket part, or hand
+  the GUIDE/budget/verify.py change to R1.
