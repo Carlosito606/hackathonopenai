@@ -66,6 +66,8 @@ poprawnym liczeniu dat.
   (`AGENTS.md`, sekcja 5).
 - Podział dev-hard do testu odporności: pytania dev z 3-5 wstrzykniętymi sesjami-pułapkami
   (`rockets/poligon/README.md`).
+- Niezależny audyt: dwóch recenzentów GPT (tylko odczyt) sprawdziło dowody R1 dla wszystkich 146 pytań testu;
+  do kodu trafiły tylko ogólne wzorce błędów, nic z treści testu (`experiments/r1/20261030-2300-gpt-audit-test-evidence.md`).
 
 **Notatka:** Wielu agentów pracowało równolegle; porządek trzymały wspólne zasady, jeden sędzia i kolejka do
 Reactora.
@@ -80,8 +82,11 @@ Reactora.
   temporal 0,899 → 0,913 (`experiments/retrieval/20261031-0130-recall-audit.md`).
 - Skala: dev-large (ok. 470 sesji), 30 pytań: 0,833 → 0,867; tylko orientacyjnie, jedno pytanie to 3-10 punktów
   (`experiments/retrieval/20261031-0130-recall-audit.md`).
-- Dev-hard (sam BM25, sesje gold w top 5): spadek o 13,1 pkt ogółem; multi-session −24,7, temporal −19,6
-  (`rockets/poligon/README.md`).
+- R1 na dev i dev-hard, 398 pytań w parach, wszystkie sesje gold w dowodach: 0,952 → 0,889 (−6,3 pkt);
+  multi-session 0,918 → 0,753, temporal 0,892 → 0,804, pozostałe typy bez zmian (`experiments/r1/20261030-2320-dev-hard.md`).
+- Sesje-pułapki trafiają do dowodów w 99% pytań (średnio 3,1 na pytanie), więc reguły o prawie trafieniach w
+  notatkach są kluczowe (`experiments/r1/20261030-2320-dev-hard.md`).
+- Dla porównania sam BM25 traci na dev-hard 13,1 pkt (`rockets/poligon/README.md`).
 
 **Notatka:** Na czystym dev wyszukiwanie jest prawie pełne; słabe miejsca to pytania z wielu sesji i o czas, gdy
 pojawiają się pułapki.
@@ -117,6 +122,9 @@ odpowiada zamiast odmówić.
   próbkach (`experiments/retrieval/20261031-0130-recall-audit.md`, „Sample limits”).
 - Nie przyjęliśmy: logitów rerankera jako progu (multi-session 0,930 → 0,718) ani różnicowania sesji dla każdego
   pytania (`experiments/retrieval/20261031-0130-recall-audit.md`, „Not adopted”).
+- Audyt dowodów testu: 13 pytań OK, 14 z brakującą turą, 109 z mylącą pułapką obok właściwej odpowiedzi,
+  10 bez odpowiedzi w historii, 0 z pominiętą datą; z tego wzięliśmy reguły o innych osobach i o planach,
+  dołączanie następnej tury użytkownika i okna dat (`experiments/r1/20261030-2300-gpt-audit-test-evidence.md`).
 - Najlepsze łączenie wyszukiwania zależy od typu pytania (`coord/findings/20261030-2330-karol-claude-fusion-depends-on-type.md`).
 
 **Notatka:** Mierzyliśmy każdą zmianę i odrzucaliśmy te, które pomagały jednemu typowi pytań kosztem innych.
@@ -131,7 +139,8 @@ odpowiada zamiast odmówić.
   `rockets/README.md`).
 - Liczenie w kodzie liczby dni między dwoma zdarzeniami, gdy oba mają znacznik daty
   (`coord/handoffs/2026-10-30-temporal-date-coverage.md`).
-- Pomiar R1 na całym dev-hard i dev-large (`rockets/poligon/LOG.md`, `experiments/retrieval/20261031-0130-recall-audit.md`).
+- Odporność multi-session na pułapki (dev-hard −16,5 pkt) i pomiar R1 na całym dev-large
+  (`experiments/r1/20261030-2320-dev-hard.md`, `experiments/retrieval/20261031-0130-recall-audit.md`).
 - Wynik testu: <uzupełnić po przebiegu>
 
 **Notatka:** Kolejny zysk jest w odporności na pułapki i w liczeniu dat w kodzie, nie w samym wyszukiwaniu.
