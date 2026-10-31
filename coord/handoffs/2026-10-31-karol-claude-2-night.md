@@ -32,4 +32,5 @@ README top lines updated (PR #23); v2 `--check` with the exclude list passes loc
 one 4,096-token context: send at most 2 long prompts at once). R1-side venv: `C:\Users\karol\venv-poligon`.
 
 **Not done:** audit rounds 8+ (needs Karol's OK after the memory reap), a dev-hard-trap split build (the probe does
-not need one), measuring cite_expand on top of the reply fallback (needs cal39 predictions with the fallback).
+not need one). (cite_expand on top of the reply fallback was measured by patryk-opencode: 0.910 -> 0.955 on cal39,
+dev only; irrelevant now, see Citations.)
