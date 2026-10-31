@@ -33,6 +33,13 @@ class CheckpointTest(unittest.TestCase):
             path.write_text('{"question_id":"q_a"}\n{"question_id":')
             self.assertEqual(read_checkpoint(path), [{'question_id': 'q_a'}])
 
+    def test_unicode_line_separators_inside_answers_are_not_record_boundaries(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'checkpoint.jsonl'
+            item = {'question_id': 'q_a', 'answer': 'north\u2028south\u0085east'}
+            path.write_text(json.dumps(item, ensure_ascii=False) + '\n')
+            self.assertEqual(read_checkpoint(path), [item])
+
     def test_corruption_before_last_append_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'checkpoint.jsonl'
