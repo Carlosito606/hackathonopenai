@@ -1,17 +1,17 @@
 """Fuse expanded BM25 (expand_probe.py) with R1 final session rankings (RRF) and count all gold in the top k.
 
-    python rockets/poligon/fuse_probe.py   # run from the repo root; reads ../data and runs/r1 exports under ../data/poligon_runs/r1f
+    python rockets/poligon/fuse_probe.py ../data   # from the repo root; R1 exports in ../data/poligon_runs/r1f/<split>
 """
 import json, re, sys
 from collections import defaultdict
 from pathlib import Path
-sys.path.insert(0, "rockets/poligon")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from bm25_run import rank
 from judge import Judge, rj
 from expand_probe import PROMPT, sessions, rrf
-D = "../../../data"
+D = sys.argv[1] if len(sys.argv) > 1 else "../data"
 judge = Judge("http://127.0.0.1:8897", "", str(Path.home() / ".cache" / "poligon-expand.jsonl"))
-hold = set(open("splits/dev_holdout.txt").read().split())
+hold = set((Path(__file__).resolve().parents[2] / "splits" / "dev_holdout.txt").read_text().split())
 for split, run in (("dev", "dev"), ("dev_hard", "dev-hard-v2"), ("dev_hard_long", "dev-hard-long")):
     gold = {g["question_id"]: g for g in rj(f"{D}/{split}/gold.jsonl")}
     r1 = {r["question_id"]: r["ranked"] for r in rj(f"{D}/poligon_runs/r1f/{run}/candidates.jsonl")}
