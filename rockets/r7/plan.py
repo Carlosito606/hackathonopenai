@@ -63,10 +63,11 @@ def overlay(args):
     empty = {"abstain": False, "answer": "", "citations": []}
     with open(args.out, "w", encoding="utf-8") as f:
         for p in plan:
+            pred = {k: reader.get(p["question_id"], empty)[k] for k in ("abstain", "answer", "citations")}
             if p["r7"]["abstain"] and not args.reader_only:
-                pred = {"abstain": True, "answer": "", "citations": []}
-            else:
-                pred = {k: reader.get(p["question_id"], empty)[k] for k in ("abstain", "answer", "citations")}
+                # Evidence F1 is scored on every answerable question, abstained or not (challenge README), so the
+                # reader's citations stay: a false abstention then loses the answer but not the evidence.
+                pred = {"abstain": True, "answer": "", "citations": pred["citations"]}
             f.write(json.dumps({"question_id": p["question_id"], **pred}) + "\n")
 
 
