@@ -14,3 +14,11 @@ follow-up: replacement v2 at clean 24701ff also rejected its first local respons
   twice, not an independent two-question sample. Raw response and exact loaded-source hashes are cached locally.
 next: a bounded literal-span repair request, exact visible-source footprint binding, then repeat source audits
   and paired multi-session evaluation. Current suite: 96 tests. No default enablement or performance claim.
+
+follow-up 05:36 UTC: v3 at clean 31a161b used the full named fee061f export for the same prespecified question.
+  Its initial and single repair responses repeated the same invalid name; 2 local calls, 1 rejected source,
+  0 accepted caches/facts. This is still one question across protocols, not three independent questions;
+  v1/v2 also used older retrieval candidates, so it is not a controlled accuracy comparison.
+next: v4 constrains entity decoding to unique literal source spans, rather than adding prompt retries or
+  guessing corrections to invented names. Independent item/alias/coverage audits and paired scoring remain
+  required. The default counting cache remains disabled. Current suite: 106 synthetic tests pass.

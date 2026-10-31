@@ -11,12 +11,16 @@ runs/r1/20261031-0200-fee061f-final-dev, named reference fee061f065f52e3045ec63a
 All gold sessions in pack: R1 94/97 answerable, R4 94/97; no counting cache, no computed facts, no reader score.
 Preparation source clean 9586db6, local run runs/r4/full-multi-reference-9586db6 (do not present it as accuracy).
 Verification permits only differences in the unused retrieve body; signatures/defaults, all other retrieval AST
-and exact date/evidence/facade/prompt bytes remain checked. 102 tests pass; touched Python files compile.
+and exact date/evidence/facade/prompt bytes remain checked. 106 tests pass; touched Python files compile.
 
-Next local validation: same prespecified first eligible count question as v1/v2, now using the full named R1
-manifest and v3 repair. Private process handle/outcome: /tmp/r4-counting-probe-v3.json when launched; inspect
-actual process/logs before deciding it is live or terminal. Defaults stay opt-in until real source audits and
-full paired multi-session scores. Weighted sums, event counts and current inventories remain later work.
+V3 is terminal: same prespecified first eligible count question, now using the full named R1 manifest.
+Both initial and repair responses repeated a nonliteral name: 2 calls, 1 invalid source, no accepted facts.
+The local record /tmp/r4-counting-probe-v3.json now records rejection, not a running process.
+V4 constrains entity names to unique whole-word literal spans via llama.cpp JSON schema (24 words/200 chars).
+Alias links remain model hypotheses; source grammar proves no completeness or correct item semantics.
+Next: verify actual server constraints, probe the same question on a clean source, audit all items/aliases,
+then measure full paired multi-session accuracy. Defaults stay opt-in. Weighted sums, event counts and
+current inventories remain later work.
 
 Temporal reader: original processes ended under heavy memory pressure; 11 pairs survived. The exact run/source
 42ab798 was resumed with the same weights/context/KV precision/batches/decoding and bounded host caches.

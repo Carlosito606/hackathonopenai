@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 from . import rocket
-from .count_extract import cache_fingerprint, cache_key, closed_list_response, computation, extract_one_source, load_record, requested_window, source_response, validate_response, visible_sources
+from .count_extract import cache_fingerprint, cache_key, closed_list_response, computation, extract_one_source, literal_names, literal_response_format, load_record, requested_window, source_response, validate_response, visible_sources
 from . import test_counting
 
 
@@ -200,6 +200,40 @@ class ExtractionTest(unittest.TestCase):
         _, _, outcome = extract_one_source(self.q, self.sources[0], 0, [], call, max_chars=1)
         self.assertEqual(outcome, {'status': 'oversize', 'attempts': 0})
         call.assert_not_called()
+
+    def test_literal_decoder_excludes_invented_suffixes_and_duplicate_mentions(self):
+        text = "I bought the Amber Museum book, then a Cedar Museum map. The book was blue."
+        names = literal_names(text)
+        self.assertIn('Amber Museum book', names)
+        self.assertIn('Cedar Museum map', names)
+        self.assertNotIn('Cedar Museum map book', names)
+        self.assertNotIn('book', names)
+        self.assertNotIn('Musu', names)
+        self.assertEqual(names, sorted(set(names)))
+
+    def test_literal_decoder_handles_punctuation_unicode_and_bounded_names(self):
+        names = literal_names("I built a 1/48 B-17 and a '70 coupe. Musée d’Orsay was nearby.")
+        self.assertIn('1/48 B-17', names)
+        self.assertIn('70 coupe', names)
+        self.assertIn('Musée d’Orsay', names)
+        text = ' '.join('word' + str(i) for i in range(25))
+        self.assertNotIn(text, literal_names(text))
+        self.assertEqual(literal_names('x' * 201), [])
+
+    def test_decoder_aliases_are_only_existing_ids_and_do_not_mutate_inventory(self):
+        known = [{'id': 0, 'labels': ['Amber Museum']}]
+        before = copy.deepcopy(known)
+        fmt = literal_response_format(self.sources[0], known)
+        props = fmt['schema']['properties']['items']['items']['properties']
+        self.assertEqual(props['same_as']['enum'], [None, 0])
+        self.assertIn('Amber Museum', props['entity']['enum'])
+        self.assertEqual(known, before)
+
+    def test_decoder_profile_changes_invalidate_cached_extraction(self):
+        from . import count_extract
+        before = cache_key(self.q, self.h, self.cands)
+        with patch.dict(count_extract.DECODER_PROFILE, max_name_words=12):
+            self.assertNotEqual(before, cache_key(self.q, self.h, self.cands))
 
 
 if __name__ == '__main__':

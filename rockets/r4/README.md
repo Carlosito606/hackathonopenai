@@ -5,7 +5,7 @@ Status: initial implementation merged in PR #11; exact R1 chunk-manifest replay 
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 102 synthetic tests pass: temporal/item scope, paired recovery, official score.py and exact chunk selection.
+Checks: 106 synthetic tests pass: temporal/item scope, paired recovery, official score.py and exact chunk selection.
 Baseline: root R1 at each run's recorded `baseline_sha`, same candidates/machine; dev minus holdout.
 Historical smoke and the original in-progress CPU run use R1 at `de158d5`; their artifacts keep that provenance.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
@@ -67,6 +67,11 @@ Weighted quantities, occurrence counts, changing inventories and complex/vague p
 Extraction is a separate CLI; the four stages never call a model endpoint. Invalid JSON or literal names get
 at most one repair request with validation feedback; uncertainty and transport errors are not retried. The
 known inventory changes only after an accepted response. Both attempts and their input hashes are cached.
+V3 repeated a nonliteral name after validation feedback on the same preselected dev question; neither attempt
+was accepted. V4 constrains name decoding to unique, whole-word source spans (up to 24 words/200 characters).
+This requires llama.cpp's [schema-capable response_format](https://github.com/ggml-org/llama.cpp/blob/5047748f1/tools/server/README.md#post-v1chatcompletions-openai-compatible-chat-completions-api); the source-dependent grammar and decoder profile
+are hashed in the audit. It prevents invented name suffixes by construction, but does not prove item semantics
+or completeness. Names outside the span bounds require fallback, not truncation or approximate matching.
 Cache keys bind question/history/candidate text, extractor prompts/schema and the exact visible user-source
 footprint. Assembly changes that expose different fragments invalidate reuse. The paired runner records cache
 hashes and rejects changes on resume.

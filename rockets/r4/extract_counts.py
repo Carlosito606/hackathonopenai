@@ -13,7 +13,7 @@ from collections import Counter
 from pathlib import Path
 
 from . import rocket
-from .count_extract import cache_key, closed_list_response, extract_one_source, requested_window, supports_distinct, validate_response, visible_sources
+from .count_extract import DECODER_PROFILE, cache_key, closed_list_response, extract_one_source, literal_response_format, requested_window, supports_distinct, validate_response, visible_sources
 from .run import candidate_key, rows, verify_reader, write
 from .manifest import CandidateManifest
 from .timeline import classify
@@ -58,7 +58,7 @@ def main():
         'source_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain', '--', 'rockets/r4'], cwd=rocket.ROOT)),
         'source_sha256': {name: hashlib.sha256((rocket.ROOT / 'rockets/r4' / name).read_bytes()).hexdigest()
                           for name in ['count_extract.py', 'extract_counts.py', 'counting.py']},
-        'reader': args.reader, 'reader_revision': args.reader_revision,
+        'reader': args.reader, 'reader_revision': args.reader_revision, 'decoder_profile': DECODER_PROFILE,
         'split': 'dev minus holdout, optional --ids subset',
         'candidate_cache': str(args.candidate_cache) if args.candidate_cache else None, 'types': args.types,
         'candidate_provenance': manifest.provenance if manifest else
@@ -109,10 +109,14 @@ def main():
         all_items, known = [], []
         valid = True
         for index, source in enumerate(sources):
+            response_format = literal_response_format(source, known)
+            schema_hash = hashlib.sha256(json.dumps(response_format, sort_keys=True).encode()).hexdigest()
+
             def call(prompt):
                 request = urllib.request.Request(args.local.rstrip('/') + '/v1/chat/completions',
                     json.dumps({'model': args.reader, 'messages': [{'role': 'user', 'content': prompt}],
-                                'temperature': 0, 'max_tokens': 400}).encode(), {'Content-Type': 'application/json'})
+                                'temperature': 0, 'max_tokens': 400, 'response_format': response_format}).encode(),
+                    {'Content-Type': 'application/json'})
                 stats['local_calls'] += 1
                 with urllib.request.urlopen(request, timeout=600) as response:
                     return json.load(response)['choices'][0]['message']['content']
@@ -120,7 +124,8 @@ def main():
             def audit(attempt, prompt, reply):
                 write(args.out / (key + f'-source-{index}-attempt-{attempt}-response.json'), {
                     'question_id': q['question_id'], 'reader': args.reader, 'source': index, 'attempt': attempt,
-                    'input_sha256': hashlib.sha256(prompt.encode()).hexdigest(), 'reply': reply})
+                    'input_sha256': hashlib.sha256(prompt.encode()).hexdigest(),
+                    'response_format_sha256': schema_hash, 'decoder_profile': DECODER_PROFILE, 'reply': reply})
 
             extracted, updated, outcome = extract_one_source(q, source, index, known, call, audit, args.max_chars)
             write(args.out / (key + f'-source-{index}-outcome.json'), outcome)

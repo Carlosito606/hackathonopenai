@@ -15,7 +15,8 @@ from datetime import timedelta
 from .counting import count_distinct, entity_key, grounded_items
 from .dates import MONTH, NUMBERS, parse_date, resolve_dates, shift_months
 
-VERSION = 'r4-distinct-items-v3'
+VERSION = 'r4-distinct-items-v4'
+DECODER_PROFILE = {'format': 'llama.cpp-json-object-schema', 'max_name_words': 24, 'max_name_chars': 200}
 SOURCE_INSTRUCTIONS = '''Read ONE user excerpt for the question. Return JSON only:
 {"complete":true,"items":[{"entity":"EXACT literal name from this excerpt","same_as":null,"date":null}]}.
 Do not answer the count. Never append descriptive words that are absent from the literal entity name.
@@ -31,6 +32,45 @@ REPAIR_INSTRUCTIONS = ('The previous response failed validation. Correct its JSO
                        'If unresolved, report complete=false.')
 
 
+def literal_names(text):
+    """Enumerate bounded, unique, whole-word spans without choosing entities.
+
+    These are decoder choices, not extracted facts. The model still has to select
+    relevant names and aliases; the source/date/semantic checks remain necessary.
+    Names beyond the bound or repeated ambiguously require an unresolved result.
+    """
+    words = list(re.finditer(r"\w+(?:['’\-]\w+)*", text))
+    names = set()
+    for i, left in enumerate(words):
+        for right in words[i:i + DECODER_PROFILE['max_name_words']]:
+            if right.end() - left.start() > DECODER_PROFILE['max_name_chars']:
+                break
+            name = text[left.start():right.end()]
+            if text.find(name) == text.rfind(name):
+                names.add(name)
+    return sorted(names)
+
+
+def literal_response_format(source, known):
+    """llama.cpp schema: entity strings can only copy a literal source span.
+
+    No answer, gold value or invented canonical name enters the grammar. Null
+    aliases and complete=false stay available; literal decoding proves neither
+    item semantics nor coverage. Post-validation must also reject bad dates.
+    """
+    names = literal_names(source['text'])
+    item = {'type': 'object', 'properties': {
+        'entity': {'type': 'string', 'enum': names or ['']},
+        'same_as': {'enum': [None] + [e['id'] for e in known]},
+        'date': {'type': ['string', 'null']}},
+        'required': ['entity', 'same_as', 'date'], 'additionalProperties': False}
+    return {'type': 'json_object', 'schema': {
+        'type': 'object', 'properties': {
+            'complete': {'type': 'boolean'},
+            'items': {'type': 'array', 'items': item}},
+        'required': ['complete', 'items'], 'additionalProperties': False}}
+
+
 def source_scope(h, cands):
     from .rocket import compatible_evidence
     return visible_sources(h, cands, compatible_evidence(h, cands, dates=False))
@@ -42,7 +82,7 @@ def source_fingerprint(sources):
 
 def cache_key(q, h, cands, sources=None):
     sources = source_scope(h, cands) if sources is None else sources
-    inputs = [VERSION, SOURCE_INSTRUCTIONS, REPAIR_INSTRUCTIONS, q, h,
+    inputs = [VERSION, DECODER_PROFILE, SOURCE_INSTRUCTIONS, REPAIR_INSTRUCTIONS, q, h,
               [[c['session_id'], c['turn'], c['text']] for c in cands], source_fingerprint(sources)]
     return hashlib.sha256(json.dumps(inputs, sort_keys=True).encode()).hexdigest()
 
