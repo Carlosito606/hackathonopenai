@@ -18,6 +18,8 @@ def f1(c, e):
     return 0 if not h else 2 * h / (len(c) + len(e))
 
 
+subprocess.run([sys.executable, "reactor/predictions.py", "../rakieta-dev/results-cal40-new.jsonl", "--out",
+                "/tmp/pred-new.jsonl", "--abstain-on", "agent,no-answer"], check=True, capture_output=True)
 fb = []
 for r in res:
     p = plan[r["question_id"]]
