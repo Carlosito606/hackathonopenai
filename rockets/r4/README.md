@@ -5,7 +5,7 @@ Status: first end-to-end Reactor smoke completed; full paired stand-in evaluatio
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact (5 complete calendar months / 154 days), verified against the source and used correctly.
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 40 synthetic tests pass, including contract interoperability, a local HTTP reader fixture and official score.py.
+Checks: 46 synthetic tests pass, including interrupted paired-run recovery and official score.py through a local reader fixture.
 Baseline: R1 at `de158d5`, same retrieval candidates, same machine; dev minus `splits/dev_holdout.txt`.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
 Stand-in: Qwen2.5-7B-Instruct Q4_K_M downloaded; it starts after R1 preparation to fit 8 GiB RAM.
@@ -34,7 +34,7 @@ Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, t
 From the repository root, using Python 3.11+ and the R1 dependencies in this folder's requirements.txt:
 
 ```bash
-R4_SCORER=/path/to/memory-challenge/score.py python -m unittest rockets.r4.test_timeline rockets.r4.test_contract -v
+R4_SCORER=/path/to/memory-challenge/score.py python -m unittest rockets.r4.test_timeline rockets.r4.test_contract rockets.r4.test_checkpoint -v
 R4_DEVICE=cpu python -m rockets.r4.run \
   --data /path/to/dev --types temporal-reasoning,multi-session \
   --local http://TEAM-STAND-IN:8899 --reader TEAM-MODEL \
@@ -57,12 +57,15 @@ replies, candidate text and embedding caches stay under ignored `rockets/r4/cach
 supported by this development runner. It has no Reactor execution path and never accesses the operator's key.
 
 For a fair comparison, both variants use the same cached R1 candidates and the same stand-in endpoint.
+Use `--resume --run-id ORIGINAL_ID` with the same options and clean source commit to resume an interrupted run.
+Recovery keeps only the common complete prefix of both variants and recomputes an interrupted pair. Changes
+to source, reader revision, endpoint or data path are rejected; a partial last JSON append can be recovered.
 The endpoint must advertise exactly `--reader` at `/v1/models`: root `ask.py --local` uses the server's default.
 R4 may
 omit an evidence session if date annotations would exceed the 24,000-character evidence budget. Computation
 coverage and automatic scorer matches are reported separately from reader answer accuracy; automatic partial
 matches do not establish independent fact correctness. Measurements under three percentage points are noise.
-An all-user-turn diagnostic (not R1 retrieval and not an answer benchmark) produced 14 computations on 107 temporal
+An all-user-turn diagnostic (not R1 retrieval and not an answer benchmark) produced 16 computations on 107 temporal
 dev questions. One gold/source inconsistency was verified independently; see the R4 temporal-gold finding.
 Reproduce the parser-only diagnostic with `python -m rockets.r4.diagnose --data DEV --scorer SCORE_PY`.
 If the reader omits its final-answer marker, the runner records an empty response and a protocol-failure count;

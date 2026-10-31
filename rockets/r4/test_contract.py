@@ -8,7 +8,8 @@ import threading
 import unittest
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from unittest.mock import patch
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
 
 from . import rocket, run
 
@@ -24,6 +25,16 @@ def fixture():
 
 
 class ContractTest(unittest.TestCase):
+    def test_retrieve_supports_r1_facade_without_private_reranker(self):
+        q, h, cands = fixture()
+        module = SimpleNamespace(Embedder=Mock(return_value=object()), reranker=Mock(),
+                                 retrieve=Mock(return_value=cands))
+        with patch.object(rocket, 'r1', return_value=module), patch.object(rocket, '_emb', None), \
+                patch.dict(os.environ, {'R4_DEVICE': 'cpu'}):
+            result = rocket.retrieve(q, h)
+        module.reranker.assert_called_once_with(device='cpu')
+        self.assertEqual(result[0]['text'], cands[0]['text'])
+
     def test_missing_final_answer_remains_a_reader_failure(self):
         result = {'question_id': 'q_synthetic', 'status': 'timeout', 'reply': 'I need more time.'}
         self.assertEqual(run.prediction(result), {'question_id': 'q_synthetic', 'abstain': False,
@@ -130,7 +141,21 @@ class ContractTest(unittest.TestCase):
                         '--local', f'http://127.0.0.1:{server.server_port}', '--reader', 'synthetic-protocol-fixture',
                         '--scorer', str(scorer), '--run-id', 'synthetic']
                 with patch.object(run, 'ROOT', root), patch.object(rocket, 'retrieve', return_value=cands), \
-                        patch.object(sys, 'argv', argv), patch.object(run.subprocess, 'check_output', side_effect=['0' * 40, b'']):
+                        patch.object(sys, 'argv', argv), patch.object(run.subprocess, 'check_output',
+                            side_effect=['0' * 40, b'', '0' * 40, b'']):
+                    ask = __import__('ask')
+                    local = ask.local
+                    calls = []
+
+                    def interrupted(args, plan):
+                        calls.append(plan['question_id'])
+                        if len(calls) == 2:
+                            raise ConnectionError('synthetic reader interruption between R1 and R4')
+                        return local(args, plan)
+
+                    with patch.object(ask, 'local', side_effect=interrupted), self.assertRaises(ConnectionError):
+                        run.main()
+                    argv.append('--resume')
                     run.main()
                 out = next((root / 'runs/r4').iterdir())
                 meta = json.loads((out / 'meta.json').read_text())
