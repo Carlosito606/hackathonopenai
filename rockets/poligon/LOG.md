@@ -110,3 +110,11 @@ conflicting own fact ("designer handbag" $800 vs $5,000). dev-hard v2 will exclu
   Fitbit Charge 3, 9 months"), a few are off-topic and harmless.
 - `reader_probe.py`: first run died on HTTP 500 (a prompt over the 4096-token slot); now each message is fitted
   with the server's /tokenize and judge.py records server errors per row instead of crashing.
+
+## 2026-10-31 01:35 karol-claude-2: dev-hard-long (test-length histories) with BM25
+
+v2 + `--pad-to 200` (exclude_v2, 135 pairs): build 7 min, 1.1 GB. Plain BM25, all gold in top 5 sessions, 398
+paired questions, dev / v2 / long: multi 0.670 / 0.423 / 0.392, temporal 0.725 / 0.529 / 0.471, k-update 0.966 /
+0.845 / 0.828, ss-user 1.000 / 1.000 / 0.961, ss-asst 1.000 / 0.989 / 0.978, all 0.844 / 0.714 / 0.681 (top 10:
+0.907 / 0.852 / 0.809). The computed splits/dev_hard_long_ids.txt equals the build's (same sha1). `--check` on the
+long build not run (about 5 GB of memory; the same code passed it on the trial build without --exclude).
