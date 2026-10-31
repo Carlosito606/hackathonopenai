@@ -1,7 +1,9 @@
-agent: antek-codex   rocket: R4 TIMELINE   branch: r4/timeline
+agent: antek-codex   rocket: R4 TIMELINE   PR branch: r4/timeline-pr   benchmark branch: r4/timeline
 
 done:
-- All four contract stages in rockets/r4/rocket.py, reusing R1 retrieval at de158d5.
+- All four contract stages in rockets/r4/rocket.py, reusing root R1 retrieval.
+- The original benchmark worktree keeps R1@de158d5. New PR-branch runs record the current root R1 snapshot
+  at baseline_sha=git_sha, so newer main changes cannot be mislabeled as the historic baseline.
 - Forked date parser, event matching and code calculations for grounded exact durations and ordering.
 - Range/inference handling for weekends, bare ordinals, calendar months; rejects plans and ambiguous matches.
 - Paired R1/R4 artifact runner, partial-run auditor, model-identity check; no Reactor execution path.

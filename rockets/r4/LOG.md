@@ -129,3 +129,10 @@
 - All 68 tests pass. Full temporal CPU preparation reached 32/107; the old preparation's computed facts are
   from 5c697f6 and are not final R4 results. Final reading recomputes with the corrected code. The supervisor
   creates both score artifacts, the source-aware audit, and a completion.json after all 107 questions finish.
+
+## 2026-10-31 — antek-codex — PR on current main
+
+- Created a fresh unpublished r4/timeline-pr from the published review branch, rebased onto current main,
+  preserving both published branch histories and the original in-progress benchmark worktree.
+- All 68 tests pass with the current split R1 modules. New runs record root R1 at their actual git snapshot
+  as baseline_sha instead of inheriting the historical de158d5 label. Historical artifacts remain unchanged.

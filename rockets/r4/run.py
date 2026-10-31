@@ -105,7 +105,7 @@ def main():
                                 'rockets/r4', 'memsys.py', 'prepare.py', 'ask.py', 'retrieval.py', 'dates.py',
                                 'evidence.py', 'reactor/client.py'], cwd=ROOT)),
                             'stages': {'retrieve': 'r1', 'enrich': 'r4', 'assemble': 'r4', 'decide': 'r4'},
-                            'baseline_sha': 'de158d5', 'split': 'dev minus splits/dev_holdout.txt',
+                            'baseline_sha': sha, 'split': 'dev minus splits/dev_holdout.txt',
                             'question_types': sorted(types), 'questions': len(questions),
                             'reader': args.reader, 'flags': vars(args) | {'data': str(args.data), 'scorer': str(args.scorer),
                                                                       'candidate_cache': str(args.candidate_cache)},
@@ -118,7 +118,7 @@ def main():
         validate_resume(json.loads((out / 'meta.json').read_text()), metadata)
     else:
         write(out / 'meta.json', metadata)
-        write(baseline / 'meta.json', {'rocket': 'r1', 'run_id': out.name + '/baseline-r1', 'git_sha': sha,
+        write(baseline / 'meta.json', {'rocket': 'r1', 'run_id': out.name + '/baseline-r1', 'git_sha': sha, 'baseline_sha': sha,
                                   'stages': dict.fromkeys(['retrieve', 'enrich', 'assemble', 'decide'], 'r1'),
                                   'split': 'dev minus splits/dev_holdout.txt', 'reader': args.reader,
                                   'question_types': sorted(types), 'questions': len(questions),

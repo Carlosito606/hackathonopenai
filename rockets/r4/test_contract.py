@@ -180,6 +180,7 @@ class ContractTest(unittest.TestCase):
                                      run.rows(shared / 'baseline-r1/predictions.jsonl'))
                 out = root / 'runs/r4/synthetic-0000000'
                 meta = json.loads((out / 'meta.json').read_text())
+                self.assertEqual(meta['baseline_sha'], meta['git_sha'])
                 self.assertEqual(meta['questions'], 1)
                 self.assertTrue(meta['complete'])
                 for folder in [out, out / 'baseline-r1']:
