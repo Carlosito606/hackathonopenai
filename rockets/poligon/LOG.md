@@ -164,3 +164,5 @@ v2: 7 crowded, 7 retrieval, 1 other. sessdiv + prune at 18k: gold 0.992 / 0.965 
 - Where final R1 loses gold: dev 3 not in candidates / 8 cut by budget; v2 14 / 12; long 25 / 13. Of 35 gold
   sessions missing from the candidates on long, 28 share <= 1 content word with the question (paraphrase), 13 hold
   the fact in an aside. Finding 20261031-0335.
+- expand_probe.py on dev-hard-long (BM25): question + stand-in category expansion, top 10 all 0.809 -> 0.857, multi
+  0.588 -> 0.701, temporal 0.716 -> 0.755; top 5 mixed (multi 0.392 -> 0.351). Finding 20261031-0340.
