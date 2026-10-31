@@ -26,7 +26,11 @@ asks Reactor, which writes the answer, cites the sessions, or abstains. Submissi
 5. **Reactor** (`ask.py`): one Reactor history per dataset history, questions one at a time through the kit's
    `client.py` (`--max-chars 30000`), one retry after a timeout; resumable (a rerun asks only unanswered questions).
    When Reactor cites only in its reasoning and not on the final line, the citations are taken from its whole reply.
-6. **Submission**: the kit's `predictions.py` with `--abstain-on agent,no-answer`.
+6. **Submission**: the kit's `predictions.py` with `--abstain-on agent,no-answer`, then
+   `rockets/poligon/cite_expand.py --abstentions-only`: where we abstain, cite the pack session sharing the most
+   question words. Answers and abstentions do not change; evidence F1 counts answerable questions we abstained on
+   (0 without a citation). Expanding the citations of answered questions is not used: it cites near misses
+   (`experiments/r1/20261031-0220-cite-expand.md`).
 
 ## Run
 
@@ -44,7 +48,10 @@ python ask.py plan-test.jsonl results-test.jsonl --base-url https://tNN.api.reac
 # give it a file with the session ids only
 python -c "import json,sys;o=open(sys.argv[2],'w',encoding='utf-8');[o.write(json.dumps({'session_id':s['session_id']})+'\n') for l in open(sys.argv[1],encoding='utf-8') for s in json.loads(l)['sessions']]" ../data/test/histories.jsonl ../data/test/session_ids.jsonl
 python reactor/predictions.py results-test.jsonl --histories ../data/test/session_ids.jsonl \
-    --out predictions.jsonl --abstain-on agent,no-answer
+    --out predictions-raw.jsonl --abstain-on agent,no-answer
+python rockets/poligon/cite_expand.py predictions-raw.jsonl plan-test.jsonl ../data/test/histories.jsonl \
+    --out predictions.jsonl --abstentions-only
+python experiments/r1/check_predictions.py ../data/test predictions.jsonl
 ```
 
 Development without Reactor: `ask.py plan-dev.jsonl results-dev.jsonl --local http://127.0.0.1:8899` asks a local
@@ -64,7 +71,7 @@ mlx-community/Qwen2.5-7B-Instruct-4bit`); `score.py` from the challenge repo sco
 | counting questions on dev-hard after date windows and session diversity | multi-session 0.714 -> 0.914 | `experiments/r1/20261031-0030-budget.md` |
 | date expressions tagged in test user turns | 37% -> 67% | `experiments/temporal/20261030-2308-date-coverage.md` |
 | independent audit of the test evidence (two GPT agents) | generic failure patterns, acted on in code | `experiments/r1/20261030-2300-gpt-audit-test-evidence.md` |
-| final test run on Reactor (31.10, 01:37-05:57 UTC) | 146/146 answered by Reactor, 12 abstentions (8.2%), every answer cited (1.57 sessions per answer; 3 citations taken from the reply), median latency 75 s; `check_predictions.py` passes; no gold for test | `ship/predictions.jsonl`, `experiments/r1/20261031-0600-final-run.md` |
+| final test run on Reactor (31.10, 01:37-05:57 UTC) | 146/146 answered by Reactor, 12 abstentions (8.2%), every answer cited (1.57 sessions per answer; 3 citations taken from the reply), each abstention cited by `cite_expand.py --abstentions-only`, median latency 75 s; `check_predictions.py` passes; no gold for test | `ship/predictions.jsonl`, `experiments/r1/20261031-0600-final-run.md` |
 
 ## Reproducing the submission
 
