@@ -256,6 +256,26 @@ class ComputationTest(unittest.TestCase):
                          '2024-03-20', pool)
         self.assertEqual(result.get('answer'), '7 days')
 
+    def test_date_of_dependent_meeting_does_not_date_book_completion(self):
+        pool = self.event("I finished 'River Atlas', which I had to rush to finish for my reading group meeting two weeks ago.",
+                          '2024-03-18')
+        result = compute("How many days ago did I finish 'River Atlas'?", '2024-03-25', pool)
+        self.assertFalse(result['computed'])
+
+    def test_date_before_a_relative_clause_remains_with_its_event(self):
+        pool = self.event("I finished 'River Atlas' today, which I enjoyed.", '2024-03-04')
+        result = compute("How many days ago did I finish 'River Atlas'?", '2024-03-11', pool)
+        self.assertEqual(result.get('answer'), '7 days')
+
+    def test_return_date_does_not_date_attendance(self):
+        pool = self.event('I just got back from the sculpture workshop today.', '2024-03-04')
+        self.assertFalse(compute('How many days ago did I attend the sculpture workshop?', '2024-03-11', pool)['computed'])
+
+    def test_return_itself_can_be_a_dated_event(self):
+        pool = self.event('I just got back from the sculpture workshop today.', '2024-03-04')
+        result = compute('How many days ago did I get back from the sculpture workshop?', '2024-03-11', pool)
+        self.assertEqual(result.get('answer'), '7 days')
+
 
 if __name__ == '__main__':
     unittest.main()

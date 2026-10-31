@@ -10,10 +10,11 @@ STOP = set('a an the and or to of on at for from in with my me i did do does was
 NAME = r"\b(?:[A-Z][A-Za-z0-9]*(?:['’][a-z]+)?|\d+[A-Za-z]*)(?:(?:\s+(?:of|the|and|for|in|at|to))?\s+[A-Z][A-Za-z0-9]*(?:['’][a-z]+)?)*\b"
 NAME_STOP = set('a an the of and for in at to my i'.split())
 COORDINATE = re.compile(
-    r'(?:,\s*|\s+)(?:and|but|while|whereas|then)\s+(?='
+    r'(?:,\s*|\s+)(?:(?:which|where|when)\s+(?=(?:I|we|he|she|they|my|our)\b)|'
+    r'(?:and|but|while|whereas|then)\s+(?='
     r'(?:I|we|he|she|they|my|our|started|began|bought|finished|read|watched|visited|attended|'
     r'discovered|joined|noticed|planned|decided|returned|completed|built|moved|shared|found|took|'
-    r'recovered|celebrated|went|got|remembered|recalled|thought)\b)', re.I)
+    r'recovered|celebrated|went|got|remembered|recalled|thought)\b))', re.I)
 RECOLLECTION = re.compile(
     r'\b(?:I|we)\s+(?:(?:was|am|were|have|had|been|just|also)\s+){0,3}'
     r'(?:thinking|thought|remember(?:ed|ing)?|recall(?:ed|ing)?|reminisc(?:ed|ing)|'
@@ -168,6 +169,8 @@ def events(text, session_date, session_id, turn, role):
                     'ambiguous_clause': ambiguous,
                     'recollection': bool(RECOLLECTION.search(clause)),
                     'decision': bool(re.search(r'\b(?:decided|chose|resolved|agreed)\s+to\b', clause, re.I)),
+                    'return': bool(re.search(r'\b(?:I|we)\s+(?:(?:have|had|just|recently|also)\s+)*'
+                                             r'(?:got|came|returned)\s+(?:back\s+)?from\b', clause, re.I)),
                     'cancelled': cancelled, 'third_party_subjects': subjects})
     return out
 
@@ -187,6 +190,8 @@ def match_event(anchor, pool, allow_ranges=False, require_self=False):
             continue  # a dated recollection/discussion does not date its subject
         if event.get('decision') and not re.search(r'\b(?:decid(?:e|ed)|choose|chose|resolv(?:e|ed)|agree(?:d)?)\b', anchor, re.I):
             continue  # deciding to act does not establish that the action happened
+        if event.get('return') and not re.search(r'\b(?:return(?:ed)?|(?:get|got|came|come) back)\b', anchor, re.I):
+            continue  # returning from an event does not establish its attendance date
         if require_self and event.get('third_party_subjects'):
             continue  # naming my companion in the question does not make their solo event mine
         if event.get('cancelled') and not re.search(r'\bcancel', anchor, re.I):
