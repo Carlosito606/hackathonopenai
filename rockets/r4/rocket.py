@@ -134,7 +134,15 @@ def assemble(q, h, cands):
     # Labels refer to the final evidence order, not the ranked candidates.
     for index, item in enumerate(evidence, 1):
         facts = facts.replace('source ' + item['id'] + ',', f'source [E{index}],')
-    return {'evidence': evidence, 'facts': facts}
+    pack = {'evidence': evidence, 'facts': facts}
+    if classify(q['question'])['form'] == 'count':
+        # Alias inventories can be much longer than two-event date facts. Check
+        # the full client message, never truncate away items to fit the budget.
+        prepare = importlib.import_module('prepare')
+        question = decide(q, h, cands, pack)['question']
+        if prepare.message_chars(question, evidence, q['question_date']) > prepare.MAX_MESSAGE:
+            return baseline_assemble(q, h, cands)
+    return pack
 
 
 def baseline_decide(q, h, cands, pack):

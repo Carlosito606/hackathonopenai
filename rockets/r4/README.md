@@ -5,7 +5,7 @@ Status: initial implementation merged in PR #11; exact R1 chunk-manifest replay 
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 73 synthetic tests pass: date/actor scope, paired-run recovery, official score.py and exact chunk selection.
+Checks: 96 synthetic tests pass: temporal/item scope, paired recovery, official score.py and exact chunk selection.
 Baseline: root R1 at each run's recorded `baseline_sha`, same candidates/machine; dev minus holdout.
 Historical smoke and the original in-progress CPU run use R1 at `de158d5`; their artifacts keep that provenance.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
@@ -68,6 +68,8 @@ Extraction is a separate CLI; the four stages never call a model endpoint. Cache
 candidate text and extractor schema; the paired runner records cache hashes and rejects changes on resume.
 Source/quote validation does not certify semantic recall or ownership. Local-model completeness claims are
 identified as such in reader facts. Do not enable this by default before paired multi-session evaluation.
+If the full inventory would exceed the client message budget, R4 uses the unchanged R1 pack rather than
+discarding items. Computation artifacts count only facts actually included in the final reader pack.
 
 From the repository root, using Python 3.11+ and the R1 dependencies in this folder's requirements.txt:
 

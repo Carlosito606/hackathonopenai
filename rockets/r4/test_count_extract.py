@@ -131,6 +131,15 @@ class ExtractionTest(unittest.TestCase):
             with self.subTest(change=change), self.assertRaises(ValueError):
                 source_response(self.q, source, 0, modified, known)
 
+    def test_oversize_inventory_falls_back_without_dropping_items(self):
+        import prepare
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {'R4_COUNT_CACHE': tmp}):
+            Path(tmp, cache_key(self.q, self.h, self.cands) + '.json').write_text(json.dumps(self.record()))
+            enriched = rocket.enrich(self.q, self.h, self.cands)
+            with patch.object(prepare, 'message_chars', return_value=prepare.MAX_MESSAGE + 1):
+                pack = rocket.assemble(self.q, self.h, enriched)
+            self.assertEqual(pack, rocket.baseline_assemble(self.q, self.h, self.cands))
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -200,6 +200,13 @@ def main():
                 append(folder / 'predictions.jsonl', prediction(result))
         computed = bool(packs['r4']['facts'])
         computation = rocket.grounded_computation(q, enriched, packs['r4']['evidence'], h)
+        if not computed:
+            # A potential calculation is not a fact actually supplied to the
+            # reader (e.g. an oversize inventory fell back to the R1 pack).
+            computation.update(computed=False, sources=[], facts='', reason='not_supplied_in_final_pack')
+            computation.pop('answer', None)
+        elif not computation['computed']:
+            raise ValueError('reader facts cannot be reproduced from the final evidence')
         stats['questions'] += 1
         stats['computed'] += computed
         append(out / 'computations.jsonl', {'question_id': q['question_id'], **computation})

@@ -183,3 +183,6 @@
   unverified. Raw responses, loaded-source hashes and metadata stay in ignored caches. No count accuracy claim.
 - 95 synthetic tests pass, including full stage assembly, source hallucination rejection, partial-word rejection,
   omitted evidence, period uncertainty, alias partition checks and official scorer/local-reader regression tests.
+- Full message budgeting now includes item facts and aliases; oversize inventories fall back without dropping
+  items. Computation artifacts distinguish a possible calculation from a fact actually supplied to the reader.
+  The identical-plan integration fixture checks this distinction; 96 tests pass.
