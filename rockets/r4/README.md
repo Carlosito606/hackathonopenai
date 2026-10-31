@@ -5,7 +5,7 @@ Status: initial implementation merged in PR #11; exact R1 chunk-manifest replay 
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 101 synthetic tests cover temporal/item scope, paired recovery, official score.py and exact chunk selection.
+Checks: 102 synthetic tests pass: temporal/item scope, paired recovery, official score.py and exact chunk selection.
 Baseline: root R1 at each run's recorded `baseline_sha`, same candidates/machine; dev minus holdout.
 Historical smoke and the original in-progress CPU run use R1 at `de158d5`; their artifacts keep that provenance.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
@@ -72,8 +72,19 @@ footprint. Assembly changes that expose different fragments invalidate reuse. Th
 hashes and rejects changes on resume.
 Source/quote validation does not certify semantic recall or ownership. Local-model completeness claims are
 identified as such in reader facts. Do not enable this by default before paired multi-session evaluation.
+`extract_counts` also accepts `--candidate-manifest` instead of `--candidate-cache`. It validates every selected
+exported pack before extraction. The manifest's named retrieval revision is recorded as `baseline_reference_sha`;
+reconstruction permits changes inside the unused R1 `retrieve` body while checking the rest of that module's
+AST and exact bytes of date/evidence/facade/prompt modules. Chunking changes still fail. The baseline therefore
+uses exported retrieval at its named revision, with matching assembly and prompt code.
 If the full inventory would exceed the client message budget, R4 uses the unchanged R1 pack rather than
 discarding items. Computation artifacts count only facts actually included in the final reader pack.
+
+For the local llama.cpp b12017 server on this 8 GiB machine, the recovery launcher sets `--cache-ram 0
+--ctx-checkpoints 0 --no-cache-idle-slots`. Its default host prompt cache can otherwise grow to 8192 MiB.
+Runtime sidecars record cache-policy changes and the preserved pair boundary; model weights, KV precision,
+8192-token context and decoding parameters are unchanged. All 214 cached temporal plans were tokenized offline:
+maximum raw message 7024 tokens, plus 64 reserved wrapper tokens and 600 generation tokens, fits that context.
 
 From the repository root, using Python 3.11+ and the R1 dependencies in this folder's requirements.txt:
 

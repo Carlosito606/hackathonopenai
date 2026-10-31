@@ -15,13 +15,16 @@ from pathlib import Path
 from . import rocket
 from .count_extract import cache_key, closed_list_response, extract_one_source, requested_window, supports_distinct, validate_response, visible_sources
 from .run import candidate_key, rows, verify_reader, write
+from .manifest import CandidateManifest
 from .timeline import classify
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data', required=True, type=Path)
-    parser.add_argument('--candidate-cache', required=True, type=Path)
+    candidates = parser.add_mutually_exclusive_group(required=True)
+    candidates.add_argument('--candidate-cache', type=Path)
+    candidates.add_argument('--candidate-manifest', type=Path, help='exact R1 chunk export; all selected packs are verified')
     parser.add_argument('--out', type=Path, default=rocket.ROOT / 'rockets/r4/cache/counting')
     parser.add_argument('--local', required=True)
     parser.add_argument('--reader', required=True)
@@ -43,6 +46,12 @@ def main():
                  (selected is None or q['question_id'] in selected) and classify(q['question'])['form'] == 'count']
     needed = {q['history_id'] for q in questions}
     histories = {h['history_id']: h for h in rows(args.data / 'histories.jsonl') if h['history_id'] in needed}
+    manifest = CandidateManifest(args.candidate_manifest) if args.candidate_manifest else None
+    manifest_cands = {}
+    if manifest:
+        manifest.verify_source(rocket.ROOT)
+        manifest_cands = {q['question_id']: manifest.rebuild(q, histories[q['history_id']]) for q in questions}
+        print(f'Verified {len(manifest_cands)} selected R1 evidence manifests.', flush=True)
     args.out.mkdir(parents=True, exist_ok=True)
     write(args.out / 'extraction-meta.json', {
         'source_sha': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=rocket.ROOT, text=True).strip(),
@@ -51,8 +60,9 @@ def main():
                           for name in ['count_extract.py', 'extract_counts.py', 'counting.py']},
         'reader': args.reader, 'reader_revision': args.reader_revision,
         'split': 'dev minus holdout, optional --ids subset',
-        'candidate_cache': str(args.candidate_cache), 'types': args.types,
-        'candidate_provenance': 'preexisting cache; this extraction CLI does not assert its retrieval source revision',
+        'candidate_cache': str(args.candidate_cache) if args.candidate_cache else None, 'types': args.types,
+        'candidate_provenance': manifest.provenance if manifest else
+            'preexisting cache; this extraction CLI does not assert its retrieval source revision',
         'ids': str(args.ids) if args.ids else None})
     stats = Counter(selected_count_questions=len(questions))
     for q in questions:
@@ -60,11 +70,14 @@ def main():
         if not supports_distinct(q['question']):
             stats['unsupported_quantity_kind'] += 1
             continue
-        path = args.candidate_cache / (candidate_key(q, h) + '.json')
-        if not path.exists():
-            stats['missing_candidates'] += 1
-            continue
-        cands = json.loads(path.read_text())
+        if manifest:
+            cands = manifest_cands[q['question_id']]
+        else:
+            path = args.candidate_cache / (candidate_key(q, h) + '.json')
+            if not path.exists():
+                stats['missing_candidates'] += 1
+                continue
+            cands = json.loads(path.read_text())
         evidence = rocket.compatible_evidence(h, cands, dates=False)
         sources = visible_sources(h, cands, evidence)
         key = cache_key(q, h, cands, sources)

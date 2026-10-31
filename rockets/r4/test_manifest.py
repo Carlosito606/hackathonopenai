@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 from . import rocket
-from .manifest import CandidateManifest
+from .manifest import CandidateManifest, reconstruction_signature
 from .test_contract import fixture
 
 
@@ -76,6 +76,16 @@ class ManifestTest(unittest.TestCase):
         p.write_text(p.read_text() * 2)
         with self.assertRaisesRegex(ValueError, 'duplicate question'):
             CandidateManifest(self.folder)
+
+    def test_only_the_unused_retrieve_body_may_differ_for_manifest_reconstruction(self):
+        source = 'CHUNK, OVERLAP = 900, 200\ndef split_text(text):\n return text[:CHUNK]\ndef retrieve(h, n=80):\n return h[:n]\n'
+        wider_pool = source.replace('return h[:n]', 'return h[:n + 40]')
+        self.assertEqual(reconstruction_signature(source), reconstruction_signature(wider_pool))
+        for changed in [source.replace('900, 200', '800, 200'),
+                        source.replace('text[:CHUNK]', 'text[:OVERLAP]'),
+                        source.replace('n=80', 'n=120'),
+                        source + '\nCHUNK = 100\n']:
+            self.assertNotEqual(reconstruction_signature(source), reconstruction_signature(changed))
 
 
 if __name__ == '__main__':

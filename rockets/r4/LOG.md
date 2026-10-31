@@ -196,7 +196,17 @@
   scope cannot reuse an old complete inventory when the question/history/candidates happen to stay identical.
   Loading also checks the stored source fingerprint explicitly; old v2 caches are not silently migrated.
 - Five regression tests cover source-scope changes, corrupt fingerprints, valid/invalid repairs, immutable known
-  identities and the request/transport bounds. 101 tests are expected including the full existing suite; actual
-  local-model validation of the repair is still pending. Counts remain opt-in and PR #21 remains draft.
+  identities and request/transport bounds. All 101 tests passed after the tool host recovered; actual local-model
+  validation of the repair remains pending. Counts remain opt-in. PR #21 was merged by mission control; this
+  follow-up is on r4/count-literal-repair.
 - Requested exact full R1 multi-session chunk exports for the 107 non-holdout questions. Only 6/57 count
   questions have legacy local candidates; those partial caches cannot establish a full paired improvement.
+- Karol pointed to the already published all-type export runs/r1/20261031-0200-fee061f-final-dev. Reconstruction
+  now allows changes inside the uncalled retrieve body, preserving its signature, all other retrieval AST and
+  exact date/evidence/facade/prompt bytes. This is needed for main's wider retrieval pool; exported ranking still
+  comes from fee061f. Added manifest inputs to count extraction and explicit baseline_reference_sha metadata.
+  Chunking changes remain rejected; 102 tests pass. Full multi-session reconstruction is the next measurement.
+- The temporal reader terminated after severe memory pressure, preserving 11 paired questions. Resumed the
+  same source/model/context/precision/batch/decoding with host prompt-cache/context-checkpoint retention disabled;
+  runtime segment recorded. The local binary defaults to 8192 MiB host cache. A guard stops this reader before
+  sustained low available memory. No prediction edits. 214 plans tokenize to at most 7024 raw tokens.

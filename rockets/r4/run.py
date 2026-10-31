@@ -123,6 +123,7 @@ def main():
                             'stages': {'retrieve': 'r1', 'enrich': 'r4', 'assemble': 'r4', 'decide': 'r4'},
                             'baseline_sha': sha, 'split': 'dev minus splits/dev_holdout.txt',
                             'candidate_manifest': manifest.provenance if manifest else None,
+                            'baseline_reference_sha': manifest.provenance['resolved_source_git_sha'] if manifest else None,
                             'counting_cache_sha256': counting_hash,
                             'question_types': sorted(types), 'questions': len(questions),
                             'reader': args.reader, 'flags': vars(args) | {'data': str(args.data), 'scorer': str(args.scorer),
@@ -142,6 +143,7 @@ def main():
                                   'stages': dict.fromkeys(['retrieve', 'enrich', 'assemble', 'decide'], 'r1'),
                                   'split': 'dev minus splits/dev_holdout.txt', 'reader': args.reader,
                                   'candidate_manifest': manifest.provenance if manifest else None,
+                                  'baseline_reference_sha': manifest.provenance['resolved_source_git_sha'] if manifest else None,
                                   'question_types': sorted(types), 'questions': len(questions),
                                   'complete': False})
     args.candidate_cache.mkdir(parents=True, exist_ok=True)
