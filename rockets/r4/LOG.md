@@ -74,3 +74,20 @@
   matches and 5 unjudged; this does not use R1 retrieval and is not an answer benchmark.
 - Latest team R1 export lacks chunk ids for multi-chunk turns. Requested exact identifiers; no reconstruction
   is passed off as identical retrieval. The local sequential CPU/Qwen supervisor continues independently.
+
+## 2026-10-31 — antek-codex — correction after source audit
+
+- Manually reviewed all ten computed facts in the 23-question checkpoint. Eight had directly supported event
+  dates; two did not. A date can modify remembering a past tour, or starting to enjoy music after an undated
+  discovery, without dating the target visit/discovery. These ten observations are a small source audit.
+- The unsupported tour-date fact was also the one fact supplied in the Reactor smoke at 616bb63. The earlier
+  "verified" statement above is withdrawn: both reader scores remain 2/2, but the fact was not source-grounded.
+  Corrected the aggregate verification field and added an explicit audit note; predictions and scores are unchanged.
+- Date extraction now retains only the coordinated predicate containing the expression. Recollections and
+  discussions cannot date their subjects; questions about the recollection itself remain supported.
+- All 51 tests pass, including the two scope patterns, an actual dated visit followed by recollection, and a
+  directly dated recollection. The final reader run will recompute facts using the corrected source.
+- Extended the same distinction to deciding versus acting, and past intentions (wanted/hoped/planned). All 54
+  tests pass. Replaying the ten cached cases drops precisely the two unsupported facts and retains the other eight.
+- Post-fix all-user-turn diagnostic: 14/107 computations, 9 automatic matches, 5 unjudged; still not R1 retrieval
+  or reader answer accuracy. This diagnostic was run on the scope patch over 98e95c5 before its own commit.
