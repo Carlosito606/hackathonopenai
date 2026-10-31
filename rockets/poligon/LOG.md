@@ -130,3 +130,22 @@ long build not run (about 5 GB of memory; the same code passed it on the trial b
 padded sessions too). On R1 926005e dev vs dev-hard v1 it gives ok 348, crowded 23, retrieval 7, other 1, missed on
 dev too 19 (the one-off count in finding 20261031-0115 said 21 crowded of 29 losses: it classified hard-ok before
 dev-missed, so 4 questions moved). Same conclusion: crowding is most of the loss.
+
+## 2026-10-31 02:00 karol-claude-2: Reactor calibration answers: failure analysis and citations
+
+failures.py on runs/r1/20261031-0125-reactor-cal39 with the human verdicts on unjudged: old ok 27, citation_miss 10,
+answered_unanswerable 1, wrong_date 1; new ok 25, citation_miss 12, answered_unanswerable 1, wrong_date 1. All
+citation misses leave a gold session out (none extra). `cite_expand.py` (ratio 0.8, cite the best pack session when
+none): F1 0.867 -> 0.951 (old), 0.795 -> 0.917 (new) over final-line citations; vs ask.py's reply fallback 0.895 /
+0.910 alone; combination unmeasured. Finding 20261031-0300.
+
+## 2026-10-31 02:10 karol-claude-2: reader probe on test-like traps
+
+Stand-in shares one 4,096-token KV cache across its 4 slots (finding 20261031-0245): the probe stalled at 4
+parallel 1.7k-token prompts; rerun with --workers 2 --ctx 2048 --budget 4500 --max-tokens 250 (192 calls, ~35 min).
+83 inject + 13 remove questions, plain / trap: gold 27 / 31, abstained 31 / 27, other 24 / 22, trap taken 1 / 3
+(by hand: 1 real, the rest false alarms of the word-subset rule); remove: abstained 12 / 12 of 13. Aside in the
+pack 52 / 83. Finding 20261031-0310.
+- judge.py --human on cal39: agreement with patryk-opencode's verdicts 10/11 (old) and 11/11 (new); judged
+  correct 0.923 / 0.949 vs human 0.949 / 0.949; the one miss is the flagged yes/no "Road bike" answer. Finding
+  20261031-0315.
