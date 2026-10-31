@@ -23,7 +23,8 @@ pack: multi 0.918 -> 0.753, temporal 0.892 -> 0.804, all 0.952 -> 0.889; near-mi
 Fix found here: "sessdiv" pack order at a 26k budget brings dev-hard multi to 0.959 and temporal to 0.902
 (`pack_policies.py`, coord/findings/20261031-0125-*).
 
-Compare your rocket: run it on ../data/dev and ../data/dev_hard, then
+Measure your rocket in one command (runs on dev, dev-hard v2 and dev-hard-long, contract artifacts):
+`python rockets/poligon/report.py ../data RUN_DEV RUN_HARD RUN_LONG`. Or, pairwise:
 `python rockets/poligon/compare_dev_hard.py ../data/dev ../data/dev_hard DEV/candidates.jsonl HARD/candidates.jsonl`
 (or the two evidence.jsonl files for "all gold in the pack").
 
@@ -86,6 +87,7 @@ almost always); use it to rank rockets on robustness, not to predict the test sc
 | `pack_budget.py` | R1's evidence budget vs all-gold-in-pack and whole-message size, from candidates.jsonl |
 | `pack_policies.py` | pack orders against near-miss crowding (sessdiv, query-driven pruning), from candidates.jsonl |
 | `r1_run.py` | R1 retrieval (root memsys.py) on a whole split -> candidates.jsonl, evidence.jsonl |
+| `report.py` | one report for any rocket: dev vs dev-hard v2 vs dev-hard-long from its candidates/evidence, misses split into retrieval vs pack, near-misses per pack (no models, seconds) |
 | `make_traps.py` | test-like trap asides (another person / a plan, other value) written by the stand-in; local output |
 | `reader_probe.py` | a reader with vs without the trap aside on the same small R1-style pack |
 | `PITCH.md` | slide-ready summary for the final presentation |
