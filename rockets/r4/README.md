@@ -20,6 +20,8 @@ Counting: opt-in local item extraction, grounded spans, identity deduplication a
 Limits: counting semantics/coverage remain unmeasured; the default pipeline does not load counting caches.
 Joint extraction: `global_count_extract.py` tests a source-specific JSON grammar across all visible user excerpts.
 It is diagnostic only; its versioned records are incompatible with the existing per-source pipeline cache.
+First joint probe: literal validation passed, but the model named only 2 of 5 explicitly identifiable items
+and claimed completeness. Source audit rejected the answer; no pipeline cache or reader fact was supplied.
 Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, then released early).
 
 ## What the first implementation does
