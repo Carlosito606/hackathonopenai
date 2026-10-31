@@ -46,20 +46,20 @@ BASE = """
 (How to answer: the evidence is excerpts from my own past chats with you, oldest first, each with its date; "user" is me, "assistant" is you.
 - Some excerpts are near misses: other people's things, other pets, a different event, a plan that changed, or a value I corrected later. Use only what matches the question exactly.
 - If it changed over time, the most recent conversation wins.
-- The final line holds only the short answer (a name, number, date or short phrase) and the labels of the excerpts that state it, e.g. "Sombra [E4]". One answer, no hedging, no alternatives.
+- The final line holds only the short answer (a name, number, date or short phrase) and the labels of the excerpts that state it, e.g. "<answer> [E4]". One answer, no hedging, no alternatives.
 - Write INSUFFICIENT_EVIDENCE only if no excerpt states what is asked.{extra})"""
 QUOTE = """
 (How to answer: the evidence is excerpts from my own past chats with you, each with its date; "user" is me, "assistant" is you.
-- First write "Quotes:" and copy, word for word, the sentence(s) from the excerpts that answer the question, each with its label, e.g. [E3] "I just started reading The Nightingale". The answer is often a side remark in a chat about something else, and may use other words than the question.
+- First write "Quotes:" and copy, word for word, the sentence(s) from the excerpts that answer the question, each with its label, e.g. [E3] "<the sentence>". The answer is often a side remark in a chat about something else, and may use other words than the question.
 - If it changed over time, the most recent conversation wins.
-- Then the final line holds only the short answer (a name, number, date or short phrase) and the labels of the excerpts you quoted, e.g. "Sombra [E4]". One answer, no hedging, no alternatives.
+- Then the final line holds only the short answer (a name, number, date or short phrase) and the labels of the excerpts you quoted, e.g. "<answer> [E4]". One answer, no hedging, no alternatives.
 - Write INSUFFICIENT_EVIDENCE only if you could quote nothing that answers it, or what you quoted is about a different person, thing or event than the question asks about.{extra})"""
 QUOTE2 = """
 (How to answer: the evidence is excerpts from my own past chats with you, each with its date; "user" is me, "assistant" is you.
-- First write "Quotes:" and copy, word for word, the sentence(s) from the excerpts that answer the question, each with its label, e.g. [E3] "I just started reading The Nightingale". The answer is often a side remark in a chat about something else, and may use other words than the question.
+- First write "Quotes:" and copy, word for word, the sentence(s) from the excerpts that answer the question, each with its label, e.g. [E3] "<the sentence>". The answer is often a side remark in a chat about something else, and may use other words than the question.
 - Then write "Check:" and say whether the quotes are about the very thing the question names (the same person, place, item, activity). A similar but different one (guitar for violin, tennis for table tennis, Japan for Korea, a friend for me) does not answer it.
 - If it changed over time, the most recent conversation wins.
-- The final line holds only the short answer (a name, number, date or short phrase) and the labels of the excerpts you quoted, e.g. "Sombra [E4]". One answer, no hedging, no alternatives.
+- The final line holds only the short answer (a name, number, date or short phrase) and the labels of the excerpts you quoted, e.g. "<answer> [E4]". One answer, no hedging, no alternatives.
 - Write INSUFFICIENT_EVIDENCE only if you could quote nothing that answers it, or the check failed.{extra})"""
 # Runs up to quote8k+v put the "+v" note at the end of the GUIDE; "final" is prepare.py as committed.
 VARIANTS = {
