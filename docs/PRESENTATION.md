@@ -12,7 +12,13 @@ repozytorium podanych w nawiasach.
 - Trzy miary: trafność odpowiedzi (sędzia LLM), F1 cytowanych sesji, poprawność odmowy (`AGENTS.md`, sekcja 1).
 - Ostateczne odpowiedzi musi dać nasz agent Reactor, a dane wejściowe przygotowuje kod z tego repozytorium
   (`AGENTS.md`, sekcja 1; `README.md`).
-- Wynik testu: <uzupełnić po przebiegu>
+- Przebieg testu na Reactorze (31.10, 01:37-05:57 UTC): 146/146 odpowiedzi Reactora, 12 odmów (8,2%), każda
+  odpowiedź z cytatem (średnio 1,57 sesji), mediana 75 s na pytanie (`README.md`, wiersz „final test run on
+  Reactor”).
+- Test nie ma odpowiedzi wzorcowych, więc trafności na teście jeszcze nie znamy. Czego się spodziewać: na 39
+  pytaniach dev Reactor miał ok. 92-95% poprawnych i 0 fałszywych odmów
+  (`experiments/r1/20261031-0010-reactor-calibration.md`), a na danych podobnych do testu dowodom brakuje sesji
+  gold w ok. 18% pytań multi-session i 20% temporal (`experiments/r1/20261031-0210-final-dev-hard-v2-long.md`).
 
 **Notatka:** Zaczynamy od tego, co jest oceniane: nie tylko odpowiedź, ale też dobre cytaty i umiejętność
 powiedzenia „nie wiem”.
@@ -173,6 +179,12 @@ odpowiada zamiast odmówić.
   (`coord/handoffs/2026-10-30-temporal-date-coverage.md`).
 - Odporność multi-session na pułapki (dev-hard −16,5 pkt) i pomiar R1 na całym dev-large
   (`experiments/r1/20261030-2320-dev-hard.md`, `experiments/retrieval/20261031-0130-recall-audit.md`).
-- Wynik testu: <uzupełnić po przebiegu>
+- Przebieg testu na Reactorze (31.10, 01:37-05:57 UTC): 146/146 odpowiedzi Reactora, 12 odmów (8,2%), każda
+  odpowiedź z cytatem (średnio 1,57 sesji), mediana 75 s na pytanie (`README.md`, wiersz „final test run on
+  Reactor”).
+- Test nie ma odpowiedzi wzorcowych, więc trafności na teście jeszcze nie znamy. Czego się spodziewać: na 39
+  pytaniach dev Reactor miał ok. 92-95% poprawnych i 0 fałszywych odmów
+  (`experiments/r1/20261031-0010-reactor-calibration.md`), a na danych podobnych do testu dowodom brakuje sesji
+  gold w ok. 18% pytań multi-session i 20% temporal (`experiments/r1/20261031-0210-final-dev-hard-v2-long.md`).
 
 **Notatka:** Kolejny zysk jest w odporności na pułapki i w liczeniu dat w kodzie, nie w samym wyszukiwaniu.
