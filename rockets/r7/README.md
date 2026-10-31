@@ -10,8 +10,8 @@ With Reactor (43 questions the gate abstains on, R1's prompt): Reactor abstained
 loss 1. Verdict: do not lay the gate over the ship; it only predicts the reader's abstention (41/43).
 Lesson: injected near-miss sessions defeat both gates (they carry the missing names and give SQuAD confident
 spans); computed questions (counts, dates) are left to the reader.
-Status: milestones 1-4 done (entity gate, QA gate, error analysis, reader check). Experiments after: entity swap
-and answer-name co-location (dead ends), LLM claims + NLI (running).
+Status: milestones 1-4 done (entity gate, QA gate, error analysis, reader check). Experiments after: entity swap,
+answer-name co-location and LLM claims + NLI (all dead ends for the gate, numbers in LOG.md).
 
 ## Design
 
