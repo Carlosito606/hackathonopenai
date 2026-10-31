@@ -62,6 +62,7 @@ class CheckpointTest(unittest.TestCase):
                     'flags': {'local': 'http://127.0.0.1:8899', 'reader_revision': 'rev_a'}}
         validate_resume(metadata, metadata)
         for changed in [{**metadata, 'git_sha': 'different'}, {**metadata, 'source_dirty': True},
+                        {**metadata, 'candidate_manifest': {'sha256': 'changed-export'}},
                         {**metadata, 'flags': {**metadata['flags'], 'reader_revision': 'rev_b'}}]:
             with self.subTest(changed=changed), self.assertRaises(ValueError):
                 validate_resume(metadata, changed)

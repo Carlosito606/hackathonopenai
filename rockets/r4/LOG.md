@@ -136,3 +136,19 @@
   preserving both published branch histories and the original in-progress benchmark worktree.
 - All 68 tests pass with the current split R1 modules. New runs record root R1 at their actual git snapshot
   as baseline_sha instead of inheriting the historical de158d5 label. Historical artifacts remain unchanged.
+
+## 2026-10-31 — antek-codex — complete temporal preparation from R1 chunk export
+
+- PR #11 merged by mission control. Forked r4/chunk-manifest from main@130f913 to use the promised R1 export
+  at runs/r1/20261031-0040-fee061f-temporal-chunks without loading embedding/reranking models on this CPU.
+- All 107 baseline packs reproduce the exported session order and character count. Root R1 files match
+  fee061f byte-for-byte. Explicit chunk indices avoid the ambiguous repeated-turn mapping; source/export hashes
+  and full selected-question validation protect reproducibility and resume. No full-text reference hash was exported.
+- Dev temporal minus holdout, preparation only: all-gold-in-pack 94/102 answerable questions for R1 and R4;
+  12/107 computations, 8 automatic scorer matches and 4 unjudged. All 12 match previously inspected, supported
+  source claims by exact claim hash. These are coverage/source metrics, not paired reader accuracy.
+- 73 tests pass, including a later window ranked before the first window, foreign sources, invalid indices,
+  incomplete manifests, duplicate questions, changed export identity on resume and actual local-reader/score.py.
+- Pass question_date into current R1 retrieval so its question-relative windows match prepare.plan_question.
+- Replaced the older incomplete CPU preparation with this verified complete export; old artifacts/caches are
+  preserved. Next: Qwen2.5-7B-Instruct-Q4_K_M paired reader on all 107, with the exact same candidates in both arms.

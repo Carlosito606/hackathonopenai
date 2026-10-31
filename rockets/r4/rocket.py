@@ -27,7 +27,8 @@ def retrieve(q, h):
     # Both the original monolith and the split R1 cache this public factory.
     # The split memsys facade intentionally does not export `_reranker`.
     module.reranker(device=device)
-    return [{**c, 'kind': 'turn', 'notes': {}} for c in module.retrieve(h, q['question'], _emb)][:200]
+    return [{**c, 'kind': 'turn', 'notes': {}} for c in module.retrieve(
+        h, q['question'], _emb, question_date=q['question_date'])][:200]
 
 
 def enrich(q, h, cands):

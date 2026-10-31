@@ -111,4 +111,26 @@ the top 2 sessions of a ranking costs nothing on unanswerable questions. Top-k F
 (R1 ranking / BM25): dev top1 0.741 / 0.710, top2 0.787 / 0.732, top3 0.665 / 0.617; dev-hard v1 top1 0.608 /
 0.552, top2 0.616 / 0.544. Checked on real reader output (R1's top 2): Reactor on the 43 gated questions, evidence
 F1 0.250 -> 0.375 (3 of 4 answerable abstained); Qwen on 39 reactor_mini questions 0.119 -> 0.787 (30 of 35).
-Open question for mission control: the rules want the answer from Reactor; these citations come from retrieval.
+Open question for mission control: the rules want the answer from Reactor; these citations come from retrieval.Decision (mission control, patryk-opencode, 2026-10-31 01:11 UTC, quoted): "do finału zespołu NIE dokładamy cytatów
+przy odmowach" (no false abstentions in R1's Reactor calibration, 0 of 35; citing sessions Reactor did not name is
+at the edge of the rule that the answer and its sources come from Reactor). The tool stays for development only.
+## 2026-10-31 karol-claude: stand-in reader on reactor_mini; memory stop
+
+Qwen2.5-7B Q4_K_M (desktop GTX 1660, then the laptop's Radeon 860M via llama.cpp Vulkan when the desktop slept) on
+48 of the 64 reactor_mini questions, R1's prompt on R7's evidence: R1 + Qwen and R7 + Qwen score the same (correct
+0.208, unjudged 0.125, abstention recall 5/6, false abstention 0.738, evidence F1 0.155). Qwen abstains on most
+answerable questions, so the gate changes nothing; the stand-in says little about Reactor.
+At 01:2x UTC Claude Code stopped the laptop's background jobs for low memory (two Qwen servers on one machine:
+R7's on 8899 and POLIGON's on 8897, plus the NLI model). Stopped: the Qwen server, the last 16 reactor_mini
+questions, and the NLI check on the dev-hard sample (41 of 214 done, too few answerable ones to score). Not
+restarted without Karol.
+## 2026-10-31 karol-claude: DEADEND for the gate, LLM claims + NLI (claims.py, nli.py)
+
+Research pick (claim verification): Qwen rewrites the question as first-person claims ("I have a hamster"), and an
+NLI model (DeBERTa-v3-base MNLI/FEVER/ANLI) checks each claim against 2-sentence windows of the user's own turns in
+the top 12 candidate chunks; support = the weakest claim's best entailment. Dev minus holdout, first 157 questions
+(11 unanswerable): AUC 0.846 (ss-user 0.829, multi-session 0.896). Added to the gate: t = 0.001 gives +1 right for
++2 false, t = 0.005 +3 for +15; no threshold pays. Failure causes seen: Qwen fills in answers despite the prompt
+("I met Sophia in Paris." for "Where did I meet Sophia?"; now skipped as invented names), generic claims pass
+swaps ("I have a dad."), and NLI is literal where the evidence paraphrases. The dev-hard sample was stopped at 41 of
+214 (memory). With Reactor already abstaining on near-misses (milestone 4), not pursued further.
