@@ -5,7 +5,7 @@ Status: first end-to-end Reactor smoke completed; full paired stand-in evaluatio
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 62 synthetic tests pass, including date/actor-scope regressions, interrupted paired-run recovery and official score.py.
+Checks: 68 synthetic tests pass, including date/actor-scope regressions, interrupted paired-run recovery and official score.py.
 Baseline: R1 at `de158d5`, same retrieval candidates, same machine; dev minus `splits/dev_holdout.txt`.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
 Stand-in: Qwen2.5-7B-Instruct Q4_K_M downloaded; it starts after R1 preparation to fit 8 GiB RAM.
@@ -26,6 +26,7 @@ Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, t
 - Complete calendar months/years use clamped anniversaries (January 31 → February 28, leap-day anniversaries).
 - Rejects plans, negations, assistant suggestions, conflicting matches and ambiguous multi-date sentences.
 - Keeps dates with their coordinated action; a dated recollection or discussion does not date the recalled event.
+- A date in a relative clause stays with that clause; a return date does not prove the attendance date.
 - A decision to act can date the decision; it does not establish that the planned action happened.
 - Matches coherent entity names/titles and question-provided aliases, not a bag of their words.
 - Adds computed facts and their `[E#]` labels only when their supporting text is included in the evidence pack.
@@ -37,7 +38,7 @@ Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, t
 From the repository root, using Python 3.11+ and the R1 dependencies in this folder's requirements.txt:
 
 ```bash
-R4_SCORER=/path/to/memory-challenge/score.py python -m unittest rockets.r4.test_timeline rockets.r4.test_contract rockets.r4.test_checkpoint -v
+R4_SCORER=/path/to/memory-challenge/score.py python -m unittest rockets.r4.test_timeline rockets.r4.test_contract rockets.r4.test_checkpoint rockets.r4.test_report -v
 R4_DEVICE=cpu python -m rockets.r4.run \
   --data /path/to/dev --types temporal-reasoning,multi-session \
   --local http://TEAM-STAND-IN:8899 --reader TEAM-MODEL \
@@ -71,8 +72,13 @@ R4 may
 omit an evidence session if date annotations would exceed the 24,000-character evidence budget. Computation
 coverage and automatic scorer matches are reported separately from reader answer accuracy; automatic partial
 matches do not establish independent fact correctness. Measurements under three percentage points are noise.
-An all-user-turn diagnostic (not R1 retrieval and not an answer benchmark) produced 14 computations on 107 temporal
+An all-user-turn diagnostic (not R1 retrieval and not an answer benchmark) produced 12 computations on 107 temporal
 dev questions. One gold/source inconsistency was verified independently; see the R4 temporal-gold finding.
 Reproduce the parser-only diagnostic with `python -m rockets.r4.diagnose --data DEV --scorer SCORE_PY`.
 If the reader omits its final-answer marker, the runner records an empty response and a protocol-failure count;
 it does not convert that failure into an evidence-based abstention. Transport errors leave the run incomplete.
+
+`report.py --source-audit PATH` optionally joins manual source judgments to the exact hash of each calculation's
+facts, answer and source ids. Changed claims or questions remain unreviewed. These judgments are used only in
+reporting; they never enter the stages or reader prompt. Report supported/unsupported/unreviewed counts alongside
+automatic scorer matches, and describe how the reviewed subset was selected.
