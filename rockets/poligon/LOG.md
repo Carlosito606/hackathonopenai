@@ -118,3 +118,8 @@ paired questions, dev / v2 / long: multi 0.670 / 0.423 / 0.392, temporal 0.725 /
 0.845 / 0.828, ss-user 1.000 / 1.000 / 0.961, ss-asst 1.000 / 0.989 / 0.978, all 0.844 / 0.714 / 0.681 (top 10:
 0.907 / 0.852 / 0.809). The computed splits/dev_hard_long_ids.txt equals the build's (same sha1). `--check` on the
 long build not run (about 5 GB of memory; the same code passed it on the trial build without --exclude).
+- R1 final code (fee061f) on dev temporal, the 2 misses whose gold never reaches the candidates: "What did I do
+  with Rachel on the Wednesday two months ago?" is benign (the ukulele session with the answer is in the pack; the
+  missing gold session is a related keyboard chat); "How many months before my anniversary did Rachel get
+  engaged?" is real (the engagement is an aside inside a bachelorette-trip chat). "All gold sessions in the pack"
+  slightly overstates misses: gold also lists sessions the answer does not need.
