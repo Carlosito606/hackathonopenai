@@ -1,7 +1,7 @@
 {
  "rocket": "r7",
- "run_id": "20261030-2336-6b9dc3c",
- "git_sha": "6b9dc3c",
+ "run_id": "20261031-0055-aac6aeb",
+ "git_sha": "aac6aeb",
  "stages": {
   "retrieve": "r7-bm25",
   "enrich": null,

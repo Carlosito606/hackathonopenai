@@ -23,7 +23,8 @@ KEEP = ("text", "kind", "words", "found", "head_found", "in")  # entity fields w
 
 
 def cands_from_file(path, hist):
-    """R1-style candidates rebuilt from a candidates.jsonl ([session_id, turn, score] rows, no text)."""
+    """R1-style candidates rebuilt from a candidates.jsonl ([session_id, turn, score] rows, no text). Rows name a
+    turn, not a chunk, and a long turn has several: every chunk of a turn comes in at its best rank, once."""
     opener = gzip.open if str(path).endswith(".gz") else open
     with opener(path, "rt", encoding="utf-8") as f:
         ranked = {r["question_id"]: r["ranked"] for r in map(json.loads, f)}
@@ -31,8 +32,11 @@ def cands_from_file(path, hist):
     def get(q):
         h = hist[q["history_id"]]
         where = {s["session_id"]: si for si, s in enumerate(h["sessions"])}
-        out = []
+        out, seen = [], set()
         for sid, turn, score in ranked[q["question_id"]]:
+            if (sid, turn) in seen:
+                continue
+            seen.add((sid, turn))
             si = where[sid]
             for ti, role, text in session_chunks(h["sessions"][si]):
                 if turn is None or ti == turn:
