@@ -91,3 +91,12 @@
   tests pass. Replaying the ten cached cases drops precisely the two unsupported facts and retains the other eight.
 - Post-fix all-user-turn diagnostic: 14/107 computations, 9 automatic matches, 5 unjudged; still not R1 retrieval
   or reader answer accuracy. This diagnostic was run on the scope patch over 98e95c5 before its own commit.
+
+## 2026-10-31 — antek-codex — forms and actor scope
+
+- Count questions with temporal boundaries are classified as counts before parsing between A and B; mentioning
+  a week elsewhere in such a question does not turn the counted item into a duration.
+- Added elapsed "since I" and forward "after A did I B" forms. Before/after premises must agree with source dates.
+- Recognize shared action stems consistently. When a question explicitly asks about my event, a family member's
+  solo event does not become mine just because that person is named as my companion in the question.
+- All 60 tests pass. The all-history diagnostic now records dirty source status as well as the commit.
