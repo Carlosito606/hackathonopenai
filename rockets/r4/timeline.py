@@ -66,6 +66,8 @@ def words(text):
             if len(word) > len(suffix) + 3 and word.endswith(suffix):
                 word = word[:-len(suffix)] + ('y' if suffix == 'ied' else '')
                 break
+        if word in STOP:
+            continue
         out.append(word)
     return set(out)
 
@@ -75,6 +77,13 @@ def classify(question):
     unit_match = re.search(r'\b(days?|weeks?|months?|years?)\b', q, re.I)
     unit = unit_match.group(1).lower().rstrip('s') if unit_match else 'day'
     result = {'form': 'lookup', 'unit': unit, 'anchors': []}
+    time_quantity = re.search(r'\bhow many\s+(?:(?:complete|full|calendar|whole|total)\s+)*'
+                              r'(?:days?|weeks?|months?|years?)\b', q, re.I)
+    if (re.search(r'\bhow many\b', q, re.I) and not time_quantity) or re.search(r'\btotal (?:number|count)\b', q, re.I):
+        # "How many books between January and March" counts books, not the
+        # temporal distance between the two boundaries.
+        result.update(form='count', anchors=[q])
+        return result
     # Strong separators avoid splitting an event title containing an ordinary "and".
     match = re.search(r'\bbetween (.+?) and (?:the day )?(.+)', q, re.I)
     if match:
@@ -84,9 +93,10 @@ def classify(question):
     if match:
         result.update(form='between', anchors=list(match.groups()))
         return result
-    match = re.search(r'\bbefore (.+?) did (.+)', q, re.I)
+    match = re.search(r'\b(before|after) (.+?) did (.+)', q, re.I)
     if match:
-        result.update(form='between', anchors=[match.group(2), match.group(1)], require_forward=True)
+        anchors = [match.group(3), match.group(2)] if match.group(1).lower() == 'before' else [match.group(2), match.group(3)]
+        result.update(form='between', anchors=anchors, require_forward=True)
         return result
     match = re.search(r'\b(?:ago did I|ago have I) (.+?) when (.+)', q, re.I)
     if match:
@@ -111,7 +121,7 @@ def classify(question):
                       direction='latest' if re.search('recent|latest', q, re.I) else 'earliest',
                       order_output='list' if re.search(r'\border\b|first to last|earliest to latest|second and third', q, re.I) else 'winner')
         return result
-    match = re.search(r'\b(?:ago did I|ago have I|passed since I|since I last)\s+(.+)', q, re.I)
+    match = re.search(r'\b(?:ago did I|ago have I|passed since I|since I last|since I)\s+(.+)', q, re.I)
     if match:
         result.update(form='elapsed', anchors=[match.group(1)])
     elif re.search(r'\bhow many\b|\btotal\b', q, re.I) and not unit_match:
@@ -147,9 +157,10 @@ def events(text, session_date, session_id, turn, role):
         relevant = resolve_dates(clause, session_date)
         # Several different dates in one sentence cannot be assigned to individual events by proximity alone.
         ambiguous = len({(d['start'], d['end']) for d in relevant}) > 1
-        subjects = re.findall(r'\b([Mm]y (?:friend|cousin|sister|brother|aunt|uncle|mother|father)|'
-                              r'he|she|they|[A-Z][a-z]+)\s+(?:has |had |just )?'
-                              r'(?:visited|attended|bought|finished|started|joined|graduated|became)\b', clause)
+        subjects = re.findall(r'\b([Mm]y (?:friend|cousin|sister|brother|aunt|uncle|mother|father|wife|husband|'
+                              r'partner|daughter|son|boss|colleague|coworker|neighbor|roommate|grandmother|grandfather)|'
+                              r'he|she|they|[A-Z][a-z]+)\s+(?:(?:has|had|just|already|recently|finally|also)\s+)*'
+                              r'(?:[a-z]+ed|bought|became|went|ran|made|saw|took|got|ate|won|lost|read)\b', clause)
         subjects = [s for s in subjects if s.lower() not in ('i', 'we')]
         future = parse_date(item['start']) > parse_date(session_date)
         out.append({**item, 'session_id': session_id, 'turn': turn, 'role': role, 'text': clause,
@@ -161,7 +172,7 @@ def events(text, session_date, session_id, turn, role):
     return out
 
 
-def match_event(anchor, pool, allow_ranges=False):
+def match_event(anchor, pool, allow_ranges=False, require_self=False):
     if not words(anchor):
         return None
     choices = []
@@ -176,6 +187,8 @@ def match_event(anchor, pool, allow_ranges=False):
             continue  # a dated recollection/discussion does not date its subject
         if event.get('decision') and not re.search(r'\b(?:decid(?:e|ed)|choose|chose|resolv(?:e|ed)|agree(?:d)?)\b', anchor, re.I):
             continue  # deciding to act does not establish that the action happened
+        if require_self and event.get('third_party_subjects'):
+            continue  # naming my companion in the question does not make their solo event mine
         if event.get('cancelled') and not re.search(r'\bcancel', anchor, re.I):
             continue
         if any(not words(subject) or not (words(subject) <= tokens) for subject in event.get('third_party_subjects', [])):
@@ -223,7 +236,9 @@ def compute(question, question_date, pool):
               'reason': 'unsupported_or_ambiguous_question_form'}
     if form['form'] not in ('between', 'elapsed', 'order') or not anchors:
         return result
-    selected = [match_event(anchor, pool, allow_ranges=form['form'] == 'order') for anchor in anchors]
+    selected = [match_event(anchor, pool, allow_ranges=form['form'] == 'order',
+                            require_self=bool(re.search(r'\b(?:I|we)\b', question if form['form'] == 'elapsed' else anchor, re.I)))
+                for anchor in anchors]
     if any(event is None for event in selected):
         result['reason'] = 'missing_or_ambiguous_event_date'
         return result

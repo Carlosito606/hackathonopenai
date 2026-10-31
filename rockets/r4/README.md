@@ -5,7 +5,7 @@ Status: first end-to-end Reactor smoke completed; full paired stand-in evaluatio
 Reactor smoke @ `616bb63`, temporal n=2: R1 2/2 correct, R4 2/2; mean evidence F1 0.75 for both.
 R4 supplied one computed fact; a later source audit found its event date unsupported (the dated action was recollection).
 This two-question smoke makes **no claim of improvement over R1**.
-Checks: 54 synthetic tests pass, including date-scope regressions, interrupted paired-run recovery and official score.py.
+Checks: 60 synthetic tests pass, including date/actor-scope regressions, interrupted paired-run recovery and official score.py.
 Baseline: R1 at `de158d5`, same retrieval candidates, same machine; dev minus `splits/dev_holdout.txt`.
 Both variants neutralize the inherited format example to `<answer> [E4]`; no named answer example is seeded.
 Stand-in: Qwen2.5-7B-Instruct Q4_K_M downloaded; it starts after R1 preparation to fit 8 GiB RAM.
@@ -17,6 +17,7 @@ Artifacts: `runs/r4/20261030-224702-616bb63-reactor-smoke/` (reserved 4 calls, t
 ## What the first implementation does
 
 - Classifies differences, elapsed time, order, counting and date/entity lookups without gold or type labels.
+- Separates counts within a period from distances between boundaries; supports elapsed `since` and forward `after`.
 - Resolves explicit dates, weekdays and relative day/week offsets in the current history's session date.
 - Adds `two weekends ago`, `the 15th`, `a couple of days ago`, calendar month offsets and period ranges.
 - Keeps weekends as ranges; omitted months/years and conversational month offsets are marked inferred.

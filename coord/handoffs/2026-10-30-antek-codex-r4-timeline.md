@@ -5,7 +5,7 @@ done:
 - Forked date parser, event matching and code calculations for grounded exact durations and ordering.
 - Range/inference handling for weekends, bare ordinals, calendar months; rejects plans and ambiguous matches.
 - Paired R1/R4 artifact runner, partial-run auditor, model-identity check; no Reactor execution path.
-- 54 synthetic tests pass, including date-scope checks, interrupted paired-run recovery and the official scorer.
+- 60 synthetic tests pass, including date/actor-scope checks, interrupted paired-run recovery and the official scorer.
 - Ordering supports disjoint explicit date ranges; complete calendar months/years clamp month-end anniversaries.
 - All-user-turn parser diagnostic after scope fix: 14 computations / 107 temporal questions (not R1 retrieval,
   not a reader score); 9 automatic matches, 5 unjudged.
