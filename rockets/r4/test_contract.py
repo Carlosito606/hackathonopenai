@@ -61,6 +61,16 @@ class ContractTest(unittest.TestCase):
         result = rocket.grounded_computation(q, enriched, [{'id': 's_synthetic', 'date': '2024-03-05', 'text': 'unrelated'}])
         self.assertFalse(result['computed'])
 
+    def test_no_computation_uses_the_identical_r1_pack_and_prompt(self):
+        q, h, cands = fixture()
+        h['sessions'][0]['turns'][0]['content'] = 'I enjoy botanical gardens.'
+        cands[0]['text'] = h['sessions'][0]['turns'][0]['content']
+        enriched = rocket.enrich(q, h, cands)
+        baseline = rocket.baseline_assemble(q, h, cands)
+        pack = rocket.assemble(q, h, enriched)
+        self.assertEqual(pack, baseline)
+        self.assertEqual(rocket.decide(q, h, enriched, pack), rocket.baseline_decide(q, h, cands, baseline))
+
     def test_r1_previous_user_context_can_ground_event(self):
         q, h, cands = fixture()
         h['sessions'][0]['turns'].append({'role': 'assistant', 'content': 'That sounds like a lovely visit.'})
@@ -142,7 +152,7 @@ class ContractTest(unittest.TestCase):
                         '--scorer', str(scorer), '--run-id', 'synthetic']
                 with patch.object(run, 'ROOT', root), patch.object(rocket, 'retrieve', return_value=cands), \
                         patch.object(sys, 'argv', argv), patch.object(run.subprocess, 'check_output',
-                            side_effect=['0' * 40, b'', '0' * 40, b'']):
+                            side_effect=['0' * 40, b'', '0' * 40, b'', '0' * 40, b'']):
                     ask = __import__('ask')
                     local = ask.local
                     calls = []
@@ -157,7 +167,18 @@ class ContractTest(unittest.TestCase):
                         run.main()
                     argv.append('--resume')
                     run.main()
-                out = next((root / 'runs/r4').iterdir())
+                    argv.remove('--resume')
+                    argv[argv.index('--run-id') + 1] = 'identical'
+                    with patch.object(rocket, 'assemble', side_effect=rocket.baseline_assemble), \
+                            patch.object(rocket, 'decide', side_effect=rocket.baseline_decide), \
+                            patch.object(ask, 'local', wraps=local) as call:
+                        run.main()
+                    self.assertEqual(call.call_count, 1)
+                    shared = root / 'runs/r4/identical-0000000'
+                    self.assertEqual(json.loads((shared / 'summary.json').read_text())['shared_reader_results'], 1)
+                    self.assertEqual(run.rows(shared / 'predictions.jsonl'),
+                                     run.rows(shared / 'baseline-r1/predictions.jsonl'))
+                out = root / 'runs/r4/synthetic-0000000'
                 meta = json.loads((out / 'meta.json').read_text())
                 self.assertEqual(meta['questions'], 1)
                 self.assertTrue(meta['complete'])
