@@ -126,6 +126,10 @@ odpowiada zamiast odmówić.
   10 bez odpowiedzi w historii, 0 z pominiętą datą; z tego wzięliśmy reguły o innych osobach i o planach,
   dołączanie następnej tury użytkownika i okna dat (`experiments/r1/20261030-2300-gpt-audit-test-evidence.md`).
 - Najlepsze łączenie wyszukiwania zależy od typu pytania (`coord/findings/20261030-2330-karol-claude-fusion-depends-on-type.md`).
+- Tania bramka przed odpowiedzią (R7: nazwy z pytania w dowodach + SQuAD 2.0) bez modelu łapie 13 z 25 pytań bez
+  odpowiedzi na dev i 26 ze 107 na dev-hard przy 2 fałszywych odmowach na 398; ale na 43 pytaniach, w których
+  kazałaby odmówić, Reactor z naszymi notatkami sam odmówił w 41 (zysk 1, strata 1), więc nie weszła do
+  zgłoszenia (`rockets/r7/README.md`, `rockets/r7/LOG.md`).
 
 **Notatka:** Mierzyliśmy każdą zmianę i odrzucaliśmy te, które pomagały jednemu typowi pytań kosztem innych.
 
@@ -135,8 +139,10 @@ odpowiada zamiast odmówić.
 
 - Wybór taktyki wyszukiwania według typu pytania (rakieta R8 ROUTER w `rockets/README.md`;
   `coord/findings/20261030-2330-karol-claude-fusion-depends-on-type.md`).
-- Sprawdzanie prawie trafień przed odpowiedzią: cała nazwa rzeczy, a nie tylko podobieństwo (R7 GUARDIAN w
-  `rockets/README.md`).
+- Prawie trafienia, które Reactor wciąż przepuszcza: tanie sygnały (obecność nazwy, pewność SQuAD) już nic nie
+  dodają, a sesje-pułapki je oszukują (na pytaniach dev-hard z usuniętymi dowodami najlepsza odpowiedź SQuAD
+  pochodziła z cudzej sesji w 30 z 32); potrzebne
+  sprawdzenie, czy zdanie z odpowiedzią dotyczy tego użytkownika (`rockets/r7/LOG.md`).
 - Liczenie w kodzie liczby dni między dwoma zdarzeniami, gdy oba mają znacznik daty
   (`coord/handoffs/2026-10-30-temporal-date-coverage.md`).
 - Odporność multi-session na pułapki (dev-hard −16,5 pkt) i pomiar R1 na całym dev-large
