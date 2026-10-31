@@ -22,7 +22,7 @@ MAX_MESSAGE = 29000  # ask.py sends with --max-chars 30000
 
 GUIDE = """
 (How to answer: the evidence is excerpts from my own past chats with you, oldest first, each with its date; "user" is me, "assistant" is you.
-- First write "Quotes:" and copy, word for word, the sentence(s) from the excerpts that answer the question, each with its label, e.g. [E3] "I just started reading The Nightingale". The answer is often a side remark in a chat about something else, and may use other words than the question.
+- First write "Quotes:" and copy, word for word, the sentence(s) from the excerpts that answer the question, each with its label, e.g. [E3] "<the sentence>". The answer is often a side remark in a chat about something else, and may use other words than the question.
 - If it changed over time, the most recent conversation wins. A plan, a recommendation, an attempt, or a change I later undid ("removed it", "didn't keep it", "used to") is not my current state.
 - Things said about other people (family, friends, neighbors, colleagues) or their pets do not answer a question about me or mine.
 - Then the final line holds only the short answer (a name, number, date or short phrase) followed by the labels of the excerpts you quoted, e.g. "<answer> [E4]". Labels count only on that line, so always repeat them there. One answer, no hedging, no alternatives. It is the last line of your reply: nothing after it.
