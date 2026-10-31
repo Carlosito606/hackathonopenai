@@ -71,6 +71,42 @@ class ComputationTest(unittest.TestCase):
         result = compute("Which did I use most recently, 'bus' or 'train'?", '2024-03-20', pool)
         self.assertEqual(result.get('answer'), 'train')
 
+    def test_order_list_obeys_both_explicit_directions(self):
+        pool = self.event('I visited the botanical garden today.', '2024-03-04')
+        pool += self.event('I attended the pottery workshop today.', '2024-03-11', 's_b')
+        for direction, expected in [
+                ('earliest to latest', 'the botanical garden -> the pottery workshop'),
+                ('first to last', 'the botanical garden -> the pottery workshop'),
+                ('latest to earliest', 'the pottery workshop -> the botanical garden'),
+                ('last to first', 'the pottery workshop -> the botanical garden')]:
+            with self.subTest(direction=direction):
+                question = f'What is the order from {direction}: the botanical garden, the pottery workshop?'
+                result = compute(question, '2024-03-20', pool)
+                self.assertEqual(result.get('answer'), expected)
+                self.assertIn('Computed chronological order (earliest to latest): the botanical garden -> the pottery workshop.', result['facts'])
+
+    def test_reverse_chronological_list_and_contradictory_directions(self):
+        pool = self.event('I visited the botanical garden today.', '2024-03-04')
+        pool += self.event('I attended the pottery workshop today.', '2024-03-11', 's_b')
+        question = 'Give reverse chronological order: the botanical garden, the pottery workshop?'
+        self.assertEqual(compute(question, '2024-03-20', pool).get('answer'),
+                         'the pottery workshop -> the botanical garden')
+        self.assertEqual(compute(question.replace('reverse chronological', 'REVERSE  chronological'), '2024-03-20', pool).get('answer'),
+                         'the pottery workshop -> the botanical garden')
+        question = 'Give the order from first to last and latest to earliest: the botanical garden, the pottery workshop?'
+        result = compute(question, '2024-03-20', pool)
+        self.assertFalse(result['computed'])
+        self.assertEqual(result['reason'], 'ambiguous_order_direction')
+
+    def test_alternative_titles_do_not_reverse_a_first_question(self):
+        pool = self.event('I read Latest News today.', '2024-03-04')
+        pool += self.event('I read New Order today.', '2024-03-11', 's_b')
+        for titles in ["'Latest News' or 'New Order'", 'Latest News or New Order']:
+            question = 'Which book did I read first, ' + titles + '?'
+            self.assertEqual(classify(question)['direction'], 'earliest')
+            self.assertEqual(classify(question)['order_output'], 'winner')
+            self.assertEqual(compute(question, '2024-03-20', pool).get('answer'), titles.split(' or ')[0])
+
     def test_conflicting_dates_do_not_choose_arbitrarily(self):
         pool = self.event('I visited the botanical garden today.', '2024-03-04')
         pool += self.event('I visited the botanical garden today.', '2024-03-11', 's_b')

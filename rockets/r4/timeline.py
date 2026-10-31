@@ -73,6 +73,26 @@ def words(text):
     return set(out)
 
 
+def order_direction(question):
+    """Read the requested direction, excluding quoted event titles.
+
+    Both endpoints in "earliest to latest" describe an ascending list. Words in
+    alternatives such as a book called "Latest News" are not ordering commands.
+    Contradictory explicit directions require the reader fallback.
+    """
+    control = re.sub(r'''(?<!\w)(['"])(.*?)\1(?!\w)''', '', question)
+    reverse = r'\breverse\s+chronological\s+order\b'
+    ascending = re.search(r'\b(?:earliest\s+to\s+latest|first\s+to\s+last)\b|\bchronological\s+order\b',
+                          re.sub(reverse, '', control, flags=re.I), re.I)
+    descending = re.search(r'\b(?:latest\s+to\s+earliest|last\s+to\s+first)\b|' + reverse, control, re.I)
+    if ascending and descending:
+        return None
+    if ascending or descending:
+        return 'latest' if descending else 'earliest'
+    operator = re.split(r':|,|\bamong\b', control, maxsplit=1, flags=re.I)[0]
+    return 'latest' if re.search(r'\b(?:most recently|latest)\b', operator, re.I) else 'earliest'
+
+
 def classify(question):
     q = question.strip().rstrip('?.')
     unit_match = re.search(r'\b(days?|weeks?|months?|years?)\b', q, re.I)
@@ -110,6 +130,8 @@ def classify(question):
         result.update(form='between', anchors=list(match.groups()))
         return result
     if re.search(r'\b(first|earlier|most recently|earliest|latest|order)\b', q, re.I):
+        control = re.sub(r'''(?<!\w)(['"])(.*?)\1(?!\w)''', '', q)
+        operator = re.split(r':|,|\bamong\b', control, maxsplit=1, flags=re.I)[0]
         tail = re.split(r':\s*|\bamong\s+', q, maxsplit=1, flags=re.I)
         among = bool(re.search(r'\bamong\s+', q, re.I))
         if len(tail) == 1:
@@ -119,8 +141,9 @@ def classify(question):
         if len(anchors) < 2:
             anchors = re.findall(r"['\"]([^'\"]+)['\"]", q)
         result.update(form='order', anchors=[a.strip() for a in anchors if words(a)],
-                      direction='latest' if re.search('recent|latest', q, re.I) else 'earliest',
-                      order_output='list' if re.search(r'\border\b|first to last|earliest to latest|second and third', q, re.I) else 'winner')
+                      direction=order_direction(q),
+                      order_output='list' if re.search(r'\border\b', operator, re.I) or
+                      re.search(r'\b(?:first\s+to\s+last|last\s+to\s+first|earliest\s+to\s+latest|latest\s+to\s+earliest|second and third)\b', control, re.I) else 'winner')
         return result
     match = re.search(r'\b(?:ago did I|ago have I|passed since I|since I last|since I)\s+(.+)', q, re.I)
     if match:
@@ -241,6 +264,9 @@ def compute(question, question_date, pool):
               'reason': 'unsupported_or_ambiguous_question_form'}
     if form['form'] not in ('between', 'elapsed', 'order') or not anchors:
         return result
+    if form['form'] == 'order' and form['direction'] is None:
+        result['reason'] = 'ambiguous_order_direction'
+        return result
     selected = [match_event(anchor, pool, allow_ranges=form['form'] == 'order',
                             require_self=bool(re.search(r'\b(?:I|we)\b', question if form['form'] == 'elapsed' else anchor, re.I)))
                 for anchor in anchors]
@@ -271,7 +297,9 @@ def compute(question, question_date, pool):
             result['reason'] = 'order_not_strict'
             return result
         chronology = ' -> '.join(anchor for anchor, _event in ordered)
-        answer = chronology if form['order_output'] == 'list' else ordered[-1 if form['direction'] == 'latest' else 0][0]
+        requested = reversed(ordered) if form['direction'] == 'latest' else ordered
+        answer = (' -> '.join(anchor for anchor, _event in requested) if form['order_output'] == 'list'
+                  else ordered[-1 if form['direction'] == 'latest' else 0][0])
         facts.append('Computed chronological order (earliest to latest): ' + chronology + '.')
         facts.append('Computed answer to the ordering question: ' + answer + '.')
     result.update(computed=True, sources=sources, facts='\n'.join(facts), answer=answer, reason='grounded_exact_dates')
