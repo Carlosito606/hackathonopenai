@@ -124,3 +124,13 @@ At 01:2x UTC Claude Code stopped the laptop's background jobs for low memory (tw
 R7's on 8899 and POLIGON's on 8897, plus the NLI model). Stopped: the Qwen server, the last 16 reactor_mini
 questions, and the NLI check on the dev-hard sample (41 of 214 done, too few answerable ones to score). Not
 restarted without Karol.
+## 2026-10-31 karol-claude: DEADEND for the gate, LLM claims + NLI (claims.py, nli.py)
+
+Research pick (claim verification): Qwen rewrites the question as first-person claims ("I have a hamster"), and an
+NLI model (DeBERTa-v3-base MNLI/FEVER/ANLI) checks each claim against 2-sentence windows of the user's own turns in
+the top 12 candidate chunks; support = the weakest claim's best entailment. Dev minus holdout, first 157 questions
+(11 unanswerable): AUC 0.846 (ss-user 0.829, multi-session 0.896). Added to the gate: t = 0.001 gives +1 right for
++2 false, t = 0.005 +3 for +15; no threshold pays. Failure causes seen: Qwen fills in answers despite the prompt
+("I met Sophia in Paris." for "Where did I meet Sophia?"; now skipped as invented names), generic claims pass
+swaps ("I have a dad."), and NLI is literal where the evidence paraphrases. The dev-hard sample was stopped at 41 of
+214 (memory). With Reactor already abstaining on near-misses (milestone 4), not pursued further.
