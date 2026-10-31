@@ -4,7 +4,7 @@
 
 Writes OUT_DIR/candidates.jsonl: {"question_id", "ranked": [[session_id, turn, chunk_idx, score], ...]} (top 100),
 where chunk_idx indexes retrieval.split_text(turn content); and OUT_DIR/evidence.jsonl as rockets/poligon/r1_run.py.
-Dev questions without the holdout, answerable or not, of the given type.
+Dev questions without the holdout, answerable or not, of the given type ("all" for every type).
 """
 import argparse
 import json
@@ -25,7 +25,7 @@ ap.add_argument("--type", default="temporal-reasoning")
 args = ap.parse_args()
 hist, qs, gold = load_split(args.split)
 hold = set((ROOT / "splits" / "dev_holdout.txt").read_text().split())
-qs = [q for q in qs if q["question_id"] not in hold and gold[q["question_id"]]["question_type"] == args.type]
+qs = [q for q in qs if q["question_id"] not in hold and args.type in ("all", gold[q["question_id"]]["question_type"])]
 emb = Embedder(args.cache)
 args.out.mkdir(parents=True, exist_ok=True)
 with open(args.out / "candidates.jsonl", "w", encoding="utf-8") as fc, \
