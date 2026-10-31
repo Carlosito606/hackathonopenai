@@ -90,3 +90,25 @@ occur. Added to the gate, single-fact shapes, names only: dev +1 right / +3 fals
 dev-hard +1 / +3 (BM25), +6 / +2 (R1). With noun phrases: about +2 to +20 right for +28 to +30 false. Not
 consistent and near 1:1. With a reader that answers ~90% of answerable questions right and already abstains on most
 near-misses, an extra rule needs far better than 1:1 to pay.
+## 2026-10-31 karol-claude: milestone 4, the gate against the real reader (Reactor t10)
+
+The 43 questions R7's gate (`pack` + QA < -5, BM25 candidates) abstains on: 15 dev minus holdout, 28 dev-hard v1.
+Reactor got R1's prompt (prepare.py GUIDE) on R7's evidence (plan.py), run by Karol 00:12-01:04 UTC, 43/43
+answered, then gate_value.py:
+- Reactor abstained on 41 of 43 by itself: 38 of the 39 unanswerable and 3 of the 4 answerable ones.
+- gain 1: Reactor answered an unanswerable single-session-assistant question ("UCLA Mindful Awareness Research
+  Center"); loss 1: Reactor answered a temporal question right ("27"). Net 0.
+Verdict: with R1's prompt (near misses do not count, abstain only when nothing states it about the user) the reader
+already abstains where the cheap gate would; laying R7's gate over the ship gains nothing. The gate predicts the
+reader's abstention 41/43, which could save reader calls when reader time is short. On the 4 answerable questions
+the gate flags, the gold sessions were in R7's pack (all of them in 3, one of two in 1); Reactor still abstained on 3:
+a duration counted from dates, a paraphrased gift, a bedtime on a relative day. Hard answers, not missing evidence.
+## 2026-10-31 karol-claude: cite on abstention (cite_on_abstain.py)
+
+Evidence F1 is scored on every answerable question, abstained or not, and never on unanswerable ones, but an
+abstention from predictions.py has empty citations, so a false abstention scores F1 0. Giving every abstention
+the top 2 sessions of a ranking costs nothing on unanswerable questions. Top-k F1 on answerable questions
+(R1 ranking / BM25): dev top1 0.741 / 0.710, top2 0.787 / 0.732, top3 0.665 / 0.617; dev-hard v1 top1 0.608 /
+0.552, top2 0.616 / 0.544. Checked on real reader output (R1's top 2): Reactor on the 43 gated questions, evidence
+F1 0.250 -> 0.375 (3 of 4 answerable abstained); Qwen on 39 reactor_mini questions 0.119 -> 0.787 (30 of 35).
+Open question for mission control: the rules want the answer from Reactor; these citations come from retrieval.
