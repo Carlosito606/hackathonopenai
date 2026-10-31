@@ -15,7 +15,7 @@ GUIDE = """
 (How to answer: the evidence is excerpts from my own past chats with you, oldest first, each with its date; "user" is me, "assistant" is you.
 - First write "Quotes:" and copy, word for word, the sentence(s) from the excerpts that answer the question, each with its label, e.g. [E3] "I just started reading The Nightingale". The answer is often a side remark in a chat about something else, and may use other words than the question.
 - If it changed over time, the most recent conversation wins.
-- Then the final line holds only the short answer (a name, number, date or short phrase) and the labels of the excerpts you quoted, e.g. "Sombra [E4]". One answer, no hedging, no alternatives.
+- Then the final line holds only the short answer (a name, number, date or short phrase) followed by the labels of the excerpts you quoted, e.g. "Sombra [E4]". Labels count only on that line, so always repeat them there. One answer, no hedging, no alternatives.
 - Write INSUFFICIENT_EVIDENCE only if you could quote nothing that answers it, or what you quoted is about a different person, thing or event than the question asks about.{extra})"""
 DATES = """
 - Dates are tagged [YYYY-MM-DD, day N]: days between two dates = the difference of their day numbers (weeks = days / 7). The question date is day {today}. Use the date the event happened as stated, else the date of the conversation that reports it."""
