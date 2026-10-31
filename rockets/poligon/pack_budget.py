@@ -3,8 +3,8 @@
     python rockets/poligon/pack_budget.py ../data/dev RUN_DEV ../data/dev_hard RUN_HARD --budgets 18000 22000 26000
 
 Rebuilds R1's pack with build_evidence (root memsys.py, same code as evidence.py at 926005e) from the ranked chunks
-in candidates.jsonl: a chunk's text is the k-th piece of its turn for the k-th time that turn appears in the
-ranking. At the run's own budget (18000) the rebuilt session list is compared with the run's evidence.jsonl, so
+in candidates.jsonl: exact when rows carry the chunk index ([session_id, turn, chunk_idx, score], R1's export
+since fee061f), otherwise the k-th piece of its turn for the k-th time that turn appears. At the run's own budget (18000) the rebuilt session list is compared with the run's evidence.jsonl, so
 the rebuild can be trusted. For each budget it prints, per type: all gold sessions in the pack, the share of
 gold sessions that never reached the candidates (no budget can recover them), and the longest whole message
 (the kit's build_message with prepare.py's question and guide), which ask.py refuses above 30000 characters.
