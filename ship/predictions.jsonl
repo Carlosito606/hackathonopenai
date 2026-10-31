@@ -1,10 +1,10 @@
 {"question_id": "q_40f751819121", "abstain": false, "answer": "Pixel", "citations": ["s_d73132b02b8a"]}
 {"question_id": "q_392fdc44c911", "abstain": false, "answer": "Toggl Track", "citations": ["s_d20d2f946375"]}
 {"question_id": "q_068d0a4b3f7b", "abstain": false, "answer": "5", "citations": ["s_05a96fc0df4d"]}
-{"question_id": "q_a13386c9d560", "abstain": true, "answer": "", "citations": []}
+{"question_id": "q_a13386c9d560", "abstain": true, "answer": "", "citations": ["s_30c76dac9b0a"]}
 {"question_id": "q_b3a794e382da", "abstain": false, "answer": "Fábrica Coffee Roasters", "citations": ["s_4bebbeb0f5a4"]}
 {"question_id": "q_62e927862f62", "abstain": false, "answer": "Ana Ferreira", "citations": ["s_e5548745730d"]}
-{"question_id": "q_607d3cf5b4f1", "abstain": true, "answer": "", "citations": []}
+{"question_id": "q_607d3cf5b4f1", "abstain": true, "answer": "", "citations": ["s_f531c16bcca0"]}
 {"question_id": "q_cd41ef1d48d1", "abstain": false, "answer": "Bruno Almeida", "citations": ["s_f1d12777eb9a"]}
 {"question_id": "q_06ae4afa8961", "abstain": false, "answer": "14 days", "citations": ["s_af842296e994", "s_38f2e98f38bc"]}
 {"question_id": "q_b3e5afe916c8", "abstain": false, "answer": "Director of Clinical Services", "citations": ["s_01aca3a03579"]}
@@ -15,7 +15,7 @@
 {"question_id": "q_7c7caecdcce6", "abstain": false, "answer": "139", "citations": ["s_5b349931452f", "s_fdda35ee6e10"]}
 {"question_id": "q_b81292033d1e", "abstain": false, "answer": "83", "citations": ["s_72891d8983d4", "s_3eb11d05ab63"]}
 {"question_id": "q_1a6b4fa2ede3", "abstain": false, "answer": "Priya Nair", "citations": ["s_c89660cbaad4"]}
-{"question_id": "q_aa27ddd3b7c5", "abstain": true, "answer": "", "citations": []}
+{"question_id": "q_aa27ddd3b7c5", "abstain": true, "answer": "", "citations": ["s_12114354b88f"]}
 {"question_id": "q_9a91a69855b3", "abstain": false, "answer": "71", "citations": ["s_022c5423f13d", "s_d8170628ba01"]}
 {"question_id": "q_91ae9daa0edc", "abstain": false, "answer": "37,500 shillings", "citations": ["s_c311fcf95cf9", "s_ea165bd95e5c"]}
 {"question_id": "q_0d23d90f39ba", "abstain": false, "answer": "43 days", "citations": ["s_9766ef6a3317", "s_a3883b8a3d86"]}
@@ -39,7 +39,7 @@
 {"question_id": "q_1a8be2824d48", "abstain": false, "answer": "8 ohms", "citations": ["s_09bdbcb7a7b5"]}
 {"question_id": "q_ca7af42dbd6c", "abstain": false, "answer": "6.3 volts", "citations": ["s_06329147434d"]}
 {"question_id": "q_862f0a129d66", "abstain": false, "answer": "180 ohms", "citations": ["s_3816ff8a2b58"]}
-{"question_id": "q_3664132a79f0", "abstain": true, "answer": "", "citations": []}
+{"question_id": "q_3664132a79f0", "abstain": true, "answer": "", "citations": ["s_489d66ffb392"]}
 {"question_id": "q_a01c345cd645", "abstain": false, "answer": "0.022 µF", "citations": ["s_2080123eb4cc"]}
 {"question_id": "q_6434e8c4a3ae", "abstain": false, "answer": "33k ohms", "citations": ["s_cb1ea62bdf47"]}
 {"question_id": "q_6e893bcca955", "abstain": false, "answer": "47 µF", "citations": ["s_cbbb03765460"]}
@@ -53,21 +53,21 @@
 {"question_id": "q_90f7c27a95f2", "abstain": false, "answer": "2", "citations": ["s_cc2e54586c4e"]}
 {"question_id": "q_355094c7f34a", "abstain": false, "answer": "1", "citations": ["s_6b21a3ef86b0", "s_ecc62bfcb463"]}
 {"question_id": "q_e509e8e931c1", "abstain": false, "answer": "5", "citations": ["s_c0b846477df0"]}
-{"question_id": "q_c2e25b33ec30", "abstain": true, "answer": "", "citations": []}
-{"question_id": "q_8b4f1ff8ce11", "abstain": true, "answer": "", "citations": []}
+{"question_id": "q_c2e25b33ec30", "abstain": true, "answer": "", "citations": ["s_ba33de652bda"]}
+{"question_id": "q_8b4f1ff8ce11", "abstain": true, "answer": "", "citations": ["s_1edec9a676b4"]}
 {"question_id": "q_1fda88c230cc", "abstain": false, "answer": "69", "citations": ["s_9147ce9fe782", "s_992d05874c50"]}
 {"question_id": "q_9d2958737ab5", "abstain": false, "answer": "72", "citations": ["s_b2ec7e74262d", "s_0eff5d8e8448"]}
 {"question_id": "q_e6ffd9f64dac", "abstain": false, "answer": "45", "citations": ["s_05ca5bc45fcc", "s_5de7dcefe0ce"]}
-{"question_id": "q_6ab86da6d151", "abstain": true, "answer": "", "citations": []}
+{"question_id": "q_6ab86da6d151", "abstain": true, "answer": "", "citations": ["s_41a9bb428973"]}
 {"question_id": "q_4f4389802423", "abstain": false, "answer": "Scotiabank", "citations": ["s_3256f6b7da17"]}
 {"question_id": "q_4d44a760b75b", "abstain": false, "answer": "43", "citations": ["s_e6c9f13ea0b5", "s_2c34acd1f4cc"]}
-{"question_id": "q_22ab86c83e4c", "abstain": true, "answer": "", "citations": []}
+{"question_id": "q_22ab86c83e4c", "abstain": true, "answer": "", "citations": ["s_d8561c09032e"]}
 {"question_id": "q_d8597704a027", "abstain": false, "answer": "5", "citations": ["s_e1f222b68f0f", "s_fb89989e119d"]}
-{"question_id": "q_33cd29d8e252", "abstain": true, "answer": "", "citations": []}
+{"question_id": "q_33cd29d8e252", "abstain": true, "answer": "", "citations": ["s_347bd25e2b54"]}
 {"question_id": "q_976e9c69229f", "abstain": false, "answer": "Manon", "citations": ["s_0212608ef9bb"]}
 {"question_id": "q_ae313330ed3d", "abstain": false, "answer": "73 days", "citations": ["s_9a341842ca7a", "s_4c166de08c8b"]}
 {"question_id": "q_8e098a44c205", "abstain": false, "answer": "Masters Swim Club", "citations": ["s_6447a9cc444f"]}
-{"question_id": "q_962a82f81f3a", "abstain": true, "answer": "", "citations": []}
+{"question_id": "q_962a82f81f3a", "abstain": true, "answer": "", "citations": ["s_a23930130cb7"]}
 {"question_id": "q_bad53f86da03", "abstain": false, "answer": "Coach Miriam", "citations": ["s_dfdd379dd740"]}
 {"question_id": "q_f46f10460ac8", "abstain": false, "answer": "Ferreira Immigration Law", "citations": ["s_d7d50ed51233"]}
 {"question_id": "q_05c51b87253c", "abstain": false, "answer": "100 days", "citations": ["s_8c34565cb319", "s_63c36c3352d9"]}
@@ -77,7 +77,7 @@
 {"question_id": "q_91ff2fbd8bd6", "abstain": false, "answer": "77 days", "citations": ["s_ede8caefcb6a", "s_2def4021619d"]}
 {"question_id": "q_bc91651664c8", "abstain": false, "answer": "BEVA 371", "citations": ["s_f96b6f0b43e9"]}
 {"question_id": "q_6a3d4c6ff3c4", "abstain": false, "answer": "21", "citations": ["s_4541449a1b69", "s_bb9e08560ed6", "s_0e15becddd97"]}
-{"question_id": "q_4483117bcef2", "abstain": true, "answer": "", "citations": []}
+{"question_id": "q_4483117bcef2", "abstain": true, "answer": "", "citations": ["s_da52acbb5b7c"]}
 {"question_id": "q_eeee9fea968c", "abstain": false, "answer": "108", "citations": ["s_0b956b108cef", "s_185f60a958e3"]}
 {"question_id": "q_1d7f43897caa", "abstain": false, "answer": "Gazelle", "citations": ["s_486ea74c5256"]}
 {"question_id": "q_be699a99e8ae", "abstain": false, "answer": "46", "citations": ["s_894040884a3a", "s_b6f5234fda52"]}
@@ -126,7 +126,7 @@
 {"question_id": "q_2b8785c0664b", "abstain": false, "answer": "Golden Dragon", "citations": ["s_6a820766921f"]}
 {"question_id": "q_eb3a2b633378", "abstain": false, "answer": "6:00 a.m.", "citations": ["s_88459a4efc85"]}
 {"question_id": "q_ffc9e6cb19b2", "abstain": false, "answer": "Juniper", "citations": ["s_3395cc712db0", "s_567c3768e63e", "s_8a04408b5c21"]}
-{"question_id": "q_bb52fdaffb76", "abstain": true, "answer": "", "citations": []}
+{"question_id": "q_bb52fdaffb76", "abstain": true, "answer": "", "citations": ["s_878a7af2f5cc"]}
 {"question_id": "q_90d3741d99e9", "abstain": false, "answer": "Marcus", "citations": ["s_4d42203f003e"]}
 {"question_id": "q_982391af62c7", "abstain": false, "answer": "2", "citations": ["s_88222f7078f3", "s_06e06b5d18dc"]}
 {"question_id": "q_b8179c3b814f", "abstain": false, "answer": "Rose City Runners", "citations": ["s_14e583f70e68"]}
