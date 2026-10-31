@@ -64,7 +64,7 @@ mlx-community/Qwen2.5-7B-Instruct-4bit`); `score.py` from the challenge repo sco
 | counting questions on dev-hard after date windows and session diversity | multi-session 0.714 -> 0.914 | `experiments/r1/20261031-0030-budget.md` |
 | date expressions tagged in test user turns | 37% -> 67% | `experiments/temporal/20261030-2308-date-coverage.md` |
 | independent audit of the test evidence (two GPT agents) | generic failure patterns, acted on in code | `experiments/r1/20261030-2300-gpt-audit-test-evidence.md` |
-| final test run on Reactor | <filled in after the run> | `ship/` |
+| final test run on Reactor (31.10, 01:37-05:57 UTC) | 146/146 answered by Reactor, 12 abstentions (8.2%), every answer cited (1.57 sessions per answer; 3 citations taken from the reply), median latency 75 s; `check_predictions.py` passes; no gold for test | `ship/predictions.jsonl` |
 
 ## Reproducing the submission
 
