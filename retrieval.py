@@ -214,7 +214,7 @@ def retrieve(history, question, emb, n_fuse=80, rerank=True, question_date=None,
             ranks = np.empty(len(rows))
             ranks[np.argsort(-scores)] = np.arange(len(rows))
             fused += w / (60 + ranks)
-    top = list(np.argsort(-fused)[:n_fuse])
+    top = list(np.argsort(-fused)[:n_fuse + n_fuse // 2 * bool(MULTI.search(question))])  # counting: wider pool
     seen = set(top)
     top += [i for i in np.argsort(-np.where(inwin, fused, -1))[:n_window] if inwin[i] and i not in seen]
     cands = [dict(rows[i], fused=float(fused[i])) for i in top]
