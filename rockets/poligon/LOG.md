@@ -149,3 +149,35 @@ pack 52 / 83. Finding 20261031-0310.
 - judge.py --human on cal39: agreement with patryk-opencode's verdicts 10/11 (old) and 11/11 (new); judged
   correct 0.923 / 0.949 vs human 0.949 / 0.949; the one miss is the flagged yes/no "Road bike" answer. Finding
   20261031-0315.
+
+## 2026-10-31 02:20 karol-claude-2: R1 final code on dev-hard v2 and dev-hard-long
+
+patryk-opencode exported R1 fee061f (the submitted code) on dev, v2 and long with chunk indices. All gold in pack
+dev / v2 / long: all 0.972 / 0.935 / 0.905; multi 0.969 / 0.907 / 0.825; temporal 0.922 / 0.833 / 0.804. Crowding on
+v2: 7 crowded, 7 retrieval, 1 other. sessdiv + prune at 18k: gold 0.992 / 0.965 / 0.937; answer phrase dev 0.714
+(vs 0.692), v2 0.671 (0.654), long 147/234 (151): not a clear win at test length. Local dev_hard rebuilt with all
+135 exclusions to match. Finding 20261031-0325.
+- cite_expand.py on the final R1 dev packs (simulated reader citing the one gold session with most question
+  words): evidence F1 0.765 -> 0.805 (k-update 0.667 -> 0.868, multi 0.587 -> 0.652, temporal 0.664 -> 0.721,
+  ss-asst 1.000 -> 0.933, ss-user 1.000 -> 0.967). An answerable question we abstain on scores F1 0 today
+  (predictions.py writes citations []); citing the best pack session gives it 0.646 on average (--cite-abstentions).
+- Where final R1 loses gold: dev 3 not in candidates / 8 cut by budget; v2 14 / 12; long 25 / 13. Of 35 gold
+  sessions missing from the candidates on long, 28 share <= 1 content word with the question (paraphrase), 13 hold
+  the fact in an aside. Finding 20261031-0335.
+- expand_probe.py on dev-hard-long (BM25): question + stand-in category expansion, top 10 all 0.809 -> 0.857, multi
+  0.588 -> 0.701, temporal 0.716 -> 0.755; top 5 mixed (multi 0.392 -> 0.351). Finding 20261031-0340.
+  Same direction on dev (top 5 all 0.844 -> 0.889) and dev-hard v2 (0.714 -> 0.764); expansion alone > RRF.
+- DEADEND: RRF of final R1's session ranking with expanded BM25 loses gold (top 8: dev 0.967 -> 0.962, v2 0.920 ->
+  0.892, long 0.882 -> 0.864). The BM25-only gain does not transfer to R1's dense + reranker pipeline.
+- CORRECTION cite_expand.py: measured on dev only; on dev-hard v2 / long it costs ~7 points of evidence F1 (0.764
+  -> 0.695 / 0.696) because near-misses share the most question words. patryk-opencode caught it and kept it out
+  of the submission. Lesson for me: run every proposal on dev-hard before posting it. --cite-abstentions alone:
+  0 -> 0.646 / 0.437 / 0.438 (dev / v2 / long).
+
+## 2026-10-31 02:45 karol-claude-2: report.py on every rocket with dev-hard runs
+
+`report.py` (no models, 0.1 s) reproduces R1 final's numbers exactly (top 5 multi 0.897 / 0.649 / 0.557). R7
+(aac6aeb: BM25 candidates, R1 assemble) on dev vs dev-hard v1: all gold in pack 0.935 -> 0.839, multi 0.897 ->
+0.629; of 64 dev-hard misses 48 are gold among the candidates but not packed (crowding, the problem R1's final
+session diversity fixed: R1 final has 12 such on v2), 16 outside the candidates. Same levels as R7's README. R4's
+committed runs are a 2-question Reactor smoke (no dev-hard run yet); R3's are a 15-question k-update Reactor test.

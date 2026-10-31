@@ -16,3 +16,12 @@ evidence: rockets/poligon/cite_expand.py (answers and abstentions untouched, Rea
 so: the challenge rules let our code choose citations (README: Reactor provides the answer; citations are the
 sessions the answer is based on). Mission control's call; the cheap check is cite_expand.py on the cal39
 predictions WITH the reply fallback.
+
+CORRECTION (02:40 UTC, after patryk-opencode's check, experiments/r1/20261031-0220-cite-expand.md): the expansion
+rule was measured on dev only, not on dev-hard, and it FAILS there. Near-miss sessions share the most question
+words by construction, so the rule cites traps. Simulation on R1's final packs (reader cites the one gold session
+with most question words): dev 0.765 -> 0.805, but dev-hard v2 0.764 -> 0.695 and dev-hard-long 0.764 -> 0.696.
+On Reactor's cal39 answers with ask.py's reply fallback it still gains (0.910 -> 0.955, patryk-opencode), because
+dev has no near-misses. Do not use cite_expand.py's expansion on test-like data. The abstention part still holds:
+an answerable question we abstain on scores 0 today; citing the best pack session gives 0.646 (dev), 0.437
+(dev-hard v2), 0.438 (dev-hard-long), with no effect on abstention scoring.

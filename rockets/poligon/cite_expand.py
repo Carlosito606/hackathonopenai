@@ -1,5 +1,9 @@
 """Add one evidence citation the reader left out, by code, after the run (answers untouched).
 
+WARNING: the expansion helps on dev but costs ~7 points of evidence F1 on dev-hard (near-miss sessions share the
+most question words, so it cites traps): coord/findings/20261031-0300-*, CORRECTION. Only --abstentions-only
+(cite the best pack session when we abstain, where the score is 0 anyway) is safe on test-like data.
+
     python rockets/poligon/cite_expand.py predictions.jsonl plan.jsonl ../data/test/histories.jsonl \\
         --out predictions-cited.jsonl [--ratio 0.8]
 
@@ -50,6 +54,8 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--ratio", type=float, default=0.8)
     ap.add_argument("--cite-abstentions", action="store_true")
+    ap.add_argument("--abstentions-only", action="store_true",
+                    help="leave answered questions alone; only cite the best pack session on abstentions")
     args = ap.parse_args()
     plan = {p["question_id"]: p for p in rj(args.plan)}
     need = {p["history_id"] for p in plan.values()}
@@ -64,7 +70,9 @@ def main():
     out, added = [], 0
     for p in rj(args.predictions):
         q = plan.get(p["question_id"])
-        if q and (not p["abstain"] or args.cite_abstentions):
+        if q and args.abstentions_only and not p["abstain"]:
+            q = None
+        if q and (not p["abstain"] or args.cite_abstentions or args.abstentions_only):
             question = q["question"].split("\n(How to answer")[0]
             pack = [e["id"] for e in q["evidence"]]
             new = expand(list(p["citations"]), pack, words(question),
