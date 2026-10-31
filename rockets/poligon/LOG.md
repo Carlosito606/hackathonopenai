@@ -173,3 +173,11 @@ v2: 7 crowded, 7 retrieval, 1 other. sessdiv + prune at 18k: gold 0.992 / 0.965 
   -> 0.695 / 0.696) because near-misses share the most question words. patryk-opencode caught it and kept it out
   of the submission. Lesson for me: run every proposal on dev-hard before posting it. --cite-abstentions alone:
   0 -> 0.646 / 0.437 / 0.438 (dev / v2 / long).
+
+## 2026-10-31 02:45 karol-claude-2: report.py on every rocket with dev-hard runs
+
+`report.py` (no models, 0.1 s) reproduces R1 final's numbers exactly (top 5 multi 0.897 / 0.649 / 0.557). R7
+(aac6aeb: BM25 candidates, R1 assemble) on dev vs dev-hard v1: all gold in pack 0.935 -> 0.839, multi 0.897 ->
+0.629; of 64 dev-hard misses 48 are gold among the candidates but not packed (crowding, the problem R1's final
+session diversity fixed: R1 final has 12 such on v2), 16 outside the candidates. Same levels as R7's README. R4's
+committed runs are a 2-question Reactor smoke (no dev-hard run yet); R3's are a 15-question k-update Reactor test.

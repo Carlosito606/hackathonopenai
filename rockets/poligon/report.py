@@ -61,8 +61,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("data", type=Path, help="folder with dev/, dev_hard/, dev_hard_long/")
     ap.add_argument("runs", type=Path, nargs="+", help="run folders on dev, dev_hard[, dev_hard_long]")
+    ap.add_argument("--splits", nargs="+", default=["dev", "dev_hard", "dev_hard_long"],
+                    help="split folder names under data, in the order of the runs (e.g. dev dev_hard_v1)")
     args = ap.parse_args()
-    names = ("dev", "dev_hard", "dev_hard_long")[:len(args.runs)]
+    names = tuple(args.splits[:len(args.runs)])
     res = {n: load(args.data / n, r) for n, r in zip(names, args.runs)}
     common = set.intersection(*(set(r) for r in res.values()))
     print(f"{len(common)} answerable questions present in every run (paired by source question)\n")
