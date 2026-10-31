@@ -167,3 +167,5 @@ v2: 7 crowded, 7 retrieval, 1 other. sessdiv + prune at 18k: gold 0.992 / 0.965 
 - expand_probe.py on dev-hard-long (BM25): question + stand-in category expansion, top 10 all 0.809 -> 0.857, multi
   0.588 -> 0.701, temporal 0.716 -> 0.755; top 5 mixed (multi 0.392 -> 0.351). Finding 20261031-0340.
   Same direction on dev (top 5 all 0.844 -> 0.889) and dev-hard v2 (0.714 -> 0.764); expansion alone > RRF.
+- DEADEND: RRF of final R1's session ranking with expanded BM25 loses gold (top 8: dev 0.967 -> 0.962, v2 0.920 ->
+  0.892, long 0.882 -> 0.864). The BM25-only gain does not transfer to R1's dense + reranker pipeline.

@@ -12,5 +12,9 @@ temporal 0.725 -> 0.784); dev-hard v2 0.714 / 0.852 -> 0.764 / 0.905 (k-update t
 evidence: rockets/poligon/expand_probe.py (one short stand-in call per question, cached; BM25 from bm25_run.py).
 gbrain's LongMemEval-S report found LLM expansion harmful for its hybrid retriever (93% -> 55%); here it helps
 plain BM25 at depth 10. Not measured: R1's dense + reranker pipeline, which already catches part of the paraphrase.
-so: worth one R1 experiment after the final: add the expansion as an extra sub-query (retrieval.sub_queries is
-already fused by RRF with weight 0.5) and measure on dev-hard-long with r1_run/export_chunks.
+[DEADEND] for R1: fusing that expanded-BM25 session ranking with the final R1 ranking (RRF, c=60) LOSES gold:
+all gold in the top 8 sessions dev 0.967 -> 0.962, dev-hard v2 0.920 -> 0.892, dev-hard-long 0.882 -> 0.864; top 12
+long 0.920 -> 0.897 (multi 0.856 -> 0.763). R1's dense retrieval and reranker already find what the expansion
+adds to BM25, and the fused BM25 list brings in near-misses.
+so: LLM category expansion is a cheap fix for a lexical-only retriever, not for R1. If R1 tries it, use it inside
+the reranker's query (or as a weighted sub-query), never as an equal RRF partner, and measure on dev-hard-long.
