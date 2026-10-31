@@ -169,6 +169,30 @@ def judge_run(args, judge):
     if args.out:
         wj(args.out, out)
     print_table(out)
+    if args.human:
+        agreement(out, args.human)
+
+
+def agreement(judged, human_path):
+    """The judge's verdicts against a person's on the same unjudged answers (JSONL with question_id and a
+    verdict/label/human field: correct/wrong, yes/no, true/false)."""
+    norm = {"correct": True, "yes": True, "true": True, "1": True, "wrong": False, "no": False, "false": False,
+            "0": False}
+    human = {}
+    for r in rj(human_path):
+        v = next((r[k] for k in ("verdict", "label", "human", "correct") if k in r), None)
+        if v is not None and str(v).strip().lower() in norm:
+            human[r["question_id"]] = norm[str(v).strip().lower()]
+    pairs = [(human[r["question_id"]], r["answer"] == "correct") for r in judged
+             if "judge" in r and r["question_id"] in human]
+    if not pairs:
+        print("no judged answer has a human verdict")
+        return
+    cm = {(h, j): sum(1 for p in pairs if p == (h, j)) for h in (True, False) for j in (True, False)}
+    agree = cm[True, True] + cm[False, False]
+    print(f"judge vs human on {len(pairs)} unjudged answers: agreement {agree}/{len(pairs)} = {agree / len(pairs):.3f}; "
+          f"human correct & judge correct {cm[True, True]}, human correct & judge wrong {cm[True, False]}, "
+          f"human wrong & judge correct {cm[False, True]}, human wrong & judge wrong {cm[False, False]}")
 
 
 def selftest(args, judge):
@@ -218,6 +242,7 @@ def main():
     ap.add_argument("--model", default="", help="model name, if the server needs one")
     ap.add_argument("--cache", default=str(Path.home() / ".cache" / "poligon-judge.jsonl"))
     ap.add_argument("--out", help="write judged details here")
+    ap.add_argument("--human", help="JSONL of a person's verdicts on unjudged answers: print the agreement")
     ap.add_argument("--workers", type=int, default=4, help="parallel requests (llama-server: its --parallel slots)")
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--per-type", type=int, default=20, help="selftest: gold questions per type")
