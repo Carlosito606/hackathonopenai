@@ -138,3 +138,11 @@ answered_unanswerable 1, wrong_date 1; new ok 25, citation_miss 12, answered_una
 citation misses leave a gold session out (none extra). `cite_expand.py` (ratio 0.8, cite the best pack session when
 none): F1 0.867 -> 0.951 (old), 0.795 -> 0.917 (new) over final-line citations; vs ask.py's reply fallback 0.895 /
 0.910 alone; combination unmeasured. Finding 20261031-0300.
+
+## 2026-10-31 02:10 karol-claude-2: reader probe on test-like traps
+
+Stand-in shares one 4,096-token KV cache across its 4 slots (finding 20261031-0245): the probe stalled at 4
+parallel 1.7k-token prompts; rerun with --workers 2 --ctx 2048 --budget 4500 --max-tokens 250 (192 calls, ~35 min).
+83 inject + 13 remove questions, plain / trap: gold 27 / 31, abstained 31 / 27, other 24 / 22, trap taken 1 / 3
+(by hand: 1 real, the rest false alarms of the word-subset rule); remove: abstained 12 / 12 of 13. Aside in the
+pack 52 / 83. Finding 20261031-0310.
