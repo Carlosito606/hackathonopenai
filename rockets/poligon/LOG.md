@@ -130,3 +130,11 @@ long build not run (about 5 GB of memory; the same code passed it on the trial b
 padded sessions too). On R1 926005e dev vs dev-hard v1 it gives ok 348, crowded 23, retrieval 7, other 1, missed on
 dev too 19 (the one-off count in finding 20261031-0115 said 21 crowded of 29 losses: it classified hard-ok before
 dev-missed, so 4 questions moved). Same conclusion: crowding is most of the loss.
+
+## 2026-10-31 02:00 karol-claude-2: Reactor calibration answers: failure analysis and citations
+
+failures.py on runs/r1/20261031-0125-reactor-cal39 with the human verdicts on unjudged: old ok 27, citation_miss 10,
+answered_unanswerable 1, wrong_date 1; new ok 25, citation_miss 12, answered_unanswerable 1, wrong_date 1. All
+citation misses leave a gold session out (none extra). `cite_expand.py` (ratio 0.8, cite the best pack session when
+none): F1 0.867 -> 0.951 (old), 0.795 -> 0.917 (new) over final-line citations; vs ask.py's reply fallback 0.895 /
+0.910 alone; combination unmeasured. Finding 20261031-0300.
