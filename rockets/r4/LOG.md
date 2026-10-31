@@ -152,3 +152,17 @@
 - Pass question_date into current R1 retrieval so its question-relative windows match prepare.plan_question.
 - Replaced the older incomplete CPU preparation with this verified complete export; old artifacts/caches are
   preserved. Next: Qwen2.5-7B-Instruct-Q4_K_M paired reader on all 107, with the exact same candidates in both arms.
+
+## 2026-10-31 — antek-codex — auditable distinct-item arithmetic
+
+- Added a standalone counting kernel on a separate worktree while the full temporal reader run remains frozen
+  at 42ab798. It does not yet change any pipeline fact, question, prediction or reader call.
+- Item identities come from literal spans in user turns of this history. Typography/case/whitespace normalize;
+  near names, acronyms and different articles do not collapse. Duplicate mentions keep source links, not votes.
+- Period counts use event dates, not conversation dates. Unknown/inferred dates and boundary-crossing intervals
+  yield bounds. An independently dated in-period mention can establish membership despite undated repeats.
+- Date spans must belong to the item's own asserted event clause; recollections, plans, another person's action,
+  and a different coordinated action cannot lend the item their date. This applies the temporal scope finding.
+- Nine new synthetic invariants pass. Arithmetic provenance does not validate semantic extraction, ownership,
+  completeness, aliases or inventory updates; result flags explicitly retain these limits. No dev count-accuracy
+  claim. Next: a conservative item extractor, followed by paired multi-session scoring before enabling counts.
