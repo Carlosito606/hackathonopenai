@@ -152,17 +152,17 @@ def main(out):
     # 5. reactor vs stand-in, citations
     ax = fig.add_axes([0.71, 0.18, 0.26, 0.2])
     labs = ["odmowy\nzbędne\nQwen 7B", "odmowy\nzbędne\nReactor", "cytaty\nlinia\nkońcowa", "cytaty\n+ nasze\nobejście"]
-    vals = [0.40, 0.0, 0.795, 0.910]
+    vals = [0.52, 0.0, 0.795, 0.910]
     cols = [RED, GREEN, "#90caf9", BLUE]
     bars = ax.bar(range(4), vals, color=cols)
     for b, v in zip(bars, vals):
-        ax.text(b.get_x() + b.get_width() / 2, v + 0.02, f"{v:.0%}" if v <= 0.4 else f"{v:.2f}".replace(".", ","),
+        ax.text(b.get_x() + b.get_width() / 2, v + 0.02, f"{v:.0%}" if v <= 0.6 and v not in (0.795, 0.910) else f"{v:.2f}".replace(".", ","),
                 ha="center", fontsize=11, weight="bold")
     ax.set_xticks(range(4), labs, fontsize=9)
     ax.set_ylim(0, 1.05)
     fig.text(0.70, 0.415, "5. Reactor vs model zastępczy", fontsize=14, weight="bold")
     ax.spines[["top", "right"]].set_visible(False)
-    fig.text(0.70, 0.105, "Źródło: experiments/r1/\n20261031-0010-reactor-calibration.md\n(35 pytań dev z odpowiedzią).", fontsize=9, color=GREY)
+    fig.text(0.70, 0.095, "Źródła: Qwen 7B: experiments/verify/\n20261031-0214-abstention.md (base_s, 75 pytań\ndev z odpowiedzią); Reactor i cytaty:\nexperiments/r1/20261031-0010-reactor-calibration.md.", fontsize=9, color=GREY)
 
     # 6. what 37/39 means
     ax = fig.add_axes([0.03, 0.005, 0.94, 0.085])
