@@ -110,3 +110,23 @@ conflicting own fact ("designer handbag" $800 vs $5,000). dev-hard v2 will exclu
   Fitbit Charge 3, 9 months"), a few are off-topic and harmless.
 - `reader_probe.py`: first run died on HTTP 500 (a prompt over the 4096-token slot); now each message is fitted
   with the server's /tokenize and judge.py records server errors per row instead of crashing.
+
+## 2026-10-31 01:35 karol-claude-2: dev-hard-long (test-length histories) with BM25
+
+v2 + `--pad-to 200` (exclude_v2, 135 pairs): build 7 min, 1.1 GB. Plain BM25, all gold in top 5 sessions, 398
+paired questions, dev / v2 / long: multi 0.670 / 0.423 / 0.392, temporal 0.725 / 0.529 / 0.471, k-update 0.966 /
+0.845 / 0.828, ss-user 1.000 / 1.000 / 0.961, ss-asst 1.000 / 0.989 / 0.978, all 0.844 / 0.714 / 0.681 (top 10:
+0.907 / 0.852 / 0.809). The computed splits/dev_hard_long_ids.txt equals the build's (same sha1). `--check` on the
+long build not run (about 5 GB of memory; the same code passed it on the trial build without --exclude).
+- R1 final code (fee061f) on dev temporal, the 2 misses whose gold never reaches the candidates: "What did I do
+  with Rachel on the Wednesday two months ago?" is benign (the ukulele session with the answer is in the pack; the
+  missing gold session is a related keyboard chat); "How many months before my anniversary did Rachel get
+  engaged?" is real (the engagement is an aside inside a bachelorette-trip chat). "All gold sessions in the pack"
+  slightly overstates misses: gold also lists sessions the answer does not need.
+
+## 2026-10-31 01:45 karol-claude-2: crowding.py
+
+`crowding.py` turns the earlier one-off displacement count into a tool (exact with chunk-indexed candidates; counts
+padded sessions too). On R1 926005e dev vs dev-hard v1 it gives ok 348, crowded 23, retrieval 7, other 1, missed on
+dev too 19 (the one-off count in finding 20261031-0115 said 21 crowded of 29 losses: it classified hard-ok before
+dev-missed, so 4 questions moved). Same conclusion: crowding is most of the loss.
